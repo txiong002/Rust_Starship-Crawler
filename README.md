@@ -14,3 +14,10 @@ TBD
 Open a terminal and type the command 
 
 `cargo run`
+
+
+# References
+
+Lee: I reused code from HW3 to help set up the dungeon room.
+
+The code we reused was based on the code to define (`struct`), implement (`impl`), and display (`show_posn`) the Chomp board.
