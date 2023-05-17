@@ -7,7 +7,12 @@
 //! Run it using the command `cargo run`.
 //!
 //!
-use rsc_lib::*;
+
+use prompted::input;
+use rsc_lib::{combat::Player, *};
+
+const MAX_PLAYER_HEALTH: usize = 100;
+const BASE_ATTACK_DAMAGE: usize = 10;
 
 /// Display the room
 fn show_room(room: &Room) {
@@ -29,11 +34,25 @@ fn show_room(room: &Room) {
 }
 
 fn main() {
-    println!("TBD");
+    println!("==== Welcome to Starship Crawler! ====");
+
+    // Ask for the player's name.
+    let player_name: String = input!("Enter your name: ");
+
+    println!();
+
+    let player: Player = Player::new_player(player_name, MAX_PLAYER_HEALTH, BASE_ATTACK_DAMAGE);
 
     let room = Room::new(10, 10);
 
-    println!("{:?}", room);
+    // println!("{:?}", room);
 
     show_room(&room);
+
+    println!("Your name is: {}", player.name);
+    println!("Your have {} health.", player.health);
+    println!("You inflict {} damage on enemies.", player.attack_damage);
+
+    // Game loop logic - end the game when the player wins or the player dies.
+    // let mut is_game_over: bool = false;
 }

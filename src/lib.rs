@@ -1,6 +1,6 @@
 //! Rust Starship Crawler library
 //! 4/29/2023
-//! //! CS 510 Rust
+//! CS 510 Rust
 //!
 //! Library code goes here
 //!
@@ -32,8 +32,10 @@ pub struct Room {
 }
 
 impl Room {
+    /// Initialize the room with the given width and height.
+    /// Set up the walls.
     pub fn new(width: usize, height: usize) -> Self {
-        // Return a chomp board
+        // Return a room
         let mut my_room = Room {
             width,
             height,
@@ -48,8 +50,11 @@ impl Room {
 /// Set up the room's walls
 pub fn set_up_walls(mut room: Room) -> Room {
     for i in 0..room.room_area.len() {
+        // First and last row are walls
         room.room_area[i][0] = false;
         room.room_area[i][room.room_area.len() - 1] = false;
+
+        // Top and bottom rows are all walls
         if i == 0 || i == room.room_area.len() - 1 {
             for j in 0..room.room_area[0].len() {
                 room.room_area[i][j] = false;

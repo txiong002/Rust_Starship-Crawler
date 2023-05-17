@@ -9,12 +9,15 @@ This is a roguelike game where the player is an explorer investigating an abando
 
 TBD
 
-## How to run
+## How to play
 
-Open a terminal and type the command 
+1) Open a terminal and type the command 
 
 `cargo run`
 
+2) When prompted, enter your name.
+
+3) Have fun!
 
 # References
 

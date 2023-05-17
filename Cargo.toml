@@ -8,3 +8,4 @@ license-file = "LICENSE.txt"
 name = "rsc_lib"
 
 [dependencies]
+prompted = "0.2.7"
