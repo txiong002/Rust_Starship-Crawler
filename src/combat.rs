@@ -16,6 +16,8 @@ pub struct Player {
     pub health: usize,
     /// Attack damage - base is 10
     pub attack_damage: usize,
+    /// Stat that determines how much the player can move in one turn
+    pub movement: usize,
 }
 
 /// A simple enemy.
@@ -29,12 +31,13 @@ pub struct Enemy {
 /// Player implementation
 /// The player can move and attack.
 impl Player {
-    pub fn new_player(name: String, health: usize, attack_damage: usize) -> Self {
+    pub fn new_player(name: String, health: usize, attack_damage: usize, movement: usize) -> Self {
         // Return the player.
         Player {
             name,
             health,
             attack_damage,
+            movement,
         }
     }
 
