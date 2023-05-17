@@ -20,6 +20,7 @@ fn show_room(room: &Room) {
     // Show the room
     for i in 0..room.width {
         for j in 0..room.height {
+            //Print player location
             if i == room.player_location.0 && j == room.player_location.1 {
                 print!("^");
             }
@@ -63,12 +64,13 @@ fn main() {
     println!("You can move {} space.", player.movement);
     let mut check = 0;
     while check == 0 {
+        //Get user move
         room = match user_move(room.clone(), &player) {
             Some(room) => { 
                 check = 1;
                 room
             }
-            //If the AI was unable to find a winning move, chomp the piece that is furthest down
+            //Continue if move was invalid
             None => continue
         };
     }
