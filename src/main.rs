@@ -74,6 +74,7 @@ fn main() {
             None => continue
         };
     }
+    //Reprint room
     show_room(&room);
     println!("You inflict {} damage on enemies.", player.attack_damage);
 

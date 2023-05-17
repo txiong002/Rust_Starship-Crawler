@@ -79,7 +79,7 @@ pub fn set_up_walls(mut room: Room) -> Room {
 pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
     let user_move: (usize, usize);
     //Get user input
-    let user_input: String = input!("Where do you want to move? (Format: 1 4): ").parse().unwrap();
+    let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ").parse().unwrap();
     let user_move_str = user_input.split_whitespace().collect::<Vec<_>>();
     //Make sure the user didn't input too much
     if user_move_str.len() == 2 {
@@ -91,7 +91,7 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
         {
             Ok(v) => v,
             Err(_) => {
-                println!("Invalid input!");
+                println!("Invalid input! Please use positive numbers only!");
                 return None;
             }
         };
@@ -126,6 +126,6 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
         room.player_location = user_move;
         return Some(room);
     }
-    println!("Invalid input!");
+    println!("Invalid input! Please make sure that your input is two positive integers!");
     None
 }
