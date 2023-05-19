@@ -57,16 +57,16 @@ impl Enemy {
 
 // Combat implementation
 pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
-    if enemy.health <= 0 {
+    if enemy.health == 0 {
         println!("Enemy has been defeated!");
-        return false;
-    } else if player.health <= 0 {
+        false
+    } else if player.health == 0 {
         println!("{} has been defeated", player.name);
-        return false;
+        false
     } else {
         enemy.health -= player.attack_damage;
         player.health -= enemy.attack_damage;
-        return true;
+        true
     }
 }
 

@@ -116,13 +116,11 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
             }
         }
         //Same, but if the move is meant to be going "backwards"
-        else {
-            if ((room.player_location.0 - user_move.0) > player.movement)
-                || ((room.player_location.1 - user_move.1) > player.movement)
-            {
-                println!("You cannot move that far!");
-                return None;
-            }
+        else if ((room.player_location.0 - user_move.0) > player.movement)
+            || ((room.player_location.1 - user_move.1) > player.movement)
+        {
+            println!("You cannot move that far!");
+            return None;
         }
 
         //If the move is confirmed to be a valid movement for the player to make
