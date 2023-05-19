@@ -35,6 +35,7 @@ pub struct Room {
 
     //Player location (set of coordinates) inside current room (maybe set this up a different way later?)
     pub player_location: (usize, usize),
+    pub enemy_location: (usize, usize),
 }
 
 impl Room {
@@ -48,6 +49,7 @@ impl Room {
             room_area: [[true; MAX_HEIGHT]; MAX_WIDTH], // Every square is set to false except those within the bounds of nrows and ncols
             //Start with having the player be centered at the bottom of the room
             player_location: (1, 4),
+            enemy_location: (8, 4),
         };
 
         my_room = set_up_walls(my_room);
@@ -79,7 +81,9 @@ pub fn set_up_walls(mut room: Room) -> Room {
 pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
     let user_move: (usize, usize);
     //Get user input
-    let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ").parse().unwrap();
+    let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ")
+        .parse()
+        .unwrap();
     let user_move_str = user_input.split_whitespace().collect::<Vec<_>>();
     //Make sure the user didn't input too much
     if user_move_str.len() == 2 {

@@ -9,10 +9,15 @@
 //!
 
 use prompted::input;
-use rsc_lib::{combat::Player, *};
+use rsc_lib::{
+    combat::Player,
+    combat::{display_health, face_off, Enemy},
+    *,
+};
 
 const MAX_PLAYER_HEALTH: usize = 100;
 const BASE_ATTACK_DAMAGE: usize = 10;
+const ENEMY_ATTACK_DAMAGE: usize = 9;
 const BASE_MOVEMENT: usize = 1;
 
 /// Display the room
@@ -23,6 +28,10 @@ fn show_room(room: &Room) {
             //Print player location
             if i == room.player_location.0 && j == room.player_location.1 {
                 print!("^");
+            }
+            // print enemy location
+            else if i == room.enemy_location.0 && j == room.enemy_location.1 {
+                print!("X");
             }
             // Print a room tile depending on whether it is a wall or a floor.
             else if room.room_area[i][j] {
@@ -46,12 +55,16 @@ fn main() {
 
     println!();
 
-    let player: Player = Player::new_player(
+    // Create new player
+    let mut player: Player = Player::new_player(
         player_name,
         MAX_PLAYER_HEALTH,
         BASE_ATTACK_DAMAGE,
         BASE_MOVEMENT,
     );
+
+    // Create new enemy
+    let mut enemy: Enemy = Enemy::new_enemy(MAX_PLAYER_HEALTH, ENEMY_ATTACK_DAMAGE);
 
     let mut room = Room::new(10, 10);
 
@@ -61,23 +74,33 @@ fn main() {
 
     println!("Your name is: {}", player.name);
     println!("Your have {} health.", player.health);
-    println!("You can move {} space.", player.movement);
-    let mut check = 0;
-    while check == 0 {
-        //Get user move
-        room = match user_move(room.clone(), &player) {
-            Some(room) => { 
-                check = 1;
-                room
-            }
-            //Continue if move was invalid
-            None => continue
-        };
-    }
-    //Reprint room
-    show_room(&room);
-    println!("You inflict {} damage on enemies.", player.attack_damage);
 
+    // Loop until game is over
+    'outer: loop {
+        println!("You can move {} space.", player.movement);
+        let mut check = 0;
+        while check == 0 {
+            //Get user move
+            room = match user_move(room.clone(), &player) {
+                Some(room) => {
+                    check = 1;
+                    room
+                }
+                //Continue if move was invalid
+                None => continue,
+            };
+        }
+        //Reprint room
+        show_room(&room);
+        println!("You inflict {} damage on enemies.", player.attack_damage);
+        let game_over = face_off(&mut player, &mut enemy);
+        display_health(&player, &enemy);
+
+        if !game_over {
+            println!("Game over, Thanks for playing");
+            break 'outer;
+        }
+    }
     // Game loop logic - end the game when the player wins or the player dies.
     // let mut is_game_over: bool = false;
 }
