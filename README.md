@@ -7,13 +7,15 @@ This is a roguelike game where the player is an explorer investigating an abando
 
 ## Installation
 
-TBD
+Open a terminal and clone the repository with the command below:
+
+`git clone https://gitlab.cecs.pdx.edu/cs510-rust-lth/rust-starship-crawler.git`
 
 ## How to play
 
 1) Open a terminal and type the command 
 
-`cargo run`
+- `cargo run`
 
 2) When prompted, enter your name.
 

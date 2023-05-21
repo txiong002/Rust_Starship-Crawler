@@ -8,16 +8,24 @@
 //!
 //!
 
+// Imports ========================================
+// For prompting user input
 use prompted::input;
+
+// Using rust modules and libraries
 use rsc_lib::{
     combat::Player,
     combat::{display_health, face_off, Enemy},
     *,
 };
 
+/// The player's health
 const MAX_PLAYER_HEALTH: usize = 100;
+/// The player's base attack damage.
 const BASE_ATTACK_DAMAGE: usize = 10;
+/// The enemy's base attack damage.
 const ENEMY_ATTACK_DAMAGE: usize = 9;
+/// The number of tiles the player is allowed to traverse.
 const BASE_MOVEMENT: usize = 1;
 
 /// Display the room
@@ -80,6 +88,7 @@ fn main() {
     println!("Your name is: {}", player.name);
     println!("Your have {} health.", player.health);
 
+    // Game loop logic - end the game when the player wins or the player dies.
     // Loop until game is over
     'outer: loop {
         println!("You can move {} space.", player.movement);
@@ -97,13 +106,17 @@ fn main() {
         }
         //Reprint room
         show_room(&room);
+
+        // Check if the player has found an enemy. If so, the player and the enemy will fight.
+        // Currently the player has no control over when they get to make a move.
         let is_found = found_enemy(room.clone());
         if is_found {
             println!("Get Ready to Battle!");
             loop {
-                let game_over = face_off(&mut player, &mut enemy);
-                display_health(&player, &enemy);
+                let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
+                display_health(&player, &enemy); // Show the health values
                 if !game_over {
+                    // If either the enemy or the player has lost all their health, the game ends.
                     println!("Game over, Thanks for playing");
                     break 'outer;
                 }
@@ -112,6 +125,4 @@ fn main() {
             continue;
         }
     }
-    // Game loop logic - end the game when the player wins or the player dies.
-    // let mut is_game_over: bool = false;
 }

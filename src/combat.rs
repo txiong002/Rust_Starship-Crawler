@@ -1,9 +1,10 @@
 //! Library file for combat between enemies and the player'
 //! 5/12/2023
 //!
+//! Included in this file are the player struct and the enemy struct.
+//! The player has a name and it can move around the map. It can also attack enemies.  
 //!
-//!
-//!
+//! The enemy only has health and the ability to attack.
 //!
 //!
 
@@ -46,6 +47,7 @@ impl Player {
 
 /// Enemy implementation
 impl Enemy {
+    /// Create a new enemy with a certain health and attack damage value
     pub fn new_enemy(health: usize, attack_damage: usize) -> Self {
         // Return the enemy.
         Enemy {
@@ -55,7 +57,13 @@ impl Enemy {
     }
 }
 
-// Combat implementation
+/// Combat implementation: Player and enemy take turns attacking each other.
+/// 
+/// Returns a bool that determines whether the game continues or not.
+/// 
+/// `true` means the game continues.
+/// 
+/// `false` means the game ends.
 pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
     if enemy.health == 0 {
         println!("Enemy has been defeated!");
@@ -70,6 +78,7 @@ pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
     }
 }
 
+/// Display the health of the player and the enemy.
 pub fn display_health(player: &Player, enemy: &Enemy) {
     println!("{} current health: {}", player.name, player.health);
     println!("Enemies current heath: {}", enemy.health);

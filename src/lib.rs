@@ -132,7 +132,8 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
     None
 }
 
-// check if player has found enemy
+/// Check if player has found the enemy
+/// The enemy is found if the enemy is one tile away from the player.
 pub fn found_enemy(room: Room) -> bool {
     let row = room.player_location.0 + 1; // check to see of player is 1 row above enemy
     let col = room.player_location.1.wrapping_sub(2); // check to see if player is 2 columns to the right of enemy
