@@ -31,8 +31,7 @@ fn show_room(room: &Room) {
             }
             //  print enemy location
             else if i == room.enemy_location.0 && j == room.enemy_location.1 {
-                let is_found =
-                    found_enemy(room.clone(), room.player_location.0, room.player_location.1);
+                let is_found = found_enemy(room.clone());
                 if is_found {
                     print!("X");
                 } else {
@@ -98,13 +97,19 @@ fn main() {
         }
         //Reprint room
         show_room(&room);
-        println!("You inflict {} damage on enemies.", player.attack_damage);
-        let game_over = face_off(&mut player, &mut enemy);
-        display_health(&player, &enemy);
-
-        if !game_over {
-            println!("Game over, Thanks for playing");
-            break 'outer;
+        let is_found = found_enemy(room.clone());
+        if is_found {
+            println!("Get Ready to Battle!");
+            loop {
+                let game_over = face_off(&mut player, &mut enemy);
+                display_health(&player, &enemy);
+                if !game_over {
+                    println!("Game over, Thanks for playing");
+                    break 'outer;
+                }
+            }
+        } else {
+            continue;
         }
     }
     // Game loop logic - end the game when the player wins or the player dies.
