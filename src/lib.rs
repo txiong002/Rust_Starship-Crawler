@@ -131,3 +131,20 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
     println!("Invalid input! Please make sure that your input is two positive integers!");
     None
 }
+
+// check if player has found enemy
+pub fn found_enemy(room: Room, x: usize, y: usize) -> bool {
+    let row = x + 1; // check to see of player is 1 row above enemy
+    let col = y.wrapping_sub(2); // check to see if player is 2 columns to the right of enemy
+    let col_2 = y.wrapping_add(2); // check to see if player is 2 columns to the left of enemy
+
+    if row == room.enemy_location.0 {
+        if col <= room.enemy_location.1 || col_2 >= room.enemy_location.1 {
+            true
+        } else {
+            false
+        }
+    } else {
+        false
+    }
+}

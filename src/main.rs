@@ -29,9 +29,15 @@ fn show_room(room: &Room) {
             if i == room.player_location.0 && j == room.player_location.1 {
                 print!("^");
             }
-            // print enemy location
+            //  print enemy location
             else if i == room.enemy_location.0 && j == room.enemy_location.1 {
-                print!("X");
+                let is_found =
+                    found_enemy(room.clone(), room.player_location.0, room.player_location.1);
+                if is_found {
+                    print!("X");
+                } else {
+                    print!(".");
+                }
             }
             // Print a room tile depending on whether it is a wall or a floor.
             else if room.room_area[i][j] {
