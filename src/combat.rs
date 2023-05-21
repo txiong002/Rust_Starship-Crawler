@@ -58,11 +58,11 @@ impl Enemy {
 }
 
 /// Combat implementation: Player and enemy take turns attacking each other.
-/// 
+///
 /// Returns a bool that determines whether the game continues or not.
-/// 
+///
 /// `true` means the game continues.
-/// 
+///
 /// `false` means the game ends.
 pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
     if enemy.health == 0 {
