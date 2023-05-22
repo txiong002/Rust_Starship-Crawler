@@ -106,8 +106,38 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
             println!("You can't move here!");
             return None;
         }
-        // Ensure that player move is within their current movement bounds
-        if (user_move.0 > room.player_location.0) || (user_move.1 > room.player_location.1) {
+
+        // User tries to go upwards or leftwards into a wall
+        if user_move.0 == 0 || user_move.1 == 0 {
+            println!("You can't move here!");
+            return None;
+        }
+
+        // Edge case: User tries to move diagonally upwards to the right
+        // user_move.0 < room.player_location.0
+        if (user_move.0 < room.player_location.0) && (user_move.1 > room.player_location.1) {
+            if ((room.player_location.0 - user_move.0) > player.movement)
+                || ((user_move.1 - room.player_location.1) > player.movement)
+            {
+                println!("You cannot move that far!");
+                return None;
+            }
+        }
+
+        // Edge case: User tries to move diagonally downwards to the left
+        // user_move.1 < room.player_location.1
+        else if (user_move.0 > room.player_location.0) && (user_move.1 < room.player_location.1) {
+            if ((user_move.0 - room.player_location.0) > player.movement)
+                || ((room.player_location.1 - user_move.1) > player.movement)
+            {
+                println!("You cannot move that far!");
+                return None;
+            }
+        }
+
+        // General purpose code: Ensure that player move is within their current movement bounds
+        // The code below will crash if the player is moving diagonally upwards to the right or diagonally downward to the left.
+        else if (user_move.0 > room.player_location.0) || (user_move.1 > room.player_location.1) {
             if ((user_move.0 - room.player_location.0) > player.movement)
                 || ((user_move.1 - room.player_location.1) > player.movement)
             {
@@ -115,6 +145,8 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
                 return None;
             }
         }
+
+
         // Same, but if the move is meant to be going "backwards"
         else if ((room.player_location.0 - user_move.0) > player.movement)
             || ((room.player_location.1 - user_move.1) > player.movement)
