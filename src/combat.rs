@@ -68,16 +68,24 @@ impl Enemy {
 /// `false` means the game ends.
 pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
     if enemy.health == 0 {
-        println!("Enemy has been defeated!");
+        println!("###########  Enemy has been defeated!  #######");
         false
     } else if player.health == 0 {
         println!("{} has been defeated", player.name);
         false
     } else {
         // Ask for the player's name.
-        input!("Press any key to attack! ");
+        input!("Press any key to attack!\n ");
         enemy.health -= player.attack_damage;
+        println!(
+            "{} afflicted {} damage points to enemy",
+            player.name, player.attack_damage
+        );
         player.health -= enemy.attack_damage;
+        println!(
+            "Enemy has afflicted {} damage points to {}",
+            enemy.attack_damage, player.name
+        );
         true
     }
 }

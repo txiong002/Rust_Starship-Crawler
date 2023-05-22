@@ -111,10 +111,10 @@ fn main() {
         // Currently the player has no control over when they get to make a move.
         let is_found = found_enemy(room.clone());
         if is_found {
-            println!("Get Ready to Battle!");
+            println!("\nGET READY TO BATTLE!!!!");
             loop {
-                let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
                 display_health(&player, &enemy); // Show the health values
+                let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
                 if !game_over {
                     // If either the enemy or the player has lost all their health, the game ends.
                     println!("Game over, Thanks for playing");
