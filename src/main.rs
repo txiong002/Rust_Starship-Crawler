@@ -84,6 +84,7 @@ fn main() {
     // println!("{:?}", room);
 
     show_room(&room);
+    println!("You are in square ({}, {}).", room.player_location.0, room.player_location.1);
 
     println!("Your name is: {}", player.name);
     println!("Your have {} health.", player.health);
@@ -106,6 +107,7 @@ fn main() {
         }
         //Reprint room
         show_room(&room);
+        println!("You are in square ({}, {}).", room.player_location.0, room.player_location.1);
 
         // Check if the player has found an enemy. If so, the player and the enemy will fight.
         // Currently the player has no control over when they get to make a move.
