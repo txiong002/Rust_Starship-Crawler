@@ -7,6 +7,8 @@
 //! The enemy only has health and the ability to attack.
 //!
 //!
+//! // For prompting user input
+use prompted::input;
 
 /// A player character.
 #[derive(Debug, Clone)]
@@ -72,6 +74,8 @@ pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
         println!("{} has been defeated", player.name);
         false
     } else {
+        // Ask for the player's name.
+        input!("Press any key to attack! ");
         enemy.health -= player.attack_damage;
         player.health -= enemy.attack_damage;
         true
@@ -80,6 +84,6 @@ pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
 
 /// Display the health of the player and the enemy.
 pub fn display_health(player: &Player, enemy: &Enemy) {
-    println!("{} current health: {}", player.name, player.health);
-    println!("Enemies current heath: {}", enemy.health);
+    println!("{}'s current health: {}", player.name, player.health);
+    println!("Enemy's current heath: {}", enemy.health);
 }

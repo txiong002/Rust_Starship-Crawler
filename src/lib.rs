@@ -106,7 +106,7 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
             println!("You can't move here!");
             return None;
         }
-        //Ensure that player move is within their current movement bounds
+        // Ensure that player move is within their current movement bounds
         if (user_move.0 > room.player_location.0) || (user_move.1 > room.player_location.1) {
             if ((user_move.0 - room.player_location.0) > player.movement)
                 || ((user_move.1 - room.player_location.1) > player.movement)
@@ -115,7 +115,7 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
                 return None;
             }
         }
-        //Same, but if the move is meant to be going "backwards"
+        // Same, but if the move is meant to be going "backwards"
         else if ((room.player_location.0 - user_move.0) > player.movement)
             || ((room.player_location.1 - user_move.1) > player.movement)
         {
@@ -123,7 +123,7 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
             return None;
         }
 
-        //If the move is confirmed to be a valid movement for the player to make
+        // If the move is confirmed to be a valid movement for the player to make
         //Change player position
         room.player_location = user_move;
         return Some(room);
