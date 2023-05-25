@@ -62,6 +62,13 @@ fn show_room(room: &Room) {
 
 fn main() {
     println!("==== Welcome to Starship Crawler! ====");
+    println!();
+    println!("BACKSTORY: You are an explorer assigned to investigate an abandoned cargo ship that was lost in space. The cargo ship was last seen departing a tropical planet with some treasure on board. There are rumors of strange and terrifying monstrosities lurking within the cargo bays and engineering rooms, but that won't stop you from finding out the starship's secrets, won't it?");
+    println!();
+    println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area."); 
+    println!();
+    println!("Are you ready to discover the secrets and treasures within?");
+    println!();
 
     // Ask for the player's name.
     let player_name: String = input!("Enter your name: ");
