@@ -93,7 +93,8 @@ fn main() {
         0,
     );
 
-    let mut room = Room::new(10, 10);
+    //let mut room = Room::new_static_room(10, 10);
+    let mut room = Room::new_proc_room();
 
     // println!("{:?}", room);
 
@@ -105,6 +106,9 @@ fn main() {
 
     println!("Your name is: {}", player.name);
     println!("Your have {} health.", player.health);
+
+    // DEBUG: Show the enemy location
+    println!("An enemy {} is in square ({}, {}).", enemy.name, room.enemy_location.0, room.enemy_location.1);
 
     // Game loop logic - end the game when the player wins or the player dies.
     // Loop until game is over

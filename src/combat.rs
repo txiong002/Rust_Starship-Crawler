@@ -92,7 +92,7 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
         false
     } else {
         // Ask for the player's command.
-        input!("Press any key to attack!\n ");
+        input!("Press the Enter key to attack!\n ");
 
         // Player attacks enemy.
         enemy.health -= player.attack_damage;
