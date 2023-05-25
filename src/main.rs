@@ -79,6 +79,7 @@ fn main() {
     let mut player: Entity = Entity::new_player(
         player_name,
         MAX_PLAYER_HEALTH,
+        "Scattershot".to_string(),
         BASE_ATTACK_DAMAGE,
         BASE_MOVEMENT,
     );
@@ -87,6 +88,7 @@ fn main() {
     let mut enemy: Entity = Entity::new_enemy(
         "Ceiling Crawler".to_string(),
         MAX_PLAYER_HEALTH,
+        "Swipe".to_string(),
         ENEMY_ATTACK_DAMAGE,
         0,
     );

@@ -3,7 +3,7 @@
 //!
 //! Included in this file is an entity struct that can be used for a player or an enemy.
 //! The entity struct has a name, a health value, a damage value, and a movement value.
-//! 
+//!
 //!
 //!
 //! // For prompting user input
@@ -21,6 +21,8 @@ pub struct Entity {
     pub name: String,
     /// The entity's health.
     pub health: usize,
+    /// Attack name.
+    pub attack_name: String,
     /// Attack damage - base is 10
     pub attack_damage: usize,
     /// Stat that determines how much the entity can move in one turn. Default is 1 tile.
@@ -32,22 +34,36 @@ pub struct Entity {
 ///
 impl Entity {
     /// Create a new player.
-    pub fn new_player(name: String, health: usize, attack_damage: usize, movement: usize) -> Self {
+    pub fn new_player(
+        name: String,
+        health: usize,
+        attack_name: String,
+        attack_damage: usize,
+        movement: usize,
+    ) -> Self {
         // Return the player.
         Entity {
             name,
             health,
+            attack_name,
             attack_damage,
             movement,
         }
     }
 
     /// Create a new enemy. This is the same as the new_player function.
-    pub fn new_enemy(name: String, health: usize, attack_damage: usize, movement: usize) -> Self {
+    pub fn new_enemy(
+        name: String,
+        health: usize,
+        attack_name: String,
+        attack_damage: usize,
+        movement: usize,
+    ) -> Self {
         // Return the enemy.
         Entity {
             name,
             health,
+            attack_name,
             attack_damage,
             movement,
         }
@@ -75,17 +91,20 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
         println!("{} has been defeated", player.name);
         false
     } else {
-        // Ask for the player's name.
+        // Ask for the player's command.
         input!("Press any key to attack!\n ");
+
+        // Player attacks enemy.
         enemy.health -= player.attack_damage;
         println!(
-            "{} afflicted {} damage points to {}",
-            player.name, player.attack_damage, enemy.name
+            "{} used {} and inflicted {} damage on {}!",
+            player.name, player.attack_name, player.attack_damage, enemy.name
         );
+        // Enemy attacks player.
         player.health -= enemy.attack_damage;
         println!(
-            "{} has afflicted {} damage points to {}",
-            enemy.name, enemy.attack_damage, player.name
+            "{} used {} and inflicted {} damage on {}!",
+            enemy.name, enemy.attack_name, enemy.attack_damage, player.name
         );
         true
     }

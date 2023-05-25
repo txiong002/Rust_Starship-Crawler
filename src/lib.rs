@@ -52,7 +52,7 @@ impl Room {
             height,
             room_area: [[true; MAX_HEIGHT]; MAX_WIDTH], // Every square is set to false except those within the bounds of nrows and ncols
 
-            //Start with having the player be centered at the bottom of the room
+            // Start with having the player be centered at the bottom of the room
             player_location: (1, 4),
             enemy_location: (8, 4),
         };
