@@ -1,42 +1,51 @@
 //! Library file for combat between enemies and the player'
 //! 5/12/2023
 //!
-//! Included in this file are the player struct and the enemy struct.
-//! The player has a name and it can move around the map. It can also attack enemies.  
-//!
-//! The enemy only has health and the ability to attack.
+//! Included in this file is an entity struct that can be used for a player or an enemy.
+//! The entity struct has a name, a health value, a damage value, and a movement value.
+//! 
 //!
 //!
 //! // For prompting user input
 use prompted::input;
 
-/// A player character.
+// ========================================================================================
+
+// ========================================================================================
+/// A moveable entity. It can be a player or an enemy.
+///
+/// Each entity has a name, a health bar, a base attack damage, and a base movement value.
 #[derive(Debug, Clone)]
-pub struct Player {
-    /// The player's name.
+pub struct Entity {
+    /// The emtity's name.
     pub name: String,
-    /// The player's health.
+    /// The entity's health.
     pub health: usize,
     /// Attack damage - base is 10
     pub attack_damage: usize,
-    /// Stat that determines how much the player can move in one turn
+    /// Stat that determines how much the entity can move in one turn. Default is 1 tile.
     pub movement: usize,
 }
 
-/// A simple enemy.
-#[derive(Debug, Clone)]
-pub struct Enemy {
-    /// The enemy's health.
-    pub health: usize,
-    pub attack_damage: usize,
-}
-
-/// Player implementation
-/// The player can move and attack.
-impl Player {
+/// Entity implementation.
+///
+///
+impl Entity {
+    /// Create a new player.
     pub fn new_player(name: String, health: usize, attack_damage: usize, movement: usize) -> Self {
         // Return the player.
-        Player {
+        Entity {
+            name,
+            health,
+            attack_damage,
+            movement,
+        }
+    }
+
+    /// Create a new enemy. This is the same as the new_player function.
+    pub fn new_enemy(name: String, health: usize, attack_damage: usize, movement: usize) -> Self {
+        // Return the enemy.
+        Entity {
             name,
             health,
             attack_damage,
@@ -47,17 +56,9 @@ impl Player {
     //
 }
 
-/// Enemy implementation
-impl Enemy {
-    /// Create a new enemy with a certain health and attack damage value
-    pub fn new_enemy(health: usize, attack_damage: usize) -> Self {
-        // Return the enemy.
-        Enemy {
-            health,
-            attack_damage,
-        }
-    }
-}
+// ========================================================================================
+
+// ========================================================================================
 
 /// Combat implementation: Player and enemy take turns attacking each other.
 ///
@@ -66,9 +67,9 @@ impl Enemy {
 /// `true` means the game continues.
 ///
 /// `false` means the game ends.
-pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
+pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
     if enemy.health == 0 {
-        println!("###########  Enemy has been defeated!  #######");
+        println!("###########  {} has been defeated!  #######", enemy.name);
         false
     } else if player.health == 0 {
         println!("{} has been defeated", player.name);
@@ -78,20 +79,20 @@ pub fn face_off(player: &mut Player, enemy: &mut Enemy) -> bool {
         input!("Press any key to attack!\n ");
         enemy.health -= player.attack_damage;
         println!(
-            "{} afflicted {} damage points to enemy",
-            player.name, player.attack_damage
+            "{} afflicted {} damage points to {}",
+            player.name, player.attack_damage, enemy.name
         );
         player.health -= enemy.attack_damage;
         println!(
-            "Enemy has afflicted {} damage points to {}",
-            enemy.attack_damage, player.name
+            "{} has afflicted {} damage points to {}",
+            enemy.name, enemy.attack_damage, player.name
         );
         true
     }
 }
 
 /// Display the health of the player and the enemy.
-pub fn display_health(player: &Player, enemy: &Enemy) {
+pub fn display_health(player: &Entity, enemy: &Entity) {
     println!("{}'s current health: {}", player.name, player.health);
-    println!("Enemy's current heath: {}", enemy.health);
+    println!("{}'s current heath: {}", enemy.name, enemy.health);
 }

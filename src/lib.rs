@@ -11,8 +11,9 @@
 
 // Import the combat module into the library
 pub mod combat;
-// Get access to Player
-use combat::Player;
+// Get access to Player and Enemy
+//use combat::Player;
+use combat::Entity;
 use prompted::input;
 
 /// Maximum number of rows the AI can handle.
@@ -82,7 +83,7 @@ pub fn set_up_walls(mut room: Room) -> Room {
 
 /// Function to move player location (basic idea is that once a player touches an "enemy" tile, battle initiates?)
 /// Get arguments from user (similar to input from chomp)
-pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
+pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
     let user_move: (usize, usize);
     //Get user input
     let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ")

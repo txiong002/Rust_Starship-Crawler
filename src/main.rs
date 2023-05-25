@@ -14,8 +14,8 @@ use prompted::input;
 
 // Using rust modules and libraries
 use rsc_lib::{
-    combat::Player,
-    combat::{display_health, face_off, Enemy},
+    combat::Entity,
+    combat::{display_health, face_off},
     *,
 };
 
@@ -76,15 +76,20 @@ fn main() {
     println!();
 
     // Create new player
-    let mut player: Player = Player::new_player(
+    let mut player: Entity = Entity::new_player(
         player_name,
         MAX_PLAYER_HEALTH,
         BASE_ATTACK_DAMAGE,
         BASE_MOVEMENT,
     );
 
-    // Create new enemy
-    let mut enemy: Enemy = Enemy::new_enemy(MAX_PLAYER_HEALTH, ENEMY_ATTACK_DAMAGE);
+    // Create a new enemy
+    let mut enemy: Entity = Entity::new_enemy(
+        "Ceiling Crawler".to_string(),
+        MAX_PLAYER_HEALTH,
+        ENEMY_ATTACK_DAMAGE,
+        0,
+    );
 
     let mut room = Room::new(10, 10);
 
@@ -126,6 +131,7 @@ fn main() {
         // Currently the player has no control over when they get to make a move.
         let is_found = found_enemy(room.clone());
         if is_found {
+            println!("\nYou encountered a {}!!!", enemy.name);
             println!("\nGET READY TO BATTLE!!!!");
             loop {
                 display_health(&player, &enemy); // Show the health values
