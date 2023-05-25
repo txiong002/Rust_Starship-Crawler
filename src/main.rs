@@ -65,7 +65,7 @@ fn main() {
     println!();
     println!("BACKSTORY: You are an explorer assigned to investigate an abandoned cargo ship that was lost in space. The cargo ship was last seen departing a tropical planet with some treasure on board. There are rumors of strange and terrifying monstrosities lurking within the cargo bays and engineering rooms, but that won't stop you from finding out the starship's secrets, won't it?");
     println!();
-    println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area."); 
+    println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
     println!();
     println!("Are you ready to discover the secrets and treasures within?");
     println!();
@@ -91,7 +91,10 @@ fn main() {
     // println!("{:?}", room);
 
     show_room(&room);
-    println!("You are in square ({}, {}).", room.player_location.0, room.player_location.1);
+    println!(
+        "You are in square ({}, {}).",
+        room.player_location.0, room.player_location.1
+    );
 
     println!("Your name is: {}", player.name);
     println!("Your have {} health.", player.health);
@@ -114,7 +117,10 @@ fn main() {
         }
         //Reprint room
         show_room(&room);
-        println!("You are in square ({}, {}).", room.player_location.0, room.player_location.1);
+        println!(
+            "You are in square ({}, {}).",
+            room.player_location.0, room.player_location.1
+        );
 
         // Check if the player has found an enemy. If so, the player and the enemy will fight.
         // Currently the player has no control over when they get to make a move.

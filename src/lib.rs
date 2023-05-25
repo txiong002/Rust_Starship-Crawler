@@ -29,11 +29,14 @@ pub struct Room {
     /// The height of the room
     pub height: usize,
 
-    /// The board. `true` is the walkable area, `false is
-    /// a wall.
+    /// The room. Each value is a boolean where `true` is a walkable tile or entity. `false` is a wall.
     pub room_area: [[bool; MAX_HEIGHT]; MAX_WIDTH], // A list of up to 4 arrays, each one containing up to 5 booleans
 
-    //Player location (set of coordinates) inside current room (maybe set this up a different way later?)
+    /// A randomly generated room. It has the same values as `room_area`.
+    /// Since the room will be generated at runtime, it needs to be a Vector.
+    // pub proc_room_area: Vec<bool>,
+
+    // Player location (set of coordinates) inside current room (maybe set this up a different way later?)
     pub player_location: (usize, usize),
     pub enemy_location: (usize, usize),
 }
@@ -47,6 +50,7 @@ impl Room {
             width,
             height,
             room_area: [[true; MAX_HEIGHT]; MAX_WIDTH], // Every square is set to false except those within the bounds of nrows and ncols
+
             //Start with having the player be centered at the bottom of the room
             player_location: (1, 4),
             enemy_location: (8, 4),
@@ -123,7 +127,6 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
                 return None;
             }
         }
-
         // Edge case: User tries to move diagonally downwards to the left
         // user_move.1 < room.player_location.1
         else if (user_move.0 > room.player_location.0) && (user_move.1 < room.player_location.1) {
@@ -134,7 +137,6 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
                 return None;
             }
         }
-
         // General purpose code: Ensure that player move is within their current movement bounds
         // The code below will crash if the player is moving diagonally upwards to the right or diagonally downward to the left.
         else if (user_move.0 > room.player_location.0) || (user_move.1 > room.player_location.1) {
@@ -145,8 +147,6 @@ pub fn user_move(mut room: Room, player: &Player) -> Option<Room> {
                 return None;
             }
         }
-
-
         // Same, but if the move is meant to be going "backwards"
         else if ((room.player_location.0 - user_move.0) > player.movement)
             || ((room.player_location.1 - user_move.1) > player.movement)
@@ -172,11 +172,14 @@ pub fn found_enemy(room: Room) -> bool {
     let col_2 = room.player_location.1.wrapping_add(2); // check to see if player is 2 columns to the left of enemy
 
     if row == room.enemy_location.0 {
-        if col <= room.enemy_location.1 || col_2 >= room.enemy_location.1 {
-            true
-        } else {
-            false
-        }
+        // if col <= room.enemy_location.1 || col_2 >= room.enemy_location.1 {
+        //     true
+        // } else {
+        //     false
+        // }
+        // If we are in range of the enemy, initiate the battle
+        // otherwise, do nothing
+        col <= room.enemy_location.1 || col_2 >= room.enemy_location.1
     } else {
         false
     }
