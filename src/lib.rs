@@ -20,6 +20,11 @@ use prompted::input;
 // https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
 use rand::{thread_rng, Rng};
 
+/// Minimum width of the room.
+const MIN_WIDTH: usize = 5;
+/// Minimum height of the room.
+const MIN_HEIGHT: usize = 5;
+
 /// Maximum width of the room.
 const MAX_WIDTH: usize = 10;
 /// Maximum height of the room.
@@ -87,11 +92,10 @@ impl Room {
     /// `Returns`
     /// A Room object
     pub fn new_proc_room() -> Self {
+        // Randomly determine the width and height of the room.
         let mut rng = thread_rng();
-        let room_width: usize = rng.gen_range(5..=MAX_WIDTH);
-        let room_height: usize = rng.gen_range(5..=MAX_HEIGHT);
-        println!("{}", room_width);
-        println!("{}", room_height);
+        let room_width: usize = rng.gen_range(MIN_WIDTH..=MAX_WIDTH);
+        let room_height: usize = rng.gen_range(MIN_HEIGHT..=MAX_HEIGHT);
 
         // Return a room
         let mut my_room = Room {
@@ -128,7 +132,7 @@ pub fn set_up_walls(mut room: Room) -> Room {
         }
     }
 
-    // Return the room
+    // Return the completed room with walls
     room
 }
 
@@ -140,7 +144,9 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
     let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ")
         .parse()
         .unwrap();
+
     let user_move_str = user_input.split_whitespace().collect::<Vec<_>>();
+
     //Make sure the user didn't input too much
     if user_move_str.len() == 2 {
         //Turn the string vector into a usize vector (return None if one of them fails to map to the usize vector)
@@ -157,9 +163,6 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
         };
         //Set the usize tuple
         user_move = (v[0], v[1]);
-
-        println!("{}, {}", user_move.0, user_move.1);
-        println!("{} x {}", room.width, room.height);
 
         //Check to see if the input was out of bounds or goes into a wall
         if user_move.0 >= room.width - 1 || user_move.1 >= room.height - 1 {
@@ -220,7 +223,8 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
     None
 }
 
-/// Check if player has found the enemy
+/// Check if player has found the enemy.
+///
 /// The enemy is found if the enemy is one tile away from the player.
 pub fn found_enemy(room: Room) -> bool {
     let row = room.player_location.0 + 1; // check to see of player is 1 row above enemy
@@ -228,11 +232,6 @@ pub fn found_enemy(room: Room) -> bool {
     let col_2 = room.player_location.1.wrapping_add(2); // check to see if player is 2 columns to the left of enemy
 
     if row == room.enemy_location.0 {
-        // if col <= room.enemy_location.1 || col_2 >= room.enemy_location.1 {
-        //     true
-        // } else {
-        //     false
-        // }
         // If we are in range of the enemy, initiate the battle
         // otherwise, do nothing
         col <= room.enemy_location.1 || col_2 >= room.enemy_location.1
