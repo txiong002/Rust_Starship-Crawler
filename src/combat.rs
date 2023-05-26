@@ -9,6 +9,10 @@
 //! // For prompting user input
 use prompted::input;
 
+// Randomly generate numbers
+// https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
+use rand::{thread_rng, Rng};
+
 // ========================================================================================
 
 // ========================================================================================
@@ -94,18 +98,52 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
         // Ask for the player's command.
         input!("Press the Enter key to attack!\n ");
 
-        // Player attacks enemy.
-        enemy.health -= player.attack_damage;
-        println!(
-            "{} used {} and inflicted {} damage on {}!",
-            player.name, player.attack_name, player.attack_damage, enemy.name
-        );
-        // Enemy attacks player.
-        player.health -= enemy.attack_damage;
-        println!(
-            "{} used {} and inflicted {} damage on {}!",
-            enemy.name, enemy.attack_name, enemy.attack_damage, player.name
-        );
+        // Flip a coin to determine whether the player's attack lands or misses.
+        let mut rng = thread_rng();
+        let coin_flip_player: usize = rng.gen_range(0..=1);
+
+        if coin_flip_player == 0 {
+            // Player misses
+            println!(
+                "{} used {} but missed!",
+                player.name, player.attack_name
+            );
+        } else {
+            // Player attacks enemy.
+            if enemy.health >= player.attack_damage {
+                enemy.health -= player.attack_damage;
+            } else { // avoid overflow
+                enemy.health = 0
+            }
+            println!(
+                "{} used {} and inflicted {} damage on {}!",
+                player.name, player.attack_name, player.attack_damage, enemy.name
+            );
+
+        }
+
+        // Flip a coin to determine whether the enemy's attack lands or misses.
+        let coin_flip_enemy: usize = rng.gen_range(0..=1);
+
+        if coin_flip_enemy == 0 {
+            // Enemy misses
+            println!(
+                "{} used {} but missed!",
+                enemy.name, enemy.attack_name
+            );
+        } else {
+            // Enemy attacks player.
+            if player.health >= enemy.attack_damage {
+                player.health -= enemy.attack_damage;
+            } else {
+                player.health = 0;
+            }
+            println!(
+                "{} used {} and inflicted {} damage on {}!",
+                enemy.name, enemy.attack_name, enemy.attack_damage, player.name
+            );
+        }
+
         true
     }
 }

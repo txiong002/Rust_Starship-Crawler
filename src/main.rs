@@ -94,7 +94,11 @@ fn main() {
     );
 
     //let mut room = Room::new_static_room(10, 10);
-    let mut room = Room::new_proc_room();
+    let level: Floor = Floor::new_floor(1);
+    let mut room: Room = level.rooms[0].clone();
+    //let mut room: Room = Room::new_proc_room();
+
+    println!("{:?}", level);
 
     // println!("{:?}", room);
 

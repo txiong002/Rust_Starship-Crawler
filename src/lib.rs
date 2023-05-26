@@ -98,7 +98,7 @@ impl Room {
         let room_height: usize = rng.gen_range(MIN_HEIGHT..=MAX_HEIGHT);
 
         // Return a room
-        let mut my_room = Room {
+        let mut my_room: Room = Room {
             width: room_width,
             height: room_height,
             room_area: vec![vec![true; room_height]; room_width], // Every square is set to false except those within the bounds of nrows and ncols
@@ -115,10 +115,29 @@ impl Room {
     }
 }
 
+/// A Floor is a level in the game.
+/// 
+/// Each Floor has one or more Rooms.
+/// 
+#[derive(Debug, Clone)]
+pub struct Floor {
+    pub rooms: Vec<Room>
+}
+
+/// Functions for floor
+impl Floor {
+    /// Create a new floor with a given number of procedurally generated rooms.
+    pub fn new_floor(num_rooms: usize) -> Self {
+        Floor {
+            rooms: vec![Room::new_proc_room(); num_rooms]
+        }
+    }
+}
+
 /// Set up the room's walls
 pub fn set_up_walls(mut room: Room) -> Room {
-    let num_rows = room.room_area.len();
-    let num_cols = room.room_area[0].len();
+    let num_rows: usize = room.room_area.len();
+    let num_cols: usize = room.room_area[0].len();
     for i in 0..num_rows {
         // First and last row are walls
         room.room_area[i][0] = false;
@@ -145,7 +164,7 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
         .parse()
         .unwrap();
 
-    let user_move_str = user_input.split_whitespace().collect::<Vec<_>>();
+    let user_move_str: Vec<&str> = user_input.split_whitespace().collect::<Vec<_>>();
 
     //Make sure the user didn't input too much
     if user_move_str.len() == 2 {
@@ -227,9 +246,9 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
 ///
 /// The enemy is found if the enemy is one tile away from the player.
 pub fn found_enemy(room: Room) -> bool {
-    let row = room.player_location.0 + 1; // check to see of player is 1 row above enemy
-    let col = room.player_location.1.wrapping_sub(2); // check to see if player is 2 columns to the right of enemy
-    let col_2 = room.player_location.1.wrapping_add(2); // check to see if player is 2 columns to the left of enemy
+    let row: usize = room.player_location.0 + 1; // check to see of player is 1 row above enemy
+    let col: usize = room.player_location.1.wrapping_sub(2); // check to see if player is 2 columns to the right of enemy
+    let col_2: usize = room.player_location.1.wrapping_add(2); // check to see if player is 2 columns to the left of enemy
 
     if row == room.enemy_location.0 {
         // If we are in range of the enemy, initiate the battle
@@ -248,7 +267,7 @@ fn test_new_proc_room() {
         println!("Test #{}", i);
 
         // Create a room.
-        let room = Room::new_proc_room();
+        let room: Room = Room::new_proc_room();
 
         // Assert that the width and height of the procedurally generated room is less than 10.
         assert_eq!(room.width <= 10, true);
