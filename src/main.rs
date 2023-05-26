@@ -108,7 +108,10 @@ fn main() {
     println!("Your have {} health.", player.health);
 
     // DEBUG: Show the enemy location
-    println!("An enemy {} is in square ({}, {}).", enemy.name, room.enemy_location.0, room.enemy_location.1);
+    println!(
+        "An enemy {} is in square ({}, {}).",
+        enemy.name, room.enemy_location.0, room.enemy_location.1
+    );
 
     // Game loop logic - end the game when the player wins or the player dies.
     // Loop until game is over

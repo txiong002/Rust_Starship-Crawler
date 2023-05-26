@@ -11,8 +11,8 @@
 
 // Import the combat module into the library
 pub mod combat;
+
 // Get access to Player and Enemy
-//use combat::Player;
 use combat::Entity;
 use prompted::input;
 
@@ -20,44 +20,43 @@ use prompted::input;
 // https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
 use rand::{thread_rng, Rng};
 
-/// Maximum number of rows the AI can handle.
+/// Maximum width of the room.
 const MAX_WIDTH: usize = 10;
-/// Maximum number of columns the AI can handle.
+/// Maximum height of the room.
 const MAX_HEIGHT: usize = 10;
 
 /// A room in a floor.
 #[derive(Debug, Clone)]
 pub struct Room {
-    /// The width of the room. 
-    /// 
+    /// The width of the room.
+    ///
     /// The max index is `width - 2` since `width - 1` will have a wall.
     pub width: usize,
 
-    /// The height of the room. 
-    /// 
+    /// The height of the room.
+    ///
     /// The max index is `height - 2` since `height - 2` will have a wall.
     pub height: usize,
 
-    /// The room. Each value is a boolean where `true` is a walkable tile or entity. `false` is a wall.
-    /// This is hard-coded.
-    //pub room_area: [[bool; MAX_HEIGHT]; MAX_WIDTH], // A list of up to 4 arrays, each one containing up to 5 booleans
-
-    /// A randomly generated room. It has the same values as `room_area`.
+    /// The room. It can be hard-coded or procedurally generated.
+    ///
+    /// Each value is a boolean where `true` is a walkable tile or entity. `false` is a wall.
+    ///
     /// Since the room will be generated at runtime, it needs to be a Vector.
     pub room_area: Vec<Vec<bool>>,
 
     /// Player location (set of coordinates) inside current room (maybe set this up a different way later?)
-    /// 
+    ///
     /// All coordinates are 0-indexed. Since a wall is at index 0, the minimum x and y coordinate is 1.
-    /// 
-    /// Example: (1, 1) 
+    ///
+    /// Example: (1, 1)
     pub player_location: (usize, usize),
 
     /// The enemy's location.
-    /// 
+    ///
     /// All coordinates are 0-indexed. Since a wall is at index 0, the minimum x and y coordinate is 1.
-    /// 
-    /// Example: (1, 1) 
+    ///
+    /// Example: (1, 1)
     pub enemy_location: (usize, usize),
 }
 
@@ -158,8 +157,12 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
         };
         //Set the usize tuple
         user_move = (v[0], v[1]);
-        //Check to see if the input was out of bounds
-        if user_move.0 >= room.height || user_move.1 >= room.width {
+
+        println!("{}, {}", user_move.0, user_move.1);
+        println!("{} x {}", room.width, room.height);
+
+        //Check to see if the input was out of bounds or goes into a wall
+        if user_move.0 >= room.width - 1 || user_move.1 >= room.height - 1 {
             println!("You can't move here!");
             return None;
         }
@@ -235,5 +238,24 @@ pub fn found_enemy(room: Room) -> bool {
         col <= room.enemy_location.1 || col_2 >= room.enemy_location.1
     } else {
         false
+    }
+}
+
+/// Test that a new procedurally generated room has a width and height <= 10
+/// Test that the room's size is correctly defined.
+#[test]
+fn test_new_proc_room() {
+    for i in 0..100 {
+        println!("Test #{}", i);
+
+        // Create a room.
+        let room = Room::new_proc_room();
+
+        // Assert that the width and height of the procedurally generated room is less than 10.
+        assert_eq!(room.width <= 10, true);
+        assert_eq!(room.height <= 10, true);
+
+        assert_eq!(room.room_area.len(), room.width);
+        assert_eq!(room.room_area[0].len(), room.height);
     }
 }
