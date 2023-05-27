@@ -83,80 +83,90 @@ fn main() {
         BASE_ATTACK_DAMAGE,
         BASE_MOVEMENT,
     );
-
-    // Create a new enemy
-    let mut enemy: Entity = Entity::new_enemy(
-        "Ceiling Crawler".to_string(),
-        MAX_PLAYER_HEALTH,
-        "Swipe".to_string(),
-        ENEMY_ATTACK_DAMAGE,
-        0,
-    );
-
-    //let mut room = Room::new_static_room(10, 10);
-    let level: Floor = Floor::new_floor(1);
-    let mut room: Room = level.rooms[0].clone();
-    //let mut room: Room = Room::new_proc_room();
-
-    println!("{:?}", level);
-
-    // println!("{:?}", room);
-
-    show_room(&room);
-    println!(
-        "You are in square ({}, {}).",
-        room.player_location.0, room.player_location.1
-    );
-
-    println!("Your name is: {}", player.name);
-    println!("Your have {} health.", player.health);
-
-    // DEBUG: Show the enemy location
-    println!(
-        "An enemy {} is in square ({}, {}).",
-        enemy.name, room.enemy_location.0, room.enemy_location.1
-    );
-
-    // Game loop logic - end the game when the player wins or the player dies.
-    // Loop until game is over
+    // Loop to move to next room
     'outer: loop {
-        println!("You can move {} space.", player.movement);
-        let mut check = 0;
-        while check == 0 {
-            //Get user move
-            room = match user_move(room.clone(), &player) {
-                Some(room) => {
-                    check = 1;
-                    room
-                }
-                //Continue if move was invalid
-                None => continue,
-            };
-        }
-        //Reprint room
+        // Create a new enemy
+        let mut enemy: Entity = Entity::new_enemy(
+            "Ceiling Crawler".to_string(),
+            MAX_PLAYER_HEALTH,
+            "Swipe".to_string(),
+            ENEMY_ATTACK_DAMAGE,
+            0,
+        );
+
+        //let mut room = Room::new_static_room(10, 10);
+        let level: Floor = Floor::new_floor(1);
+        let mut room: Room = level.rooms[0].clone();
+        //let mut room: Room = Room::new_proc_room();
+
+        // println!("{:?}", level);
+
+        // println!("{:?}", room);
+
         show_room(&room);
         println!(
             "You are in square ({}, {}).",
             room.player_location.0, room.player_location.1
         );
 
-        // Check if the player has found an enemy. If so, the player and the enemy will fight.
-        // Currently the player has no control over when they get to make a move.
-        let is_found = found_enemy(room.clone());
-        if is_found {
-            println!("\nYou encountered a {}!!!", enemy.name);
-            println!("\nGET READY TO BATTLE!!!!");
-            loop {
-                display_health(&player, &enemy); // Show the health values
-                let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
-                if !game_over {
-                    // If either the enemy or the player has lost all their health, the game ends.
-                    println!("Game over, Thanks for playing");
-                    break 'outer;
-                }
+        println!("Your name is: {}", player.name);
+        println!("You have {} health.", player.health);
+
+        // DEBUG: Show the enemy location
+        println!(
+            "An enemy {} is in square ({}, {}).",
+            enemy.name, room.enemy_location.0, room.enemy_location.1
+        );
+
+        // Game loop logic - end the game when the player wins or the player dies.
+        // Loop until game is over
+        'inner: loop {
+            println!("You can move {} space.", player.movement);
+            let mut check = 0;
+            while check == 0 {
+                //Get user move
+                room = match user_move(room.clone(), &player) {
+                    Some(room) => {
+                        check = 1;
+                        room
+                    }
+                    //Continue if move was invalid
+                    None => continue,
+                };
             }
-        } else {
-            continue;
+            //Reprint room
+            show_room(&room);
+            println!(
+                "You are in square ({}, {}).",
+                room.player_location.0, room.player_location.1
+            );
+
+            // Check if the player has found an enemy. If so, the player and the enemy will fight.
+            // Currently the player has no control over when they get to make a move.
+            let is_found = found_enemy(room.clone());
+            if is_found {
+                println!("\nYou encountered a {}!!!", enemy.name);
+                println!("\nGET READY TO BATTLE!!!!");
+                loop {
+                    display_health(&player, &enemy); // Show the health values
+                    let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
+
+                    //If player wins, move to next level
+                    if !game_over && player.health > 0 {
+                        println!("GET READY FOR THE NEXT LEVEL");
+                        input!("Press ENTER to move to next level");
+                        // Add health to player for next level
+                        player.health += 50;
+                        break 'inner;
+                    } else if !game_over {
+                        // If either the enemy or the player has lost all their health, the game ends.
+                        println!("Game over, Thanks for playing");
+                        break 'outer;
+                    }
+                }
+            } else {
+                continue;
+            }
         }
     }
 }
