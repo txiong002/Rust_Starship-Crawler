@@ -16,6 +16,7 @@ use prompted::input;
 use rsc_lib::{
     combat::Entity,
     combat::{display_health, face_off},
+    pickup::Pickup,
     *,
 };
 

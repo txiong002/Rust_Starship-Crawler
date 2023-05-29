@@ -11,6 +11,7 @@
 
 // Import the combat module into the library
 pub mod combat;
+pub mod pickup;
 
 // Get access to Player and Enemy
 use combat::Entity;
@@ -49,6 +50,15 @@ pub struct Room {
     ///
     /// Since the room will be generated at runtime, it needs to be a Vector.
     pub room_area: Vec<Vec<bool>>,
+
+
+    /// TBD: Pickups list - default value is an empty vector
+    /// pub pickups: Vec<Pickup>,
+    /// 
+    /// List of pickup coordinates - default value is an empty vector
+    /// pub pickup_coords: Vec<(usize, usize)>,
+    /// 
+    /// 
 
     /// Player location (set of coordinates) inside current room (maybe set this up a different way later?)
     ///
