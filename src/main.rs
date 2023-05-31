@@ -145,6 +145,9 @@ fn main() {
             // Check if the player has found an enemy. If so, the player and the enemy will fight.
             // Currently the player has no control over when they get to make a move.
             let is_found = found_enemy(room.clone());
+
+            // counter to keep track of level
+            let mut count = 1;
             if is_found {
                 println!("\nYou encountered a {}!!!", enemy.name);
                 println!("\nGET READY TO BATTLE!!!!");
@@ -154,7 +157,8 @@ fn main() {
 
                     //If player wins, move to next level
                     if !game_over && player.health > 0 {
-                        println!("GET READY FOR THE NEXT LEVEL");
+                        count += 1;
+                        println!("You are now on Level {}, Good Luck!", count);
                         input!("Press ENTER to move to next level");
                         // Add health to player for next level
                         player.health += 50;

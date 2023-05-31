@@ -88,7 +88,10 @@ impl Entity {
 ///
 /// `false` means the game ends.
 pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
-    if enemy.health == 0 {
+    if enemy.health == 0 && player.health == 0 {
+        println!("Double KO, there was no winner!");
+        false
+    } else if enemy.health == 0 {
         println!("###########  {} has been defeated!  #######", enemy.name);
         false
     } else if player.health == 0 {
@@ -104,22 +107,19 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
 
         if coin_flip_player == 0 {
             // Player misses
-            println!(
-                "{} used {} but missed!",
-                player.name, player.attack_name
-            );
+            println!("{} used {} but missed!", player.name, player.attack_name);
         } else {
             // Player attacks enemy.
             if enemy.health >= player.attack_damage {
                 enemy.health -= player.attack_damage;
-            } else { // avoid overflow
+            } else {
+                // avoid overflow
                 enemy.health = 0
             }
             println!(
                 "{} used {} and inflicted {} damage on {}!",
                 player.name, player.attack_name, player.attack_damage, enemy.name
             );
-
         }
 
         // Flip a coin to determine whether the enemy's attack lands or misses.
@@ -127,10 +127,7 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
 
         if coin_flip_enemy == 0 {
             // Enemy misses
-            println!(
-                "{} used {} but missed!",
-                enemy.name, enemy.attack_name
-            );
+            println!("{} used {} but missed!", enemy.name, enemy.attack_name);
         } else {
             // Enemy attacks player.
             if player.health >= enemy.attack_damage {
