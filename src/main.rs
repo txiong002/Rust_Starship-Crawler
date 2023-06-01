@@ -84,7 +84,14 @@ fn main() {
         BASE_ATTACK_DAMAGE,
         BASE_MOVEMENT,
     );
-    // Loop to move to next room
+
+    println!("Your name is: {}", player.name);
+    println!("You have {} health.", player.health);
+
+    // Counters to keep track of room number and level number
+    let mut count_level = 1;
+    let mut count_room = 1;
+    // outer loop is used to move to next room
     'outer: loop {
         // Create a new enemy
         let mut enemy: Entity = Entity::new_enemy(
@@ -100,18 +107,20 @@ fn main() {
         let mut room: Room = level.rooms[0].clone();
         //let mut room: Room = Room::new_proc_room();
 
-        // println!("{:?}", level);
-
-        // println!("{:?}", room);
+        if count_room > 3 {
+            println!("\n===== LEVEL {}, ROOM 1  =====", count_level)
+        } else {
+            println!(
+                "\n===========  LEVEL {}, ROOM {}  ===========",
+                count_level, count_room
+            );
+        }
 
         show_room(&room);
         println!(
             "You are in square ({}, {}).",
             room.player_location.0, room.player_location.1
         );
-
-        println!("Your name is: {}", player.name);
-        println!("You have {} health.", player.health);
 
         // DEBUG: Show the enemy location
         println!(
@@ -120,8 +129,15 @@ fn main() {
         );
 
         // Game loop logic - end the game when the player wins or the player dies.
-        // Loop until game is over
+        // inner loop is used to handle fights
         'inner: loop {
+            // Once player beets Room #03, we change Level
+            if count_room > 3 {
+                count_level += 1;
+                count_room = 1;
+                break 'inner;
+            }
+
             println!("You can move {} space.", player.movement);
             let mut check = 0;
             while check == 0 {
@@ -146,8 +162,6 @@ fn main() {
             // Currently the player has no control over when they get to make a move.
             let is_found = found_enemy(room.clone());
 
-            // counter to keep track of level
-            let mut count = 1;
             if is_found {
                 println!("\nYou encountered a {}!!!", enemy.name);
                 println!("\nGET READY TO BATTLE!!!!");
@@ -157,11 +171,18 @@ fn main() {
 
                     //If player wins, move to next level
                     if !game_over && player.health > 0 {
-                        count += 1;
-                        println!("You are now on Level {}, Good Luck!", count);
-                        input!("Press ENTER to move to next level");
+                        count_room += 1;
+                        if count_room > 3 {
+                            println!(
+                                "\n*****  Good job on passing Level {}, moving on to next level...  *****",
+                                count_level
+                            );
+                        } else {
+                            println!("\n============= You are now entering Room # {}, Good Luck!  ==============", count_room);
+                        }
+                        input!("Press ENTER to move to next room");
                         // Add health to player for next level
-                        player.health += 50;
+                        player.health = MAX_PLAYER_HEALTH;
                         break 'inner;
                     } else if !game_over {
                         // If either the enemy or the player has lost all their health, the game ends.
