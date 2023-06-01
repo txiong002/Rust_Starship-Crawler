@@ -23,18 +23,18 @@ use rsc_lib::{
 /// The player's health
 const MAX_PLAYER_HEALTH: usize = 100;
 /// The player's base attack damage.
-const BASE_ATTACK_DAMAGE: usize = 10;
+// const BASE_ATTACK_DAMAGE: usize = 10;
 /// The enemy's base attack damage.
 const ENEMY_ATTACK_DAMAGE: usize = 9;
 /// The number of tiles the player is allowed to traverse.
-const BASE_MOVEMENT: usize = 1;
+// const BASE_MOVEMENT: usize = 1;
 
 /// Display the room
 fn show_room(room: &Room) {
     // Show the room
     for i in 0..room.width {
         for j in 0..room.height {
-            //Print player location
+            // Print player location
             if i == room.player_location.0 && j == room.player_location.1 {
                 print!("^");
             }
@@ -46,6 +46,10 @@ fn show_room(room: &Room) {
                 } else {
                     print!(".");
                 }
+            }
+            // Print pickup location
+            else if i == room.pickup_location.0 && j == room.pickup_location.1 {
+                print!("+");
             }
             // Print a room tile depending on whether it is a wall or a floor.
             else if room.room_area[i][j] {
@@ -79,10 +83,10 @@ fn main() {
     // Create new player
     let mut player: Entity = Entity::new_player(
         player_name,
-        MAX_PLAYER_HEALTH,
+        80, // starting health is 80, which is 20 less than the maximum of 100
         "Scattershot".to_string(),
-        BASE_ATTACK_DAMAGE,
-        BASE_MOVEMENT,
+        10, // starting attack damage is 10
+        1,  // starting movement range is 1 tile
     );
 
     println!("Your name is: {}", player.name);
@@ -101,6 +105,9 @@ fn main() {
             ENEMY_ATTACK_DAMAGE,
             0,
         );
+
+        // Create a new health pickup
+        let pickup: Pickup = Pickup::new_pickup("Medkit".to_string(), "health".to_string(), 20);
 
         //let mut room = Room::new_static_room(10, 10);
         let level: Floor = Floor::new_floor(1);
@@ -126,6 +133,12 @@ fn main() {
         println!(
             "An enemy {} is in square ({}, {}).",
             enemy.name, room.enemy_location.0, room.enemy_location.1
+        );
+
+        // DEBUG: Show the pickup location
+        println!(
+            "An pickup {} is in square ({}, {}).",
+            pickup.name, room.pickup_location.0, room.pickup_location.1
         );
 
         // Game loop logic - end the game when the player wins or the player dies.
@@ -157,6 +170,41 @@ fn main() {
                 "You are in square ({}, {}).",
                 room.player_location.0, room.player_location.1
             );
+
+            // Check if the player has found a pickup.
+            // If so, apply the pickup's effects to the player.
+            let pickup_found = found_pickup(room.clone());
+
+            if pickup_found {
+                println!("You found a {}!", pickup.name);
+
+                // Health pickup
+                if pickup.pickup_type == "health" {
+                    if player.health <= 80 {
+                        // Health is 80 or lower, add the health back
+                        player.health += pickup.effect;
+                        println!("Health restored by {}.", pickup.effect);
+                        println!("Your current health is now {}", player.health);
+                    } else {
+                        // Health is 81 or higher, set health to 100
+                        player.health = 100;
+                    }
+                } else if pickup.pickup_type == "attack" {
+                    player.attack_damage += pickup.effect;
+                    println!("Attack damage increased by {}.", pickup.effect);
+                    println!("Your current attack damage is now {}", player.attack_damage);
+                } else if pickup.pickup_type == "movement" {
+                    player.movement += pickup.effect;
+                    println!("Movement range increased by {} tile.", pickup.effect);
+                    println!(
+                        "Your current movement range is now {} tiles",
+                        player.movement
+                    );
+                }
+
+                // Regardless of the pickup type, delete it by resetting its location
+                room.pickup_location = (100, 100);
+            }
 
             // Check if the player has found an enemy. If so, the player and the enemy will fight.
             // Currently the player has no control over when they get to make a move.
