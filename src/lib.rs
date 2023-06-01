@@ -73,6 +73,13 @@ pub struct Room {
     ///
     /// Example: (1, 1)
     pub enemy_location: (usize, usize),
+
+    /// The pickup's location.
+    ///
+    /// All coordinates are 0-indexed. Since a wall is at index 0, the minimum x and y coordinate is 1.
+    ///
+    /// Example: (1, 1)
+    pub pickup_location: (usize, usize),
 }
 
 impl Room {
@@ -89,6 +96,7 @@ impl Room {
             // Start with having the player be centered at the bottom of the room
             player_location: (1, 4),
             enemy_location: (8, 4),
+            pickup_location: (3, 4)
         };
 
         my_room = set_up_walls(my_room);
@@ -118,6 +126,9 @@ impl Room {
 
             // The enemy is at the bottom of the room
             enemy_location: (room_width - 2, room_height / 2),
+
+            // The pickup location is two tiles away
+            pickup_location: (3, room_height / 2)
         };
 
         my_room = set_up_walls(my_room);

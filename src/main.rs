@@ -34,7 +34,7 @@ fn show_room(room: &Room) {
     // Show the room
     for i in 0..room.width {
         for j in 0..room.height {
-            //Print player location
+            // Print player location
             if i == room.player_location.0 && j == room.player_location.1 {
                 print!("^");
             }
@@ -47,6 +47,12 @@ fn show_room(room: &Room) {
                     print!(".");
                 }
             }
+
+            // Print pickup location
+            else if i == room.pickup_location.0 && j == room.pickup_location.1 {
+                print!("+");
+            }
+
             // Print a room tile depending on whether it is a wall or a floor.
             else if room.room_area[i][j] {
                 // Floor
