@@ -47,12 +47,10 @@ fn show_room(room: &Room) {
                     print!(".");
                 }
             }
-
             // Print pickup location
             else if i == room.pickup_location.0 && j == room.pickup_location.1 {
                 print!("+");
             }
-
             // Print a room tile depending on whether it is a wall or a floor.
             else if room.room_area[i][j] {
                 // Floor
@@ -88,7 +86,7 @@ fn main() {
         80, // starting health is 80, which is 20 less than the maximum of 100
         "Scattershot".to_string(),
         10, // starting attack damage is 10
-        1, // starting movement range is 1 tile
+        1,  // starting movement range is 1 tile
     );
     // Loop to move to next room
     'outer: loop {
@@ -102,11 +100,7 @@ fn main() {
         );
 
         // Create a new health pickup
-        let pickup: Pickup = Pickup::new_pickup(
-            "Medkit".to_string(), 
-            "health".to_string(), 
-            20
-        );
+        let pickup: Pickup = Pickup::new_pickup("Medkit".to_string(), "health".to_string(), 20);
 
         //let mut room = Room::new_static_room(10, 10);
         let level: Floor = Floor::new_floor(1);
@@ -170,11 +164,13 @@ fn main() {
 
                 // Health pickup
                 if pickup.pickup_type == "health" {
-                    if player.health <= 80 { // Health is 80 or lower, add the health back
+                    if player.health <= 80 {
+                        // Health is 80 or lower, add the health back
                         player.health += pickup.effect;
                         println!("Health restored by {}.", pickup.effect);
                         println!("Your current health is now {}", player.health);
-                    } else { // Health is 81 or higher, set health to 100
+                    } else {
+                        // Health is 81 or higher, set health to 100
                         player.health = 100;
                     }
                 } else if pickup.pickup_type == "attack" {
@@ -184,13 +180,15 @@ fn main() {
                 } else if pickup.pickup_type == "movement" {
                     player.movement += pickup.effect;
                     println!("Movement range increased by {} tile.", pickup.effect);
-                    println!("Your current movement range is now {} tiles", player.movement);
+                    println!(
+                        "Your current movement range is now {} tiles",
+                        player.movement
+                    );
                 }
-
 
                 // Regardless of the pickup type, delete it by resetting its location
                 room.pickup_location = (100, 100);
-            } 
+            }
 
             // Check if the player has found an enemy. If so, the player and the enemy will fight.
             // Currently the player has no control over when they get to make a move.

@@ -51,14 +51,13 @@ pub struct Room {
     /// Since the room will be generated at runtime, it needs to be a Vector.
     pub room_area: Vec<Vec<bool>>,
 
-
     /// TBD: Pickups list - default value is an empty vector
     /// pub pickups: Vec<Pickup>,
-    /// 
+    ///
     /// List of pickup coordinates - default value is an empty vector
     /// pub pickup_coords: Vec<(usize, usize)>,
-    /// 
-    /// 
+    ///
+    ///
 
     /// Player location (set of coordinates) inside current room (maybe set this up a different way later?)
     ///
@@ -96,7 +95,7 @@ impl Room {
             // Start with having the player be centered at the bottom of the room
             player_location: (1, 4),
             enemy_location: (8, 4),
-            pickup_location: (1, 5)
+            pickup_location: (1, 5),
         };
 
         my_room = set_up_walls(my_room);
@@ -128,7 +127,7 @@ impl Room {
             enemy_location: (room_width - 2, room_height / 2),
 
             // The pickup location is next to the player
-            pickup_location: (1, 2)
+            pickup_location: (1, 2),
         };
 
         my_room = set_up_walls(my_room);
@@ -137,12 +136,12 @@ impl Room {
 }
 
 /// A Floor is a level in the game.
-/// 
+///
 /// Each Floor has one or more Rooms.
-/// 
+///
 #[derive(Debug, Clone)]
 pub struct Floor {
-    pub rooms: Vec<Room>
+    pub rooms: Vec<Room>,
 }
 
 /// Functions for floor
@@ -150,7 +149,7 @@ impl Floor {
     /// Create a new floor with a given number of procedurally generated rooms.
     pub fn new_floor(num_rooms: usize) -> Self {
         Floor {
-            rooms: vec![Room::new_proc_room(); num_rooms]
+            rooms: vec![Room::new_proc_room(); num_rooms],
         }
     }
 }
@@ -280,22 +279,17 @@ pub fn found_enemy(room: Room) -> bool {
     }
 }
 
-
-
 /// Check if the player has found a pickup.
-/// 
+///
 ///
 pub fn found_pickup(room: Room) -> bool {
     // check to see if the player is on the square with the pickup
-    let row: usize = room.player_location.0; 
+    let row: usize = room.player_location.0;
     let col: usize = room.player_location.1; // check to see if the player is on the square with the pickup
-    if row == room.pickup_location.0 && col == room.pickup_location.1 {
-        // If we are on the same square as the pickup, consume it
-        // otherwise, do nothing
-        true
-    } else {
-        false
-    }
+
+    // If we are on the same square as the pickup, consume it
+    // otherwise, do nothing
+    row == room.pickup_location.0 && col == room.pickup_location.1
 }
 
 /// Test that a new procedurally generated room has a width and height <= 10
