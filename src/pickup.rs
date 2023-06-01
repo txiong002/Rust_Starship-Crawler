@@ -13,9 +13,9 @@
 #[derive(Debug, Clone)]
 pub struct Pickup {
     /// The name of the pickup.
-    name: String,
+    pub name: String,
     /// The type of the pickup. Can be `health`, `attack`, or `movement`.
-    pickup_type: String,
+    pub pickup_type: String,
     /// The effect the pickup has on the player.
     /// 
     /// If pickup_type is `health`, restore 20 health.
@@ -23,7 +23,7 @@ pub struct Pickup {
     /// If pickup_type is `attack`, increase attack by 10.
     /// 
     /// If pickup_type is `movement`, increase movement range by 1.
-    effect: usize,
+    pub effect: usize,
 }
 
 // 

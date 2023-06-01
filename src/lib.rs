@@ -96,7 +96,7 @@ impl Room {
             // Start with having the player be centered at the bottom of the room
             player_location: (1, 4),
             enemy_location: (8, 4),
-            pickup_location: (3, 4)
+            pickup_location: (1, 5)
         };
 
         my_room = set_up_walls(my_room);
@@ -127,8 +127,8 @@ impl Room {
             // The enemy is at the bottom of the room
             enemy_location: (room_width - 2, room_height / 2),
 
-            // The pickup location is two tiles away
-            pickup_location: (3, room_height / 2)
+            // The pickup location is next to the player
+            pickup_location: (1, 2)
         };
 
         my_room = set_up_walls(my_room);
@@ -267,7 +267,7 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
 ///
 /// The enemy is found if the enemy is one tile away from the player.
 pub fn found_enemy(room: Room) -> bool {
-    let row: usize = room.player_location.0 + 1; // check to see of player is 1 row above enemy
+    let row: usize = room.player_location.0 + 1; // check to see if player is 1 row above enemy
     let col: usize = room.player_location.1.wrapping_sub(2); // check to see if player is 2 columns to the right of enemy
     let col_2: usize = room.player_location.1.wrapping_add(2); // check to see if player is 2 columns to the left of enemy
 
@@ -275,6 +275,24 @@ pub fn found_enemy(room: Room) -> bool {
         // If we are in range of the enemy, initiate the battle
         // otherwise, do nothing
         col <= room.enemy_location.1 || col_2 >= room.enemy_location.1
+    } else {
+        false
+    }
+}
+
+
+
+/// Check if the player has found a pickup.
+/// 
+///
+pub fn found_pickup(room: Room) -> bool {
+    // check to see if the player is on the square with the pickup
+    let row: usize = room.player_location.0; 
+    let col: usize = room.player_location.1; // check to see if the player is on the square with the pickup
+    if row == room.pickup_location.0 && col == room.pickup_location.1 {
+        // If we are on the same square as the pickup, consume it
+        // otherwise, do nothing
+        true
     } else {
         false
     }
