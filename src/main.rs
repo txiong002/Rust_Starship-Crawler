@@ -182,9 +182,10 @@ fn main() {
         // FLOOR LOOP: Loop through each floor
         // Floor loop proceeds after all rooms in that floor are cleared
         // Floor loop ends if the player clears the last floor or the player dies.
-        for f in 0..levels.len() {
+        // for (f, <item>) in levels.iter().enumerate()
+        for (f, floor) in levels.iter().enumerate() {
             // Get the current floor
-            let current_floor: Floor = levels[f].clone();
+            let current_floor: Floor = floor.clone();
 
             println!("\n===== LEVEL {}  =====", f + 1);
 
