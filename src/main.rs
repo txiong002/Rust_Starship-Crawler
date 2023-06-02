@@ -65,7 +65,6 @@ fn show_room(room: &Room) {
     }
 }
 
-
 /// Show the player coordinates.
 fn show_player_location(room: &Room) {
     println!(
@@ -89,7 +88,6 @@ fn show_pickup_location(pickup: &Pickup, room: &Room) {
         pickup.name, room.pickup_location.0, room.pickup_location.1
     );
 }
-
 
 /// Apply pickup effects to the player depending on the pickup type.
 fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
@@ -119,7 +117,6 @@ fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
     player
 }
 
-
 /// Main function
 fn main() {
     println!("==== Welcome to Starship Crawler! ====");
@@ -142,12 +139,11 @@ fn main() {
         80, // starting health is 80, which is 20 less than the maximum of 100
         "Scattershot".to_string(),
         100, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
-        1,  // starting movement range is 1 tile
+        1,   // starting movement range is 1 tile
     );
 
     println!("Your name is: {}", player.name);
     println!("You have {} health.", player.health);
-
 
     // Create a vector of two floors.
     // The floors have two rooms each
@@ -160,7 +156,7 @@ fn main() {
     // levels[1].rooms[0] will access Level 2, Room 2
     let mut levels: Vec<Floor> = vec![];
 
-    // Counter for initializing 
+    // Counter for initializing
     let mut n: usize = 0;
 
     // Initialize the rooms and add them to the floor.
@@ -173,9 +169,6 @@ fn main() {
         }
     }
 
-    
-
-
     // Indices to keep track of level index and room index
     //let mut level_index = 0;
     //let mut room_index = 0;
@@ -183,12 +176,9 @@ fn main() {
     let mut count_level: usize = 1; // Level number
     let mut count_room: usize = 1; // Room number in a level
 
-
-
     // outer loop is used for the main game logic
     // Outer loop ends when the game is over (i.e. the player dies or the player finishes the last room in the last floor)
     'outer: loop {
-        
         // FLOOR LOOP: Loop through each floor
         // Floor loop proceeds after all rooms in that floor are cleared
         // Floor loop ends if the player clears the last floor or the player dies.
@@ -196,17 +186,17 @@ fn main() {
             // Get the current floor
             let current_floor: Floor = levels[f].clone();
 
-            println!("\n===== LEVEL {}  =====", f+1);
+            println!("\n===== LEVEL {}  =====", f + 1);
 
             // ROOM LOOP
             // Loop through that floor's set of rooms
             // Room loop ends whenever the player clears a room
-            // Room loop breaks if the player dies. 
+            // Room loop breaks if the player dies.
             for r in 0..current_floor.rooms.len() {
                 // Get the current room
                 let mut room: Room = current_floor.rooms[r].clone();
 
-                println!("\n===== ROOM {}  =====", r+1);
+                println!("\n===== ROOM {}  =====", r + 1);
 
                 // Create a new enemy
                 let mut enemy: Entity = Entity::new_enemy(
@@ -218,25 +208,22 @@ fn main() {
                 );
 
                 // Create a new health pickup
-                let pickup: Pickup = Pickup::new_pickup(
-                    "Medkit".to_string(), 
-                    "health".to_string(), 
-                    20
-                );
-        
+                let pickup: Pickup =
+                    Pickup::new_pickup("Medkit".to_string(), "health".to_string(), 20);
+
                 // Show the room, player, enemy, and pickup locations.
                 show_room(&room);
                 show_player_location(&room);
                 show_enemy_location(&enemy, &room);
                 show_pickup_location(&pickup, &room);
-        
+
                 // Game loop logic - end the game when the player wins or the player dies.
                 // inner loop is used to handle fights
                 'inner: loop {
                     // // Once player beets Room #02, we change Level
 
-                    println!("===== LEVEL #{} =====", f+1);
-        
+                    println!("===== LEVEL #{} =====", f + 1);
+
                     println!("You can move {} space.", player.movement);
                     let mut check = 0;
                     while check == 0 {
@@ -253,30 +240,30 @@ fn main() {
                     //Reprint room
                     show_room(&room);
                     show_player_location(&room);
-        
+
                     // Check if the player has found a pickup.
                     // If so, apply the pickup's effects to the player.
                     let pickup_found = found_pickup(room.clone());
-        
+
                     if pickup_found {
                         println!("You found a {}!", pickup.name);
                         player = apply_pickup_effects(player, &pickup);
-        
+
                         // Regardless of the pickup type, delete it by resetting its location
                         room.pickup_location = (100, 100);
                     }
-        
+
                     // Check if the player has found an enemy. If so, the player and the enemy will fight.
                     // Currently the player has no control over when they get to make a move.
                     let is_found = found_enemy(room.clone());
-        
+
                     if is_found {
                         println!("\nALERT: You encountered a {}!!!", enemy.name);
                         println!("\nGET READY TO BATTLE!!!!");
                         loop {
                             display_health(&player, &enemy); // Show the health values
                             let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
-        
+
                             //If player wins, move to next level
                             if !game_over && player.health > 0 {
                                 count_room += 1;
@@ -286,7 +273,7 @@ fn main() {
                                         f+1
                                     );
                                     count_room = 1; // reset the counter as we move to the next level.
-                                // Move to the next room
+                                                    // Move to the next room
                                 } else {
                                     println!("\n============= You are now entering Room # {}, Good Luck!  ==============", r+2);
                                 }
@@ -306,8 +293,6 @@ fn main() {
                     // END is_found
                 }
                 // End inner loop
-
-
             }
             // End room loop
 
@@ -322,7 +307,6 @@ fn main() {
             }
         }
         // End floors loop
-
     }
     // End outer loop
 }
