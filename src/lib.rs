@@ -148,8 +148,25 @@ pub struct Floor {
 impl Floor {
     /// Create a new floor with a given number of procedurally generated rooms.
     pub fn new_floor(num_rooms: usize) -> Self {
+        // Create an empty Room vector.
+        let mut all_rooms: Vec<Room> = vec![];
+
+        // Counter for initializing
+        let mut i: usize = 0;
+
+        // Initialize the rooms and add them to the floor.
+        loop {
+            all_rooms.push(Room::new_proc_room());
+            i += 1;
+            // Stop adding rooms once we add enough of them.
+            if i >= num_rooms {
+                break;
+            }
+        }
+
+        // Return the finished floor.
         Floor {
-            rooms: vec![Room::new_proc_room(); num_rooms],
+            rooms: all_rooms, //vec![Room::new_proc_room(); num_rooms],
         }
     }
 }
