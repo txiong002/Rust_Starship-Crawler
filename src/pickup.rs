@@ -5,7 +5,8 @@
 //! The room has a Vector of coordinates keeping track of all pickups.
 //!
 //! The plan is to have a health pickup that restores 20 HP and an attack pickup that boosts the player's attack damage by 10 points.
-//!
+
+use rand::Rng;
 
 /// A pickup has a name, a type, and an effect.
 ///
@@ -28,12 +29,33 @@ pub struct Pickup {
 
 //
 impl Pickup {
-    /// Create a new pickup with a name and effect.
-    pub fn new_pickup(name: String, pickup_type: String, effect: usize) -> Self {
-        Pickup {
-            name,
-            pickup_type,
-            effect,
+    ///Randomly build a pick-up
+    pub fn generate_pickup() -> Pickup {
+        //Randomly generate item type
+        let item_type = rand::thread_rng().gen_range(0..3);
+
+        //Based on which item type was generated, create the item
+        if item_type == 0 {
+            let item = Pickup {
+                name: String::from("Medkit"),
+                pickup_type: String::from("health"),
+                effect: 20,
+            };
+            return item;
+        } else if item_type == 1 {
+            let item = Pickup {
+                name: String::from("Pair of Boots"),
+                pickup_type: String::from("movement"),
+                effect: 1,
+            };
+            return item;
+        } else {
+            let item = Pickup {
+                name: String::from("Knife"),
+                pickup_type: String::from("attack"),
+                effect: 10,
+            };
+            return item;
         }
     }
 }

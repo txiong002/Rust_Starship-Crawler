@@ -84,7 +84,7 @@ fn show_enemy_location(enemy: &Entity, room: &Room) {
 /// Show the pickup coordinates.
 fn show_pickup_location(pickup: &Pickup, room: &Room) {
     println!(
-        "An pickup {} is in square ({}, {}).",
+        "A {} is in square ({}, {}).",
         pickup.name, room.pickup_location.0, room.pickup_location.1
     );
 }
@@ -209,8 +209,7 @@ fn main() {
                 );
 
                 // Create a new health pickup
-                let pickup: Pickup =
-                    Pickup::new_pickup("Medkit".to_string(), "health".to_string(), 20);
+                let pickup: Pickup = Pickup::generate_pickup();
 
                 // Show the room, player, enemy, and pickup locations.
                 show_room(&room);
