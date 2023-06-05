@@ -282,17 +282,11 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
                     room.player_location = user_move;
                     return Some(room);
                 }
-                else if (r) == room.enemy_location.0 && (c + 1) == room.enemy_location.1 {
+                else if ((r) == room.enemy_location.0 && (c + 1) == room.enemy_location.1) || ((r) == room.enemy_location.0 && (c - 1) == room.enemy_location.1) {
                     user_move = (r - 1, c);
                     room.player_location = user_move;
                     return Some(room);
-                }
-                else if (r) == room.enemy_location.0 && (c - 1) == room.enemy_location.1 {
-                    user_move = (r - 1, c);
-                    room.player_location = user_move;
-                    return Some(room);
-                }
-                else if c == user_move.1 {
+                } else if c == user_move.1 {
                     break;
                 }
                 if user_move.1 < room.player_location.1 {

@@ -36,26 +36,30 @@ impl Pickup {
 
         //Based on which item type was generated, create the item
         if item_type == 0 {
-            let item = Pickup {
+            Pickup {
                 name: String::from("Medkit"),
                 pickup_type: String::from("health"),
                 effect: 20,
-            };
-            return item;
+            }
+            //return item;
+
         } else if item_type == 1 {
-            let item = Pickup {
+            Pickup {
                 name: String::from("Pair of Boots"),
                 pickup_type: String::from("movement"),
                 effect: 1,
-            };
-            return item;
+            }
+            //return item;
+
         } else {
-            let item = Pickup {
+            Pickup {
                 name: String::from("Knife"),
                 pickup_type: String::from("attack"),
                 effect: 10,
-            };
-            return item;
+            }
+            //return item;
+
         }
+        
     }
 }
