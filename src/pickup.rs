@@ -42,7 +42,6 @@ impl Pickup {
                 effect: 20,
             }
             //return item;
-
         } else if item_type == 1 {
             Pickup {
                 name: String::from("Pair of Boots"),
@@ -50,7 +49,6 @@ impl Pickup {
                 effect: 1,
             }
             //return item;
-
         } else {
             Pickup {
                 name: String::from("Knife"),
@@ -58,8 +56,6 @@ impl Pickup {
                 effect: 10,
             }
             //return item;
-
         }
-        
     }
 }

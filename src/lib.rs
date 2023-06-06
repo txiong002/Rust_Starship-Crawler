@@ -281,8 +281,9 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
                     user_move = (r, c);
                     room.player_location = user_move;
                     return Some(room);
-                }
-                else if ((r) == room.enemy_location.0 && (c + 1) == room.enemy_location.1) || ((r) == room.enemy_location.0 && (c - 1) == room.enemy_location.1) {
+                } else if r == room.enemy_location.0
+                    && ((c + 1) == room.enemy_location.1 || (c - 1) == room.enemy_location.1)
+                {
                     user_move = (r - 1, c);
                     room.player_location = user_move;
                     return Some(room);
@@ -291,8 +292,7 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
                 }
                 if user_move.1 < room.player_location.1 {
                     c -= 1;
-                }
-                else {
+                } else {
                     c += 1;
                 }
             }
@@ -301,8 +301,7 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
             }
             if user_move.0 < room.player_location.0 {
                 r -= 1;
-            }
-            else {
+            } else {
                 r += 1;
             }
         }
