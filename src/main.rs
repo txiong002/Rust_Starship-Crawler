@@ -124,7 +124,7 @@ fn main() {
                 let pickup: Pickup = Pickup::generate_pickup();
 
                 // Show the room, player, enemy, and pickup locations.
-                show_room(&mut room);
+                show_room(&room);
                 show_player_location(&room);
                 show_enemy_location(&enemy, &room);
                 show_pickup_location(&pickup, &room);
@@ -150,7 +150,7 @@ fn main() {
                         };
                     }
                     //Reprint room
-                    show_room(&mut room);
+                    show_room(&room);
                     show_player_location(&room);
 
                     // Check if the player has found a pickup.

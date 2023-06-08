@@ -94,9 +94,9 @@ impl Room {
             room_area: vec![vec![true; height]; width], // Every square is set to false except those within the bounds of nrows and ncols
 
             // Start with having the player be centered at the bottom of the room
-            player_location: (1, 1),
+            player_location: (1, 5),
             enemy_location: (8, 4),
-            pickup_location: (1, 1),
+            pickup_location: (1, 5),
         };
 
         my_room = set_up_walls(my_room);
@@ -194,7 +194,7 @@ pub fn set_up_walls(mut room: Room) -> Room {
 }
 
 /// Display the room
-pub fn show_room(room: &mut Room) {
+pub fn show_room(room: &Room) {
     // Show the room
     for i in 0..room.width {
         for j in 0..room.height {
