@@ -20,12 +20,18 @@ use rsc_lib::{
     *,
 };
 
+// Randomly generate numbers to determine hit chance and determine which enemies spawn
+// https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
+use rand::{thread_rng, Rng};
+
+// ================================================
+
 /// The player's health
 const MAX_PLAYER_HEALTH: usize = 100;
 /// The player's base attack damage.
 // const BASE_ATTACK_DAMAGE: usize = 10;
 /// The enemy's base attack damage. Default is 9.
-const ENEMY_ATTACK_DAMAGE: usize = 9;
+// const ENEMY_ATTACK_DAMAGE: usize = 9;
 /// The number of tiles the player is allowed to traverse.
 // const BASE_MOVEMENT: usize = 1;
 
@@ -34,6 +40,10 @@ const MAX_LEVELS: usize = 2;
 
 /// Main function
 fn main() {
+    // Set up the RNG
+    let mut rng = thread_rng();
+
+    // Welcome message
     println!("==== Welcome to Starship Crawler! ====");
     println!();
     println!("BACKSTORY: You are an explorer assigned to investigate an abandoned cargo ship that was lost in space. The cargo ship was last seen departing a tropical planet with some treasure on board. There are rumors of strange and terrifying monstrosities lurking within the cargo bays and engineering rooms, but that won't stop you from finding out the starship's secrets, won't it?");
@@ -113,20 +123,99 @@ fn main() {
                 let mut room: Room = current_floor.rooms[r].clone();
 
                 println!("\n===== ROOM {}  =====", r + 1);
-                //let enemy_name;
-                // Enemy Name
-                let enemy_name: &str =
-                    if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
-                        "Super Mega Boss"
+
+                // Determine which enemy should spawn in each room
+                // Enemy Name - determine which enemy should spawn
+                // 0 = Ceiling crawler
+                // 1 = Rogue drone
+                // 2 = Radioactive Mutant
+                let enemy_name: &str;
+                let enemy_attack_damage: usize;
+                let enemy_health: usize;
+                let enemy_attack_name: &str;
+
+                if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+                    enemy_name = "BOSS: Alpha Ceiling Crawler";
+                    enemy_attack_damage = 25;
+                    enemy_health = 200;
+                    enemy_attack_name = "Acid Spit";
+                } else {
+                    let enemy_index: usize = rng.gen_range(0..=2);
+
+                    if enemy_index == 0 {
+                        enemy_name = "Ceiling Crawler";
+                        enemy_attack_damage = 9;
+                        enemy_health = 100;
+                        enemy_attack_name = "Swipe";
+                    } else if enemy_index == 1 {
+                        enemy_name = "Rogue Drone";
+                        enemy_attack_damage = 11;
+                        enemy_health = 100;
+                        enemy_attack_name = "Laser Blast";
                     } else {
-                        "Ceiling Crawler"
-                    };
-                // Create a new enemy
+                        enemy_name = "Radioactive Mutant";
+                        enemy_attack_damage = 13;
+                        enemy_health = 100;
+                        enemy_attack_name = "Gamma Ray";
+                    }
+                }
+
+                // let enemy_name: &str =
+                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+                //         "BOSS: Alpha Ceiling Crawler"
+                //     } else {
+                //         // Randomly choose an enemy name
+                //         let enemy_name_index: usize = rng.gen_range(0..=2);
+                //         if enemy_name_index == 0 {
+                //             "Ceiling Crawler"
+                //         } else if enemy_name_index == 1 {
+                //             "Rogue Drone"
+                //         } else {
+                //             "Radioactive Mutant"
+                //         }
+                //     };
+                // // Enemy attack damage
+                // let enemy_attack_damage: usize =
+                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+                //         // BOSS
+                //         25 // boss should do a lot of damage
+                //     } else {
+                //         // normal enemy
+                //         ENEMY_ATTACK_DAMAGE // base enemy attack damage is 9
+                //     };
+                // // Enemy health
+                // let enemy_health: usize =
+                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+                //         // BOSS
+                //         200 // boss should have a lot of health
+                //     } else {
+                //         MAX_PLAYER_HEALTH // base enemy health is 100
+                //     };
+
+                // // Enemy attack name
+                // // The attack name depends on the enemy
+                // let enemy_attack_name: &str =
+                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+                //         // BOSS
+                //         "Acid spit" // boss should have a cool attack name
+                //     } else {
+                //         if enemy_name == "Ceiling Crawler" {
+                //             "Swipe"
+                //         } else if enemy_name == "Rogue Drone" {
+                //             "Laser blast"
+                //         } else if enemy_name == "Radioactive Mutant" {
+                //             "Gamma ray"
+                //         } else {
+                //             "Swipe"
+                //         }
+                //     };
+
+                // Create a new enemy based on the above parameters
                 let mut enemy: Entity = Entity::new_enemy(
                     enemy_name.to_string(),
-                    MAX_PLAYER_HEALTH,
-                    "Swipe".to_string(),
-                    ENEMY_ATTACK_DAMAGE,
+                    enemy_health,
+                    enemy_attack_name.to_string(),
+                    enemy_attack_damage,
                     0,
                 );
 
