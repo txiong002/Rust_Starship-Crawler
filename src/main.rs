@@ -25,7 +25,7 @@ const MAX_PLAYER_HEALTH: usize = 100;
 /// The player's base attack damage.
 // const BASE_ATTACK_DAMAGE: usize = 10;
 /// The enemy's base attack damage. Default is 9.
-const ENEMY_ATTACK_DAMAGE: usize = 1;
+const ENEMY_ATTACK_DAMAGE: usize = 9;
 /// The number of tiles the player is allowed to traverse.
 // const BASE_MOVEMENT: usize = 1;
 
@@ -138,7 +138,7 @@ fn main() {
         player_name,
         80, // starting health is 80, which is 20 less than the maximum of 100
         "Scattershot".to_string(),
-        100, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
+        10, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
         1,   // starting movement range is 1 tile
     );
 
