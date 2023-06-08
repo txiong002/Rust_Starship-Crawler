@@ -29,6 +29,9 @@ const ENEMY_ATTACK_DAMAGE: usize = 9;
 /// The number of tiles the player is allowed to traverse.
 // const BASE_MOVEMENT: usize = 1;
 
+// Maximun number of Levels
+const MAX_LEVELS: usize = 2;
+
 /// Main function
 fn main() {
     println!("==== Welcome to Starship Crawler! ====");
@@ -110,13 +113,14 @@ fn main() {
                 let mut room: Room = current_floor.rooms[r].clone();
 
                 println!("\n===== ROOM {}  =====", r + 1);
-                let enemy_name;
+                //let enemy_name;
                 // Enemy Name
-                if count_level == 2 && count_room == 2 {
-                    enemy_name = "Super Mega Boss";
-                } else {
-                    enemy_name = "Ceiling Crawler";
-                }
+                let enemy_name: &str =
+                    if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+                        "Super Mega Boss"
+                    } else {
+                        "Ceiling Crawler"
+                    };
                 // Create a new enemy
                 let mut enemy: Entity = Entity::new_enemy(
                     enemy_name.to_string(),
@@ -185,7 +189,12 @@ fn main() {
                             //If player wins, move to next level
                             if !game_over && player.health > 0 {
                                 count_room += 1;
-                                if count_room > num_rooms_per_floor {
+                                if count_level == MAX_LEVELS && count_room > num_rooms_per_floor {
+                                    println!("{}, you have completed all levels!", player.name);
+                                    break 'inner;
+                                } else if count_level <= MAX_LEVELS
+                                    && count_room > num_rooms_per_floor
+                                {
                                     println!(
                                         "\n*****  Good job on passing Level {}, moving on to next level...  *****",
                                         f+1
@@ -223,7 +232,7 @@ fn main() {
             count_level += 1;
 
             // End the game when the user finishes the last level
-            if count_level > num_floors {
+            if count_level > MAX_LEVELS {
                 println!(" ====== ALL LEVELS CLEARED ====== ");
                 println!("Mission complete, Thanks for playing!");
                 break 'outer;
