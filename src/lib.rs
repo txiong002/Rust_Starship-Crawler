@@ -15,6 +15,7 @@ pub mod pickup;
 
 // Get access to Player and Enemy
 use combat::Entity;
+use pickup::Pickup;
 use prompted::input;
 
 // Randomly generate numbers
@@ -192,6 +193,42 @@ pub fn set_up_walls(mut room: Room) -> Room {
     room
 }
 
+/// Display the room
+pub fn show_room(room: &Room) {
+    // Show the room
+    for i in 0..room.width {
+        for j in 0..room.height {
+            // Print player location
+            if i == room.player_location.0 && j == room.player_location.1 {
+                print!("^");
+            }
+            //  print enemy location
+            else if i == room.enemy_location.0 && j == room.enemy_location.1 {
+                let is_found = found_enemy(room.clone());
+                if is_found {
+                    print!("X");
+                } else {
+                    print!(".");
+                }
+            }
+            // Print pickup location
+            else if i == room.pickup_location.0 && j == room.pickup_location.1 {
+                print!("+");
+            }
+            // Print a room tile depending on whether it is a wall or a floor.
+            else if room.room_area[i][j] {
+                // Floor
+                print!(".");
+            } else {
+                // Wall
+                print!("#");
+            }
+        }
+        // Go to the next row
+        println!();
+    }
+}
+
 /// Function to move player location (basic idea is that once a player touches an "enemy" tile, battle initiates?)
 /// Get arguments from user (similar to input from chomp)
 pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
@@ -314,6 +351,29 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
     None
 }
 
+/// Show the player coordinates.
+pub fn show_player_location(room: &Room) {
+    println!(
+        "You are in square ({}, {}).",
+        room.player_location.0, room.player_location.1
+    );
+}
+
+/// Show the enemy coordinates.
+pub fn show_enemy_location(enemy: &Entity, room: &Room) {
+    println!(
+        "An enemy {} is in square ({}, {}).",
+        enemy.name, room.enemy_location.0, room.enemy_location.1
+    );
+}
+
+pub fn show_pickup_location(pickup: &Pickup, room: &Room) {
+    println!(
+        "A {} is in square ({}, {}).",
+        pickup.name, room.pickup_location.0, room.pickup_location.1
+    );
+}
+
 /// Check if player has found the enemy.
 ///
 /// The enemy is found if the enemy is one tile away from the player.
@@ -342,6 +402,34 @@ pub fn found_pickup(room: Room) -> bool {
     // If we are on the same square as the pickup, consume it
     // otherwise, do nothing
     row == room.pickup_location.0 && col == room.pickup_location.1
+}
+
+/// Apply pickup effects to the player depending on the pickup type.
+pub fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
+    // Health pickup
+    if pickup.pickup_type == "health" {
+        if player.health <= 80 {
+            // Health is 80 or lower, add the health back
+            player.health += pickup.effect;
+            println!("Health restored by {}.", pickup.effect);
+            println!("Your current health is now {}", player.health);
+        } else {
+            // Health is 81 or higher, set health to 100
+            player.health = 100;
+        }
+    } else if pickup.pickup_type == "attack" {
+        player.attack_damage += pickup.effect;
+        println!("Attack damage increased by {}.", pickup.effect);
+        println!("Your current attack damage is now {}", player.attack_damage);
+    } else if pickup.pickup_type == "movement" {
+        player.movement += pickup.effect;
+        println!("Movement range increased by {} tile.", pickup.effect);
+        println!(
+            "Your current movement range is now {} tiles",
+            player.movement
+        );
+    }
+    player
 }
 
 /// Test that a new procedurally generated room has a width and height <= 10

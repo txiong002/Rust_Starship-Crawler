@@ -29,94 +29,6 @@ const ENEMY_ATTACK_DAMAGE: usize = 9;
 /// The number of tiles the player is allowed to traverse.
 // const BASE_MOVEMENT: usize = 1;
 
-/// Display the room
-fn show_room(room: &Room) {
-    // Show the room
-    for i in 0..room.width {
-        for j in 0..room.height {
-            // Print player location
-            if i == room.player_location.0 && j == room.player_location.1 {
-                print!("^");
-            }
-            //  print enemy location
-            else if i == room.enemy_location.0 && j == room.enemy_location.1 {
-                let is_found = found_enemy(room.clone());
-                if is_found {
-                    print!("X");
-                } else {
-                    print!(".");
-                }
-            }
-            // Print pickup location
-            else if i == room.pickup_location.0 && j == room.pickup_location.1 {
-                print!("+");
-            }
-            // Print a room tile depending on whether it is a wall or a floor.
-            else if room.room_area[i][j] {
-                // Floor
-                print!(".");
-            } else {
-                // Wall
-                print!("#");
-            }
-        }
-        // Go to the next row
-        println!();
-    }
-}
-
-/// Show the player coordinates.
-fn show_player_location(room: &Room) {
-    println!(
-        "You are in square ({}, {}).",
-        room.player_location.0, room.player_location.1
-    );
-}
-
-/// Show the enemy coordinates.
-fn show_enemy_location(enemy: &Entity, room: &Room) {
-    println!(
-        "An enemy {} is in square ({}, {}).",
-        enemy.name, room.enemy_location.0, room.enemy_location.1
-    );
-}
-
-/// Show the pickup coordinates.
-fn show_pickup_location(pickup: &Pickup, room: &Room) {
-    println!(
-        "A {} is in square ({}, {}).",
-        pickup.name, room.pickup_location.0, room.pickup_location.1
-    );
-}
-
-/// Apply pickup effects to the player depending on the pickup type.
-fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
-    // Health pickup
-    if pickup.pickup_type == "health" {
-        if player.health <= 80 {
-            // Health is 80 or lower, add the health back
-            player.health += pickup.effect;
-            println!("Health restored by {}.", pickup.effect);
-            println!("Your current health is now {}", player.health);
-        } else {
-            // Health is 81 or higher, set health to 100
-            player.health = 100;
-        }
-    } else if pickup.pickup_type == "attack" {
-        player.attack_damage += pickup.effect;
-        println!("Attack damage increased by {}.", pickup.effect);
-        println!("Your current attack damage is now {}", player.attack_damage);
-    } else if pickup.pickup_type == "movement" {
-        player.movement += pickup.effect;
-        println!("Movement range increased by {} tile.", pickup.effect);
-        println!(
-            "Your current movement range is now {} tiles",
-            player.movement
-        );
-    }
-    player
-}
-
 /// Main function
 fn main() {
     println!("==== Welcome to Starship Crawler! ====");
@@ -139,7 +51,7 @@ fn main() {
         80, // starting health is 80, which is 20 less than the maximum of 100
         "Scattershot".to_string(),
         10, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
-        1,   // starting movement range is 1 tile
+        1,  // starting movement range is 1 tile
     );
 
     println!("Your name is: {}", player.name);
@@ -272,10 +184,15 @@ fn main() {
                                         "\n*****  Good job on passing Level {}, moving on to next level...  *****",
                                         f+1
                                     );
+                                    // increase player health back to full for testing purposes
+                                    player.health = MAX_PLAYER_HEALTH;
                                     count_room = 1; // reset the counter as we move to the next level.
                                                     // Move to the next room
                                 } else {
                                     println!("\n============= You are now entering Room # {}, Good Luck!  ==============", r+2);
+
+                                    // replace player health back to full for testing purposes
+                                    player.health = MAX_PLAYER_HEALTH;
                                 }
                                 input!("Press ENTER to move to next room");
                                 // Add health to player for next level
