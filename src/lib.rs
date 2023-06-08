@@ -195,7 +195,7 @@ pub fn set_up_walls(mut room: Room) -> Room {
 /// Function to move player location (basic idea is that once a player touches an "enemy" tile, battle initiates?)
 /// Get arguments from user (similar to input from chomp)
 pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
-    let user_move: (usize, usize);
+    let mut user_move: (usize, usize);
     //Get user input
     let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ")
         .parse()
@@ -270,8 +270,43 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
             return None;
         }
 
-        // If the move is confirmed to be a valid movement for the player to make
-        //Change player position
+        let mut r = room.player_location.0;
+        let mut c = room.player_location.1;
+
+        //Check to make sure that the user didn't pass the enemy, and if the user's move will move past the enemy, move the user to the next
+        //closest spot
+        loop {
+            loop {
+                if (r + 1) == room.enemy_location.0 && (c) == room.enemy_location.1 {
+                    user_move = (r, c);
+                    room.player_location = user_move;
+                    return Some(room);
+                } else if r == room.enemy_location.0
+                    && ((c + 1) == room.enemy_location.1 || (c - 1) == room.enemy_location.1)
+                {
+                    user_move = (r - 1, c);
+                    room.player_location = user_move;
+                    return Some(room);
+                } else if c == user_move.1 {
+                    break;
+                }
+                if user_move.1 < room.player_location.1 {
+                    c -= 1;
+                } else {
+                    c += 1;
+                }
+            }
+            if r == user_move.0 {
+                break;
+            }
+            if user_move.0 < room.player_location.0 {
+                r -= 1;
+            } else {
+                r += 1;
+            }
+        }
+
+        //If the move was entirely valid, set the user's move and return
         room.player_location = user_move;
         return Some(room);
     }
