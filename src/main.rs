@@ -110,10 +110,16 @@ fn main() {
                 let mut room: Room = current_floor.rooms[r].clone();
 
                 println!("\n===== ROOM {}  =====", r + 1);
-
+                let enemy_name;
+                // Enemy Name
+                if count_level == 2 && count_room == 2 {
+                    enemy_name = "Super Mega Boss";
+                } else {
+                    enemy_name = "Ceiling Crawler";
+                }
                 // Create a new enemy
                 let mut enemy: Entity = Entity::new_enemy(
-                    "Ceiling Crawler".to_string(),
+                    enemy_name.to_string(),
                     MAX_PLAYER_HEALTH,
                     "Swipe".to_string(),
                     ENEMY_ATTACK_DAMAGE,
