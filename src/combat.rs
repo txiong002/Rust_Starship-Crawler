@@ -109,17 +109,41 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
             // Player misses
             println!("{} used {} but missed!", player.name, player.attack_name);
         } else {
+            // Determine if the player lands a critical hit.
+            // A critical hit does twice as much damage as a normal hit.
+            // 0 to 6 = no critical hit.
+            // 7 to 9 = critical hit.
+            let crit_hit_value: usize = rng.gen_range(0..=9);
+
             // Player attacks enemy.
             if enemy.health >= player.attack_damage {
-                enemy.health -= player.attack_damage;
+                if crit_hit_value > 6 {
+                    println!("** Player landed a critical hit! **");
+                    if enemy.health >= (2 * player.attack_damage) {
+                        enemy.health -= 2 * player.attack_damage
+                    } else {
+                        enemy.health = 0
+                    }
+                } else {
+                    enemy.health -= player.attack_damage;
+                }
             } else {
                 // avoid overflow
                 enemy.health = 0
             }
-            println!(
-                "{} used {} and inflicted {} damage on {}!",
-                player.name, player.attack_name, player.attack_damage, enemy.name
-            );
+
+            // If the player lands a critical hit, show the message and updated attack damage
+            if crit_hit_value > 6 {
+                println!(
+                    "{} used {} and inflicted {} damage on {}!",
+                    player.name, player.attack_name, 2 * player.attack_damage, enemy.name
+                );
+            } else {
+                println!(
+                    "{} used {} and inflicted {} damage on {}!",
+                    player.name, player.attack_name, player.attack_damage, enemy.name
+                );
+            }
         }
 
         // Flip a coin to determine whether the enemy's attack lands or misses.
