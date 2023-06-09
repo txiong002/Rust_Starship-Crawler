@@ -15,7 +15,7 @@ use prompted::input;
 // Using rust modules and libraries
 use rsc_lib::{
     combat::Entity,
-    combat::{display_health, face_off},
+    combat::{display_health, face_off, regenerate_health},
     pickup::Pickup,
     *,
 };
@@ -121,12 +121,25 @@ fn main() {
                     } else {
                         "Ceiling Crawler"
                     };
+                let enemy_health: usize = if enemy_name == "Super Mega Boss" {
+                    MAX_PLAYER_HEALTH + 50
+                } else {
+                    MAX_PLAYER_HEALTH
+                };
+                let enemy_damage: usize = if enemy_name == "Super Mega Boss" {
+                    ENEMY_ATTACK_DAMAGE + 6
+                } else {
+                    ENEMY_ATTACK_DAMAGE
+                };
+
+                //let health = enemy_health(&mut enemy, );
+                //let damage = enemy_damage(&mut enemy);
                 // Create a new enemy
                 let mut enemy: Entity = Entity::new_enemy(
                     enemy_name.to_string(),
-                    MAX_PLAYER_HEALTH,
+                    enemy_health,
                     "Swipe".to_string(),
-                    ENEMY_ATTACK_DAMAGE,
+                    enemy_damage,
                     0,
                 );
 
@@ -200,14 +213,16 @@ fn main() {
                                         f+1
                                     );
                                     // increase player health back to full for testing purposes
-                                    player.health = MAX_PLAYER_HEALTH;
+                                    //player.health = MAX_PLAYER_HEALTH;
+                                    regenerate_health(&mut player);
                                     count_room = 1; // reset the counter as we move to the next level.
                                                     // Move to the next room
                                 } else {
                                     println!("\n============= You are now entering Room # {}, Good Luck!  ==============", r+2);
 
                                     // replace player health back to full for testing purposes
-                                    player.health = MAX_PLAYER_HEALTH;
+                                    //player.health = MAX_PLAYER_HEALTH;
+                                    regenerate_health(&mut player);
                                 }
                                 input!("Press ENTER to move to next room");
                                 // Add health to player for next level
