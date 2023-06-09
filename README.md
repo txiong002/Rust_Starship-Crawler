@@ -14,11 +14,15 @@ Every room is procedurally generated, meaning the player will never encounter th
 
 1) Open a terminal (Windows command line, Powershell, etc.) and clone the repository with the command below:
 
-    `git clone https://gitlab.cecs.pdx.edu/cs510-rust-lth/rust-starship-crawler.git`
+    ```
+    git clone https://gitlab.cecs.pdx.edu/cs510-rust-lth/rust-starship-crawler.git
+    ```
 
 2) cd into the project directory:
 
-    `cd rust-starship-crawler`
+    ```
+    cd rust-starship-crawler
+    ```
 
 3) Execute the following commands to build the project
 
@@ -29,7 +33,9 @@ Every room is procedurally generated, meaning the player will never encounter th
 
 4) Run the project with the command
 
-    `cargo run`
+    ```
+    cargo run
+    ```
 
 ### Testing
 
