@@ -44,3 +44,10 @@ https://en.wikipedia.org/wiki/Roguelike
 
 Rand Crate reference:
 https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
+
+
+# License file
+
+This project uses the "MIT License."
+
+Please see the `LICENSE` file for license terms.

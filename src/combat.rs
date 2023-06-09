@@ -136,7 +136,10 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
             if crit_hit_value > 6 {
                 println!(
                     "{} used {} and inflicted {} damage on {}!",
-                    player.name, player.attack_name, 2 * player.attack_damage, enemy.name
+                    player.name,
+                    player.attack_name,
+                    2 * player.attack_damage,
+                    enemy.name
                 );
             } else {
                 println!(
