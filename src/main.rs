@@ -48,8 +48,6 @@ fn main() {
     println!();
     println!("BACKSTORY: You are an explorer assigned to investigate an abandoned cargo ship that was lost in space. The cargo ship was last seen departing a tropical planet with some treasure on board. There are rumors of strange and terrifying monstrosities lurking within the cargo bays and engineering rooms, but that won't stop you from finding out the starship's secrets, won't it?");
     println!();
-    println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
-    println!();
     println!("Are you ready to discover the secrets and treasures within?");
     println!();
 
@@ -95,8 +93,6 @@ fn main() {
     }
 
     // Indices to keep track of level index and room index
-    //let mut level_index = 0;
-    //let mut room_index = 0;
     // Counters to keep track of room number and level number
     let mut count_level: usize = 1; // Level number
     let mut count_room: usize = 1; // Room number in a level
@@ -112,7 +108,17 @@ fn main() {
             // Get the current floor
             let current_floor: Floor = floor.clone();
 
-            println!("\n===== LEVEL {}  =====", f + 1);
+            // Each floor has a backstory to tell.
+            // The text is hardcoded for now
+            if f == 0 { // FIRST FLOOR
+                //println!("");
+                println!("\n===== LEVEL {}: CARGO BAY  =====", f + 1);
+                println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
+            } else if f == 1 { // SECOND FLOOR
+                println!("\n===== LEVEL {}: COMMAND CENTER  =====", f + 1);
+                println!("You survived the enemies hiding in the cargo bay. You make your way to the second floor.\nThis is the command center floor where all the ship's crew would fly it and keep track of the ship's vital functions.\n");
+            }
+
 
             // ROOM LOOP
             // Loop through that floor's set of rooms
@@ -134,11 +140,13 @@ fn main() {
                 let enemy_health: usize;
                 let enemy_attack_name: &str;
 
+                // Boss level - generate a boss
                 if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
                     enemy_name = "BOSS: Alpha Ceiling Crawler";
                     enemy_attack_damage = 25;
                     enemy_health = 200;
                     enemy_attack_name = "Acid Spit";
+                // All other levels - generate a random enemy
                 } else {
                     let enemy_index: usize = rng.gen_range(0..=2);
 
@@ -159,56 +167,6 @@ fn main() {
                         enemy_attack_name = "Gamma Ray";
                     }
                 }
-
-                // let enemy_name: &str =
-                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
-                //         "BOSS: Alpha Ceiling Crawler"
-                //     } else {
-                //         // Randomly choose an enemy name
-                //         let enemy_name_index: usize = rng.gen_range(0..=2);
-                //         if enemy_name_index == 0 {
-                //             "Ceiling Crawler"
-                //         } else if enemy_name_index == 1 {
-                //             "Rogue Drone"
-                //         } else {
-                //             "Radioactive Mutant"
-                //         }
-                //     };
-                // // Enemy attack damage
-                // let enemy_attack_damage: usize =
-                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
-                //         // BOSS
-                //         25 // boss should do a lot of damage
-                //     } else {
-                //         // normal enemy
-                //         ENEMY_ATTACK_DAMAGE // base enemy attack damage is 9
-                //     };
-                // // Enemy health
-                // let enemy_health: usize =
-                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
-                //         // BOSS
-                //         200 // boss should have a lot of health
-                //     } else {
-                //         MAX_PLAYER_HEALTH // base enemy health is 100
-                //     };
-
-                // // Enemy attack name
-                // // The attack name depends on the enemy
-                // let enemy_attack_name: &str =
-                //     if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
-                //         // BOSS
-                //         "Acid spit" // boss should have a cool attack name
-                //     } else {
-                //         if enemy_name == "Ceiling Crawler" {
-                //             "Swipe"
-                //         } else if enemy_name == "Rogue Drone" {
-                //             "Laser blast"
-                //         } else if enemy_name == "Radioactive Mutant" {
-                //             "Gamma ray"
-                //         } else {
-                //             "Swipe"
-                //         }
-                //     };
 
                 // Create a new enemy based on the above parameters
                 let mut enemy: Entity = Entity::new_enemy(

@@ -69,6 +69,9 @@ We tested all aspects of the game to ensure that the player could carry out the 
 
 7) If your HP reaches 0, the game will end and you will need to restart from the beginning. 
 
+# Example
+
+![](resources/example.png)
 
 # What worked
 
