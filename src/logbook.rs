@@ -36,10 +36,10 @@ impl Logbook {
     }
 }
 
-/// Define the logbook entries for the first room.
+/// Define the logbook entries for the first room of Floor 1.
 ///
 /// Return a Vector of logbook entries.
-pub fn generate_logbook_entries_for_room_1() -> Vec<Logbook> {
+pub fn generate_logbook_entries_for_room_1_floor_1() -> Vec<Logbook> {
     let title1: String = "Entry 6101: The Experiments".to_string();
     let descr1: String = "TBD 1".to_string();
 
@@ -50,4 +50,20 @@ pub fn generate_logbook_entries_for_room_1() -> Vec<Logbook> {
     let lb2: Logbook = Logbook::new_logbook(title2, descr2);
 
     vec![lb1, lb2]
+}
+
+/// Define the logbook entries for the first room of Floor 2.
+///
+/// Return a Vector of logbook entries.
+pub fn generate_logbook_entries_for_room_1_floor_2() -> Vec<Logbook> {
+    let title1: String = "Entry 6103: The Breakout".to_string();
+    let descr1: String = "TBD 3".to_string();
+
+    let title2: String = "Entry 6104: <STATIC>".to_string();
+    let descr2: String = "TBD 4".to_string();
+
+    let lb3: Logbook = Logbook::new_logbook(title1, descr1);
+    let lb4: Logbook = Logbook::new_logbook(title2, descr2);
+
+    vec![lb3, lb4]
 }
