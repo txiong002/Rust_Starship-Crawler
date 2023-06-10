@@ -14,7 +14,7 @@
 //!
 //! A room can have multiple logbook entries. Logbook entries are only found on the first room of each floor.
 //!
-//! When the player accesses a logbook entry, the entry disappears after it is read.
+//! When the player accesses a logbook entry, the entry will not disappear, so the player can read it as many times as they want.
 
 /// A logbook entry has a title and a description.
 ///
@@ -33,6 +33,12 @@ impl Logbook {
     /// Create a new logbook with the given title and description.
     pub fn new_logbook(title: String, descr: String) -> Self {
         Logbook { title, descr }
+    }
+
+    // Display the logbook.
+    pub fn show_logbook(self) {
+        println!("Title: {}", self.title);
+        println!("Description: {}", self.descr);
     }
 }
 
@@ -66,4 +72,9 @@ pub fn generate_logbook_entries_for_room_1_floor_2() -> Vec<Logbook> {
     let lb4: Logbook = Logbook::new_logbook(title2, descr2);
 
     vec![lb3, lb4]
+}
+
+/// Hardcode the logbook coordinates.
+pub fn generate_logbook_coordinates() -> Vec<(usize, usize)> {
+    vec![(2, 1), (2, 2)]
 }

@@ -18,9 +18,10 @@ pub mod pickup;
 // Import the logbook module
 pub mod logbook;
 
-// Get access to Player and Enemy
+// Get access to the player/enemy, pickup, and logbook objects.
 use combat::Entity;
 use pickup::Pickup;
+use logbook::Logbook;
 use prompted::input;
 
 // Randomly generate numbers
@@ -85,6 +86,12 @@ pub struct Room {
     ///
     /// Example: (1, 1)
     pub pickup_location: (usize, usize),
+
+    /// Logbooks list - default value is an empty vector
+    pub logbooks: Vec<Logbook>,
+    
+    /// List of logbook coordinates - default value is an empty vector
+    pub logbook_coords: Vec<(usize, usize)>,
 }
 
 impl Room {
@@ -102,6 +109,8 @@ impl Room {
             player_location: (1, 5),
             enemy_location: (8, 4),
             pickup_location: (1, 5),
+            logbooks: vec![],
+            logbook_coords: vec![],
         };
 
         my_room = set_up_walls(my_room);
@@ -134,6 +143,10 @@ impl Room {
 
             // The pickup location is next to the player
             pickup_location: (1, 1),
+
+            // Logbooks and their coordinates
+            logbooks: vec![],
+            logbook_coords: vec![],
         };
 
         my_room = set_up_walls(my_room);
@@ -201,32 +214,47 @@ pub fn show_room(room: &Room) {
     // Show the room
     for i in 0..room.width {
         for j in 0..room.height {
-            // Print player location
-            if i == room.player_location.0 && j == room.player_location.1 {
-                print!("^");
-            }
-            //  print enemy location
-            else if i == room.enemy_location.0 && j == room.enemy_location.1 {
-                let is_found = found_enemy(room.clone());
-                if is_found {
-                    print!("X");
+
+            // Tile is a floor
+            // It may or may not be occupied by an object.
+            if room.room_area[i][j] {
+                // Show the player as ^
+                if i == room.player_location.0 && j == room.player_location.1 {
+                    print!("^");
+                // Show the enemy as X
+                } else if i == room.enemy_location.0 && j == room.enemy_location.1 {
+                    let is_found = found_enemy(room.clone());
+                    if is_found {
+                        print!("X");
+                    } else {
+                        print!(".");
+                    }
+                // Show the pickup locations as +
+                } else if i == room.pickup_location.0 && j == room.pickup_location.1 {
+                    // check if pickup location and player location are the same
+                    print!("+");
+                // Show all logbook locations if there are any.
+                // This is hardcoded for now since there are only two logbook entries per room
+                } else if room.logbook_coords.len() == 2 { 
+                    if i == room.logbook_coords[0].0 && j == room.logbook_coords[0].1 || i == room.logbook_coords[1].0 && j == room.logbook_coords[1].1{
+                        // Print logbook coordinates
+                        print!("L");
+                    } else { // Print a tile.
+                        print!(".");
+                    }
+                
+                
                 } else {
+                    // Unoccupied Tile, display with a dot.
                     print!(".");
+
                 }
-            }
-            // Print pickup location
-            else if i == room.pickup_location.0 && j == room.pickup_location.1 {
-                // check if pickup location and player location are the same
-                print!("+");
-            }
-            // Print a room tile depending on whether it is a wall or a floor.
-            else if room.room_area[i][j] {
-                // Floor
-                print!(".");
             } else {
                 // Wall
                 print!("#");
             }
+
+
         }
         // Go to the next row
         println!();
@@ -434,6 +462,27 @@ pub fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
         );
     }
     player
+}
+
+
+
+/// Check if the player has found a logbook entry.
+///
+/// This happens when the player and the logbook entry are on the same square
+pub fn found_logbook(room: Room) -> (Logbook, bool) {
+    // check to see if the player is on the square with the pickup
+    let row: usize = room.player_location.0;
+    let col: usize = room.player_location.1; // check to see if the player is on the square with the pickup
+
+    // If we are on the same square as the logbook, consume it
+    // for (f, <item>) in levels.iter().enumerate()
+    for (c, coord) in room.logbook_coords.iter().enumerate() {
+        if row == coord.0 && col == coord.1 {
+            return (room.logbooks[c].clone(), true)
+        }
+    }
+
+    (Logbook::new_logbook("NULL".to_string(), "NULL".to_string()), false)
 }
 
 /// Test that a new procedurally generated room has a width and height <= 10

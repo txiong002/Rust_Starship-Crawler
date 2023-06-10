@@ -17,7 +17,8 @@ use rsc_lib::{
     combat::Entity,
     combat::{display_health, face_off, regenerate_health},
     pickup::Pickup,
-    *,
+    logbook::{Logbook, generate_logbook_coordinates},
+    *, logbook::generate_logbook_entries_for_room_1_floor_1,
 };
 
 // Randomly generate numbers to determine hit chance and determine which enemies spawn
@@ -92,6 +93,10 @@ fn main() {
         }
     }
 
+    // Generate the logbook entries for the first room of Floor 1.
+    let r1f1_logbooks: Vec<Logbook> = generate_logbook_entries_for_room_1_floor_1();
+    let r1f1_lb_coords: Vec<(usize, usize)> = generate_logbook_coordinates();
+
     // Indices to keep track of level index and room index
     // Counters to keep track of room number and level number
     let mut count_level: usize = 1; // Level number
@@ -128,6 +133,11 @@ fn main() {
                 // Get the current room
                 let mut room: Room = current_floor.rooms[r].clone();
 
+                if f == 0 && r == 0 {
+                    room.logbooks = r1f1_logbooks.clone();
+                    room.logbook_coords = r1f1_lb_coords.clone();
+                }
+
                 println!("\n===== ROOM {}  =====", r + 1);
 
                 // Determine which enemy should spawn in each room
@@ -153,17 +163,17 @@ fn main() {
                     if enemy_index == 0 {
                         enemy_name = "Ceiling Crawler";
                         enemy_attack_damage = 9;
-                        enemy_health = 100;
+                        enemy_health = 60;
                         enemy_attack_name = "Swipe";
                     } else if enemy_index == 1 {
                         enemy_name = "Rogue Drone";
                         enemy_attack_damage = 11;
-                        enemy_health = 100;
+                        enemy_health = 60;
                         enemy_attack_name = "Laser Blast";
                     } else {
                         enemy_name = "Radioactive Mutant";
                         enemy_attack_damage = 13;
-                        enemy_health = 100;
+                        enemy_health = 60;
                         enemy_attack_name = "Gamma Ray";
                     }
                 }
@@ -220,6 +230,16 @@ fn main() {
 
                         // Regardless of the pickup type, delete it by resetting its location
                         room.pickup_location = (100, 100);
+                    }
+
+
+                    // Check if the player found a logbook entry.
+                    // If so, show the respective entry.
+                    let logbook_found: (Logbook, bool) = found_logbook(room.clone());
+
+                    if logbook_found.1 {
+                        println!("You found a logbook!");
+                        logbook_found.0.show_logbook();
                     }
 
                     // Check if the player has found an enemy. If so, the player and the enemy will fight.
