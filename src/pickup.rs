@@ -59,3 +59,29 @@ impl Pickup {
         }
     }
 }
+
+
+/// Test that generate pickup randomly generates a pickup with the correct type and effects
+#[test]
+fn test_generate_pickup() {
+
+    // For 
+    for i in 0..100 {
+        // Generate the pickup
+        let pickup: Pickup = Pickup::generate_pickup();
+
+        println!("Test {}: Generated a {}", i, pickup.name);
+    
+        // Assert the pickup_type and effect based on name
+        if pickup.name == "Medkit" {
+            assert_eq!(pickup.pickup_type, "health");
+            assert_eq!(pickup.effect, 20);
+        } else if pickup.name == "Pair of Boots" {
+            assert_eq!(pickup.pickup_type, "movement");
+            assert_eq!(pickup.effect, 1);
+        } else if pickup.name == "Knife" {
+            assert_eq!(pickup.pickup_type, "attack");
+            assert_eq!(pickup.effect, 10);
+        }
+    }
+}
