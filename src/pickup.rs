@@ -1,7 +1,11 @@
 //! Library file for pickups
+//!
 //! 5/28/2023
 //!
+//! # About
+//!
 //! A pickup has a name and an effect. It will be placed in a room and the coordinates will be stored elsewhere.
+//!
 //! The room has a Vector of coordinates keeping track of all pickups.
 //!
 //! The plan is to have a health pickup that restores 20 HP and an attack pickup that boosts the player's attack damage by 10 points.

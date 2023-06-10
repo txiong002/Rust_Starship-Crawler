@@ -206,7 +206,7 @@ fn main() {
                             None => continue,
                         };
                     }
-                    //Reprint room
+                    // Reprint the room with the player location.
                     show_room(&room);
                     show_player_location(&room);
 

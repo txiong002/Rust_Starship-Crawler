@@ -1,5 +1,7 @@
 //! Rust Starship Crawler library
+//!
 //! 4/29/2023
+//!
 //! CS 510 Rust
 //!
 //! Library code goes here
@@ -11,7 +13,10 @@
 
 // Import the combat module into the library
 pub mod combat;
+// Import the pickup module
 pub mod pickup;
+// Import the logbook module
+pub mod logbook;
 
 // Get access to Player and Enemy
 use combat::Entity;
@@ -166,9 +171,7 @@ impl Floor {
         }
 
         // Return the finished floor.
-        Floor {
-            rooms: all_rooms, //vec![Room::new_proc_room(); num_rooms],
-        }
+        Floor { rooms: all_rooms }
     }
 }
 
