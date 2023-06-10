@@ -112,7 +112,6 @@ fn main() {
             // The text is hardcoded for now
             if f == 0 {
                 // FIRST FLOOR
-                //println!("");
                 println!("\n===== LEVEL {}: CARGO BAY  =====", f + 1);
                 println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
             } else if f == 1 {

@@ -13,9 +13,15 @@ use rand::Rng;
 /// The effect is usually a positive number that affects the player's attack and health.
 #[derive(Debug, Clone)]
 pub struct Pickup {
-    /// The name of the pickup.
+    /// The name of the pickup. This is the pickup's in-game name.
     pub name: String,
     /// The type of the pickup. Can be `health`, `attack`, or `movement`.
+    ///
+    /// `health` = affects the player's HP. Max HP is 100.
+    ///
+    /// `attack` = affects the player's attack damage.
+    ///
+    /// `movement` = affects the player's movement range.
     pub pickup_type: String,
     /// The effect the pickup has on the player.
     ///
@@ -27,35 +33,32 @@ pub struct Pickup {
     pub effect: usize,
 }
 
-//
+// Implementation of a Pickup
 impl Pickup {
     ///Randomly build a pick-up
     pub fn generate_pickup() -> Pickup {
         //Randomly generate item type
         let item_type = rand::thread_rng().gen_range(0..3);
 
-        //Based on which item type was generated, create the item
+        //Based on which item type was generated, create the item.
         if item_type == 0 {
             Pickup {
                 name: String::from("Medkit"),
                 pickup_type: String::from("health"),
-                effect: 20,
+                effect: 20, // Increase current health by 20
             }
-            //return item;
         } else if item_type == 1 {
             Pickup {
                 name: String::from("Pair of Boots"),
                 pickup_type: String::from("movement"),
-                effect: 1,
+                effect: 1, // Increase movement range by 1
             }
-            //return item;
         } else {
             Pickup {
                 name: String::from("Knife"),
                 pickup_type: String::from("attack"),
-                effect: 10,
+                effect: 10, // Increase attack by 10
             }
-            //return item;
         }
     }
 }

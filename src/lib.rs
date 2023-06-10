@@ -128,7 +128,7 @@ impl Room {
             enemy_location: (room_width - 2, room_height / 2),
 
             // The pickup location is next to the player
-            pickup_location: (1, 2),
+            pickup_location: (1, 1),
         };
 
         my_room = set_up_walls(my_room);
@@ -394,7 +394,7 @@ pub fn found_enemy(room: Room) -> bool {
 
 /// Check if the player has found a pickup.
 ///
-///
+/// This happens when the player and the pickup are on the same square
 pub fn found_pickup(room: Room) -> bool {
     // check to see if the player is on the square with the pickup
     let row: usize = room.player_location.0;
@@ -450,4 +450,38 @@ fn test_new_proc_room() {
         assert_eq!(room.room_area.len(), room.width);
         assert_eq!(room.room_area[0].len(), room.height);
     }
+}
+
+/// Test that a pickup is correctly found on a given square (1, 2)
+/// and is not found on all other squares
+#[test]
+fn test_found_pickup() {
+    // Define a new procedural room
+    let mut room: Room = Room::new_proc_room();
+
+    println!(
+        "Player location: ({}, {})",
+        room.player_location.0, room.player_location.1
+    );
+
+    show_room(&room);
+
+    // Assert that when the player and pickup are not on the same square, the pickup is not found.
+    let is_found: bool = found_pickup(room.clone());
+    assert_eq!(is_found, false);
+
+    // =======================================================================================
+    // Move the player to square (1, 1), which is where the pickup is
+    room.player_location = (1, 1); // Player is on the same square as the pickup
+
+    println!(
+        "Player location: ({}, {})",
+        room.player_location.0, room.player_location.1
+    );
+
+    show_room(&room);
+
+    // Assert that when the player and pickup are on the same square, the pickup is found.
+    let is_found: bool = found_pickup(room.clone());
+    assert_eq!(is_found, true)
 }

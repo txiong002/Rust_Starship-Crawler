@@ -88,15 +88,19 @@ impl Entity {
 ///
 /// `false` means the game ends.
 pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
+    // Both player and enemy defeat each other.
     if enemy.health == 0 && player.health == 0 {
         println!("Double KO, there was no winner!");
         false
+    // Enemy was defeated. Player has at least 1 HP.
     } else if enemy.health == 0 {
         println!("###########  {} has been defeated!  #######", enemy.name);
         false
+    // Player was defeated and enemy has at least 1 HP.
     } else if player.health == 0 {
         println!("{} has been defeated", player.name);
         false
+    // Player and enemy have at least 1 HP and take turns attacking.
     } else {
         // Ask for the player's command.
         input!("Press the Enter key to attack!\n ");
