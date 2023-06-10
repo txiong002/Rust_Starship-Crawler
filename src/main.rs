@@ -16,9 +16,10 @@ use prompted::input;
 use rsc_lib::{
     combat::Entity,
     combat::{display_health, face_off, regenerate_health},
+    logbook::generate_logbook_entries_for_room_1_floor_1,
+    logbook::{generate_logbook_coordinates, Logbook},
     pickup::Pickup,
-    logbook::{Logbook, generate_logbook_coordinates},
-    *, logbook::generate_logbook_entries_for_room_1_floor_1,
+    *,
 };
 
 // Randomly generate numbers to determine hit chance and determine which enemies spawn
@@ -231,7 +232,6 @@ fn main() {
                         // Regardless of the pickup type, delete it by resetting its location
                         room.pickup_location = (100, 100);
                     }
-
 
                     // Check if the player found a logbook entry.
                     // If so, show the respective entry.

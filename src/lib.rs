@@ -20,8 +20,8 @@ pub mod logbook;
 
 // Get access to the player/enemy, pickup, and logbook objects.
 use combat::Entity;
-use pickup::Pickup;
 use logbook::Logbook;
+use pickup::Pickup;
 use prompted::input;
 
 // Randomly generate numbers
@@ -89,7 +89,7 @@ pub struct Room {
 
     /// Logbooks list - default value is an empty vector
     pub logbooks: Vec<Logbook>,
-    
+
     /// List of logbook coordinates - default value is an empty vector
     pub logbook_coords: Vec<(usize, usize)>,
 }
@@ -214,7 +214,6 @@ pub fn show_room(room: &Room) {
     // Show the room
     for i in 0..room.width {
         for j in 0..room.height {
-
             // Tile is a floor
             // It may or may not be occupied by an object.
             if room.room_area[i][j] {
@@ -235,26 +234,24 @@ pub fn show_room(room: &Room) {
                     print!("+");
                 // Show all logbook locations if there are any.
                 // This is hardcoded for now since there are only two logbook entries per room
-                } else if room.logbook_coords.len() == 2 { 
-                    if i == room.logbook_coords[0].0 && j == room.logbook_coords[0].1 || i == room.logbook_coords[1].0 && j == room.logbook_coords[1].1{
+                } else if room.logbook_coords.len() == 2 {
+                    if i == room.logbook_coords[0].0 && j == room.logbook_coords[0].1
+                        || i == room.logbook_coords[1].0 && j == room.logbook_coords[1].1
+                    {
                         // Print logbook coordinates
                         print!("L");
-                    } else { // Print a tile.
+                    } else {
+                        // Print a tile.
                         print!(".");
                     }
-                
-                
                 } else {
                     // Unoccupied Tile, display with a dot.
                     print!(".");
-
                 }
             } else {
                 // Wall
                 print!("#");
             }
-
-
         }
         // Go to the next row
         println!();
@@ -464,8 +461,6 @@ pub fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
     player
 }
 
-
-
 /// Check if the player has found a logbook entry.
 ///
 /// This happens when the player and the logbook entry are on the same square
@@ -478,11 +473,14 @@ pub fn found_logbook(room: Room) -> (Logbook, bool) {
     // for (f, <item>) in levels.iter().enumerate()
     for (c, coord) in room.logbook_coords.iter().enumerate() {
         if row == coord.0 && col == coord.1 {
-            return (room.logbooks[c].clone(), true)
+            return (room.logbooks[c].clone(), true);
         }
     }
 
-    (Logbook::new_logbook("NULL".to_string(), "NULL".to_string()), false)
+    (
+        Logbook::new_logbook("NULL".to_string(), "NULL".to_string()),
+        false,
+    )
 }
 
 /// Test that a new procedurally generated room has a width and height <= 10
