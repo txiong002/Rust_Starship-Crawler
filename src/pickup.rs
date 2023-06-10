@@ -60,19 +60,17 @@ impl Pickup {
     }
 }
 
-
-/// Test that generate pickup randomly generates a pickup with the correct type and effects
+/// Test that a pickup is randomly generated with the correct type and effects.
 #[test]
 fn test_generate_pickup() {
-
-    // For 
+    // For
     for i in 0..100 {
-        // Generate the pickup
+        // Generate the pickup.
         let pickup: Pickup = Pickup::generate_pickup();
 
         println!("Test {}: Generated a {}", i, pickup.name);
-    
-        // Assert the pickup_type and effect based on name
+
+        // Assert that the pickup_type and effect are correct based on the pickup's name.
         if pickup.name == "Medkit" {
             assert_eq!(pickup.pickup_type, "health");
             assert_eq!(pickup.effect, 20);

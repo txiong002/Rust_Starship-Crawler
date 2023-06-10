@@ -110,15 +110,16 @@ fn main() {
 
             // Each floor has a backstory to tell.
             // The text is hardcoded for now
-            if f == 0 { // FIRST FLOOR
+            if f == 0 {
+                // FIRST FLOOR
                 //println!("");
                 println!("\n===== LEVEL {}: CARGO BAY  =====", f + 1);
                 println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
-            } else if f == 1 { // SECOND FLOOR
+            } else if f == 1 {
+                // SECOND FLOOR
                 println!("\n===== LEVEL {}: COMMAND CENTER  =====", f + 1);
                 println!("You survived the enemies hiding in the cargo bay. You make your way to the second floor.\nThis is the command center floor where all the ship's crew would fly it and keep track of the ship's vital functions.\n");
             }
-
 
             // ROOM LOOP
             // Loop through that floor's set of rooms

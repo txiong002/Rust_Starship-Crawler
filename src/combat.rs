@@ -190,3 +190,24 @@ pub fn regenerate_health(player: &mut Entity) {
         5_u32..=u32::MAX => todo!(),
     }
 }
+
+// ==============================================================================
+/// Test that the player's health is regenerated correctly.
+#[test]
+fn test_regenerate_health() {
+    // Test that the player, starting with 30 health, has at least 50 health
+    let mut player: Entity = Entity::new_player(
+        "Test Player".to_string(),
+        30, // Base health is 30
+        "Scattershot".to_string(),
+        10, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
+        1,  // starting movement range is 1 tile
+    );
+
+    // Regenerate the player's health based on a random number.
+    regenerate_health(&mut player);
+
+    // Assert that the player's health is now greater than the previous value.
+    println!("Player health is now {}", player.health);
+    assert!(player.health > 30);
+}
