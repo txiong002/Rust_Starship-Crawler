@@ -241,7 +241,7 @@ pub fn show_room(room: &Room) {
 
                 // Show all logbook locations if there are any.
                 // This is hardcoded for now since there are only two logbook entries per room
-                } else if room.logbook_coords.len() > 0 {
+                } else if !room.logbook_coords.is_empty() {
                     // Is the current coordinate a logbook coordinate? If so, display it as 'L'
                     if room.logbook_coords.contains(&(i, j)) {
                         room_string.extend(['L'].iter());
