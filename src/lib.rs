@@ -464,21 +464,31 @@ pub fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
 /// Check if the player has found a logbook entry.
 ///
 /// This happens when the player and the logbook entry are on the same square
-pub fn found_logbook(room: Room) -> (Logbook, bool) {
+pub fn found_logbook(room: Room) -> (Logbook, (usize, usize), usize, bool) {
     // check to see if the player is on the square with the pickup
     let row: usize = room.player_location.0;
     let col: usize = room.player_location.1; // check to see if the player is on the square with the pickup
 
-    // If we are on the same square as the logbook, consume it
+    // Locate and return the appropriate logbook
     // for (f, <item>) in levels.iter().enumerate()
     for (c, coord) in room.logbook_coords.iter().enumerate() {
         if row == coord.0 && col == coord.1 {
-            return (room.logbooks[c].clone(), true);
+            // Get that logbook entry
+            let logbook_entry: Logbook = room.logbooks[c].clone();
+
+            // // Get the index of the logbook coordinates and use that to get the index of the logbook entry.
+            let logbook_coords = room.logbook_coords[c];
+
+            // Return the logbook entry with its coordinates, its index, and a true value.
+            return (logbook_entry, logbook_coords, c, true);
         }
     }
 
+    // No logbook was found, return a 4-tuple with a null logbook, placeholder coordinates, a placeholder index, and a false value.
     (
         Logbook::new_logbook("NULL".to_string(), "NULL".to_string()),
+        (100, 100),
+        100,
         false,
     )
 }

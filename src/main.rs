@@ -256,11 +256,22 @@ fn main() {
 
                     // Check if the player found a logbook entry.
                     // If so, show the respective entry.
-                    let logbook_found: (Logbook, bool) = found_logbook(room.clone());
+                    // Obtain the logbook, the coordinates of the logbook, the logbook index, and a boolean that states whether the logbook was found or not.
+                    // logbook_found.0 = the Logbook object
+                    // logbook_found.1 = the coordinates of logbook_found.0
+                    // logbook_found.2 = the index of the coordinates.
+                    // logbook_found.3 = was the logbook found at the player's position?
+                    let logbook_found: (Logbook, (usize, usize), usize, bool) =
+                        found_logbook(room.clone());
 
-                    if logbook_found.1 {
+                    if logbook_found.3 {
+                        // Show the logbook.
                         println!("You found a logbook!");
                         logbook_found.0.show_logbook();
+
+                        // Remove the logbook from the map.
+                        room.logbook_coords.remove(logbook_found.2);
+                        room.logbooks.remove(logbook_found.2);
                     }
 
                     // Check if the player has found an enemy. If so, the player and the enemy will fight.
