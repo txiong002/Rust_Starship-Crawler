@@ -225,14 +225,14 @@ fn main() {
                     0,
                 );
 
-                // Create a new health pickup
-                let pickup: Pickup = Pickup::generate_pickup();
+                // // Create a new health pickup
+                // let pickup: Pickup = Pickup::generate_pickup();
 
                 // Show the room, player, enemy, and pickup locations.
                 show_room(&room);
                 show_player_location(&room);
                 show_enemy_location(&enemy, &room);
-                show_pickup_location(&pickup, &room);
+                show_pickup_locations(&room);
 
                 // Game loop logic - end the game when the player wins or the player dies.
                 // inner loop is used to handle fights
@@ -260,14 +260,17 @@ fn main() {
 
                     // Check if the player has found a pickup.
                     // If so, apply the pickup's effects to the player.
-                    let pickup_found = found_pickup(room.clone());
+                    let pickup_found: (Pickup, (usize, usize), usize, bool) =
+                        found_pickup(room.clone());
 
-                    if pickup_found {
-                        println!("You found a {}!", pickup.name);
-                        player = apply_pickup_effects(player, &pickup);
+                    if pickup_found.3 {
+                        println!("You found a {}!", pickup_found.0.name);
+                        player = apply_pickup_effects(player, &pickup_found.0);
 
                         // Regardless of the pickup type, delete it by resetting its location
-                        room.pickup_location = (100, 100);
+                        room.pickup_coords.remove(pickup_found.2);
+                        room.pickups.remove(pickup_found.2);
+                        // room.pickup_location = (100, 100);
                     }
 
                     // Check if the player found a logbook entry.
