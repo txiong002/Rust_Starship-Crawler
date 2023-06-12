@@ -16,8 +16,10 @@ use prompted::input;
 use rsc_lib::{
     combat::Entity,
     combat::{display_health, face_off, regenerate_health},
-    logbook::{generate_logbook_entries_for_room_1_floor_1, generate_logbook_entries_for_room_1_floor_2},
     logbook::{generate_logbook_coordinates, Logbook},
+    logbook::{
+        generate_logbook_entries_for_room_1_floor_1, generate_logbook_entries_for_room_1_floor_2,
+    },
     pickup::Pickup,
     *,
 };
@@ -54,7 +56,18 @@ fn main() {
     println!();
 
     // Ask for the player's name.
-    let player_name: String = input!("Enter your name: ");
+
+    let mut player_name: String;
+    loop {
+        player_name = input!("Enter your name: ");
+
+        // End the loop if the player name isn't blank - otherwise, keep asking for the player name.
+        if !player_name.is_empty() {
+            break;
+        } else {
+            println!("ERROR - Player name cannot be blank! Please enter a player name!");
+        }
+    }
 
     println!();
 
