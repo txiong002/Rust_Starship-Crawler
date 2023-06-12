@@ -29,7 +29,7 @@ use prompted::input;
 use rand::{thread_rng, Rng};
 
 /// Minimum width of the room.
-const MIN_WIDTH: usize = 5;
+const MIN_WIDTH: usize = 7;
 /// Minimum height of the room.
 const MIN_HEIGHT: usize = 5;
 

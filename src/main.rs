@@ -32,6 +32,11 @@ use rand::{thread_rng, Rng};
 
 /// The player's health
 const _MAX_PLAYER_HEALTH: usize = 100;
+/// The enemy's health - it varies by floor
+// let ENEMY_HEALTH_LVL1: usize = 25;
+// let ENEMY_HEALTH_LVL2: usize = 50;
+// let ENEMY_HEALTH_LVL3: usize = 75;
+// let ENEMY_HEALTH_LVL4: usize = 100;
 /// The player's base attack damage.
 // const BASE_ATTACK_DAMAGE: usize = 10;
 /// The enemy's base attack damage. Default is 9.
@@ -172,7 +177,7 @@ fn main() {
                 let enemy_health: usize;
                 let enemy_attack_name: &str;
 
-                // Boss level - generate a boss
+                // Final level is the Boss level - generate a boss
                 if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
                     enemy_name = "BOSS: Alpha Ceiling Crawler";
                     enemy_attack_damage = 25;
@@ -180,22 +185,33 @@ fn main() {
                     enemy_attack_name = "Acid Spit";
                 // All other levels - generate a random enemy
                 } else {
+                    // Determine the enemy's starting health value based on the level
+                    // Enemies on later levels are tougher than those on the early levels.
+                    let starting_enemy_health: usize = if count_level == 1 {
+                        25
+                    } else if count_level == 2 {
+                        50
+                    } else {
+                        100
+                    };
+
+                    // Pick an enemy to spawn.
                     let enemy_index: usize = rng.gen_range(0..=2);
 
                     if enemy_index == 0 {
                         enemy_name = "Ceiling Crawler";
                         enemy_attack_damage = 9;
-                        enemy_health = 60;
+                        enemy_health = starting_enemy_health;
                         enemy_attack_name = "Swipe";
                     } else if enemy_index == 1 {
                         enemy_name = "Rogue Drone";
                         enemy_attack_damage = 11;
-                        enemy_health = 60;
+                        enemy_health = starting_enemy_health;
                         enemy_attack_name = "Laser Blast";
                     } else {
                         enemy_name = "Radioactive Mutant";
                         enemy_attack_damage = 13;
-                        enemy_health = 60;
+                        enemy_health = starting_enemy_health;
                         enemy_attack_name = "Gamma Ray";
                     }
                 }
