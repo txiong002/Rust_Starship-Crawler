@@ -209,9 +209,13 @@ pub fn set_up_walls(mut room: Room) -> Room {
     room
 }
 
-/// Display the room
+/// Display the room with walls, tiles, the player, enemies, pickups and logbook entries.
 pub fn show_room(room: &Room) {
-    // Show the room
+    // The string representing the room.
+    let mut room_string: String = "".to_string();
+
+    // Build the room to display, adding the right char to the room_string.
+    // room_string.extend(['L'].iter()); will concatenate a single character to the String object.
     for i in 0..room.width {
         for j in 0..room.height {
             // Tile is a floor
@@ -219,43 +223,50 @@ pub fn show_room(room: &Room) {
             if room.room_area[i][j] {
                 // Show the player as ^
                 if i == room.player_location.0 && j == room.player_location.1 {
-                    print!("^");
+                    room_string.extend(['^'].iter());
+
                 // Show the enemy as X
                 } else if i == room.enemy_location.0 && j == room.enemy_location.1 {
                     let is_found = found_enemy(room.clone());
                     if is_found {
-                        print!("X");
+                        room_string.extend(['X'].iter());
                     } else {
-                        print!(".");
+                        room_string.extend(['.'].iter());
                     }
+
                 // Show the pickup locations as +
                 } else if i == room.pickup_location.0 && j == room.pickup_location.1 {
                     // check if pickup location and player location are the same
-                    print!("+");
+                    room_string.extend(['+'].iter());
+
                 // Show all logbook locations if there are any.
                 // This is hardcoded for now since there are only two logbook entries per room
-                } else if room.logbook_coords.len() == 2 {
-                    if i == room.logbook_coords[0].0 && j == room.logbook_coords[0].1
-                        || i == room.logbook_coords[1].0 && j == room.logbook_coords[1].1
-                    {
-                        // Print logbook coordinates
-                        print!("L");
+                } else if room.logbook_coords.len() > 0 {
+                    // Is the current coordinate a logbook coordinate? If so, display it as 'L'
+                    if room.logbook_coords.contains(&(i, j)) {
+                        room_string.extend(['L'].iter());
+                    // Normal coordinate, show an unoccupied tile.
                     } else {
-                        // Print a tile.
-                        print!(".");
+                        room_string.extend(['.'].iter());
                     }
+
+                // Show a normal tile - general case
                 } else {
                     // Unoccupied Tile, display with a dot.
-                    print!(".");
+                    room_string.extend(['.'].iter());
                 }
+            // Show a wall
             } else {
                 // Wall
-                print!("#");
+                room_string.extend(['#'].iter());
             }
         }
         // Go to the next row
-        println!();
+        room_string.extend(['\n'].iter());
     }
+
+    // Show the room
+    println!("{}", room_string);
 }
 
 /// Function to move player location (basic idea is that once a player touches an "enemy" tile, battle initiates?)
