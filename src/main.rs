@@ -186,7 +186,7 @@ fn main() {
                 // All other levels - generate a random enemy
                 } else {
                     // Determine the enemy's starting health value based on the level
-                    // Enemies on later levels are tougher than those on the early levels.
+                    // Enemies on later levels have more health than those on the early levels.
                     let starting_enemy_health: usize = if count_level == 1 {
                         25
                     } else if count_level == 2 {

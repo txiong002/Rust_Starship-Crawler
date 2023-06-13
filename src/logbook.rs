@@ -46,11 +46,11 @@ impl Logbook {
 ///
 /// Return a Vector of logbook entries.
 pub fn generate_logbook_entries_for_room_1_floor_1() -> Vec<Logbook> {
-    let title1: String = "Entry 6101: The Experiments".to_string();
-    let descr1: String = "TBD 1".to_string();
+    let title1: String = "Entry 6101: The Ceiling Crawler".to_string();
+    let descr1: String = "We found some long lost creature DNA while exploring the nearby ice moon. Our researchers and scientists examined it and it turns out this DNA belongs to fierce, ruthless predators.\nThe four-legged creatures, which we dubbed \"Ceiling Crawlers\", are adept at climbing walls and walking on places no human could ever walk. They lack sight, yet their sense of smell is second to none. Their four jaws open up to reveal layers of serrated teeth, capable of munching through the hardest steel. Who knows what ceiling crawlers could do in the wrong hands?".to_string();
 
-    let title2: String = "Entry 6102: Where to?".to_string();
-    let descr2: String = "TBD 2".to_string();
+    let title2: String = "Entry 6102: Our Plans".to_string();
+    let descr2: String = "Imagine all the things we could do if we could harness the power of ceiling crawlers. We could see into caves without risking our lives. We could sniff out anything we couldn't. All we have to do is keep the ceiling crawlers under control and lock the cages every night.".to_string();
 
     let lb1: Logbook = Logbook::new_logbook(title1, descr1);
     let lb2: Logbook = Logbook::new_logbook(title2, descr2);
@@ -63,10 +63,10 @@ pub fn generate_logbook_entries_for_room_1_floor_1() -> Vec<Logbook> {
 /// Return a Vector of logbook entries.
 pub fn generate_logbook_entries_for_room_1_floor_2() -> Vec<Logbook> {
     let title1: String = "Entry 6103: The Breakout".to_string();
-    let descr1: String = "TBD 3".to_string();
+    let descr1: String = "Oh no! It appears someone forgot to lock the ceiling crawler's cage last night! What do we do?! AAH!!!!\n\n".to_string();
 
     let title2: String = "Entry 6104: <STATIC>".to_string();
-    let descr2: String = "TBD 4".to_string();
+    let descr2: String = "<ENTRY CORRUPTED - ACIDIC LIQUID DETECTED - HANDLE WITH CAUTION>".to_string();
 
     let lb3: Logbook = Logbook::new_logbook(title1, descr1);
     let lb4: Logbook = Logbook::new_logbook(title2, descr2);
