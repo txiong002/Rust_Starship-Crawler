@@ -11,6 +11,8 @@ use prompted::input;
 
 // Randomly generate numbers
 // https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
+// Also import the pickup module using the keyword crate to refer to the project's absolute path
+use crate::Pickup;
 use rand::{thread_rng, Rng};
 
 // ========================================================================================
@@ -43,6 +45,8 @@ pub struct Entity {
     pub health: usize,
     /// Attacks the entity can use. Each attack has a name and a damage value. For now the player has only one attack.
     pub attacks: Vec<Attack>,
+    /// A backpack. Used by the player only to track which pickups they have. The player can only pick up one pair of boots.
+    pub backpack: Vec<Pickup>,
     /// Stat that determines how much the entity can move in one turn. Default is 1 tile.
     pub movement: usize,
 }
@@ -52,23 +56,37 @@ pub struct Entity {
 ///
 impl Entity {
     /// Create a new player.
-    pub fn new_player(name: String, health: usize, attacks: Vec<Attack>, movement: usize) -> Self {
+    pub fn new_player(
+        name: String,
+        health: usize,
+        attacks: Vec<Attack>,
+        backpack: Vec<Pickup>,
+        movement: usize,
+    ) -> Self {
         // Return the player.
         Entity {
             name,
             health,
             attacks,
+            backpack,
             movement,
         }
     }
 
     /// Create a new enemy. This is the same as the new_player function.
-    pub fn new_enemy(name: String, health: usize, attacks: Vec<Attack>, movement: usize) -> Self {
+    pub fn new_enemy(
+        name: String,
+        health: usize,
+        attacks: Vec<Attack>,
+        backpack: Vec<Pickup>,
+        movement: usize,
+    ) -> Self {
         // Return the enemy.
         Entity {
             name,
             health,
             attacks,
+            backpack,
             movement,
         }
     }
@@ -230,6 +248,7 @@ fn test_regenerate_health() {
         "Test Player".to_string(),
         30, // Base health is 30
         vec![Attack::new_attack("Scattershot".to_string(), 10)],
+        vec![],
         1, // starting movement range is 1 tile
     );
 

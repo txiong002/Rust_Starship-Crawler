@@ -6,7 +6,7 @@
 //!
 //! Library code goes here
 //!
-//! Initial room generation ode based on HW3 - Chomp
+//! Initial room generation code based on HW3 - Chomp
 //!
 //!
 //!
@@ -138,7 +138,7 @@ impl Room {
         loop {
             // Randomly generate a pickup coordinate that stays within the bounds of the room
             let coord: (usize, usize) = (
-                rng.gen_range(2..=room_width - 2),
+                rng.gen_range(2..=room_width - 4),
                 rng.gen_range(1..=room_height - 2),
             );
 
@@ -437,14 +437,6 @@ pub fn show_player_location(room: &Room) {
     );
 }
 
-/// Show the enemy coordinates.
-pub fn show_enemy_location(enemy: &Entity, room: &Room) {
-    println!(
-        "An enemy {} is in square ({}, {}).",
-        enemy.name, room.enemy_location.0, room.enemy_location.1
-    );
-}
-
 /// Show the pickups and their locations.
 pub fn show_pickup_locations(room: &Room) {
     for (p, coords) in room.pickup_coords.iter().enumerate() {
@@ -453,6 +445,22 @@ pub fn show_pickup_locations(room: &Room) {
             room.pickups[p].name, coords.0, coords.1
         );
     }
+}
+
+/// Show the player's backpack with all pickups.
+pub fn show_player_backpack(player: &Entity) {
+    println!("Your backpack has the following items: ");
+    println!("====================================================");
+    for (i, item) in player.backpack.iter().enumerate() {
+        println!(
+            "Item {}:\nName: {}\nEffect: +{} {}\n",
+            i + 1,
+            item.name,
+            item.effect,
+            item.pickup_type
+        );
+    }
+    println!("====================================================");
 }
 
 /// Check if player has found the enemy.

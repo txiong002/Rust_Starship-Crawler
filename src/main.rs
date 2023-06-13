@@ -83,12 +83,16 @@ fn main() {
         // Create the player entity with their attack list, health, and other values.
         let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 100)];
 
+        // Create the player's backpack, which starts empty.
+        let player_backpack: Vec<Pickup> = vec![];
+
         // Create new player
         let mut player: Entity = Entity::new_player(
             player_name.clone(),
             80,             // starting health is 80, which is 20 less than the maximum of 100
             player_attacks, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
-            1,              // starting movement range is 1 tile
+            player_backpack,
+            1, // starting movement range is 1 tile
         );
 
         println!("Your name is: {}", player.name);
@@ -244,13 +248,19 @@ fn main() {
                     }
 
                     // Create a new enemy based on the above parameters
-                    let mut enemy: Entity =
-                        Entity::new_enemy(enemy_name.to_string(), enemy_health, enemy_attacks, 0);
+                    let enemy_backpack: Vec<Pickup> = vec![];
+                    let mut enemy: Entity = Entity::new_enemy(
+                        enemy_name.to_string(),
+                        enemy_health,
+                        enemy_attacks,
+                        enemy_backpack,
+                        0,
+                    );
 
                     // Show the room, player, enemy, and pickup locations.
                     show_room(&room);
                     show_player_location(&room);
-                    show_enemy_location(&enemy, &room);
+                    //show_enemy_location(&enemy, &room);
                     show_pickup_locations(&room);
 
                     // Game loop logic - end the game when the player wins or the player dies.
@@ -258,7 +268,7 @@ fn main() {
                     'inner: loop {
                         // // Once player beets Room #02, we change Level
 
-                        println!("===== LEVEL #{} =====", f + 1);
+                        println!();
 
                         println!("You can move {} space.", player.movement);
                         let mut check = 0;
@@ -284,12 +294,28 @@ fn main() {
 
                         if pickup_found.3 {
                             println!("You found a {}!", pickup_found.0.name);
-                            player = apply_pickup_effects(player, &pickup_found.0);
 
-                            // Regardless of the pickup type, delete it by resetting its location
-                            room.pickup_coords.remove(pickup_found.2);
-                            room.pickups.remove(pickup_found.2);
-                            // room.pickup_location = (100, 100);
+                            // Player cannot pick up more than one pair of boots
+                            if player.backpack.contains(&pickup_found.0)
+                                && pickup_found.0.name == "Pair of Boots"
+                            {
+                                println!("You already have a Pair of Boots!");
+                            } else {
+                                // Pickup is not a pair of boots or the player doesn't have a pair of boots
+
+                                // Apply pickup effects.
+                                player = apply_pickup_effects(player, &pickup_found.0);
+
+                                // Add the pickup to the player's backpack if it isn't a medkit.
+                                if pickup_found.0.pickup_type != "health" {
+                                    player.backpack.push(pickup_found.0);
+                                    show_player_backpack(&player);
+                                }
+
+                                // Regardless of the pickup type, delete it by resetting its location
+                                room.pickup_coords.remove(pickup_found.2);
+                                room.pickups.remove(pickup_found.2);
+                            }
                         }
 
                         // Check if the player found a logbook entry.
