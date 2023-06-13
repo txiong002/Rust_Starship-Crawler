@@ -228,14 +228,17 @@ pub fn display_health(player: &Entity, enemy: &Entity) {
 
 // function to restore player health. Generate number between 0 and 4, then applies health based on number generated
 pub fn regenerate_health(player: &mut Entity) {
-    let restore: u32 = rand::thread_rng().gen_range(0..4);
-    match restore {
-        0 => player.health += 20,
-        1 => player.health += 25,
-        2 => player.health += 30,
-        3 => player.health = 75,
-        4 => player.health = 100,
-        5_u32..=u32::MAX => todo!(),
+    // add health to player if current health is less than 50
+    if player.health <= 50 {
+        let restore: u32 = rand::thread_rng().gen_range(0..4);
+        match restore {
+            0 => player.health += 20,
+            1 => player.health += 25,
+            2 => player.health += 30,
+            3 => player.health += 40,
+            4 => player.health += 50,
+            5_u32..=u32::MAX => todo!(),
+        }
     }
 }
 
