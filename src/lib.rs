@@ -145,11 +145,29 @@ impl Room {
             // Add the pickup coordinate
             all_pickup_coords.push(coord);
 
-            // Add the pickup
-            all_pickups.push(Pickup::generate_pickup());
+            // Generate the initial pickup
+            let new_pickup: Pickup = Pickup::generate_pickup();
+
+            // If the pickup is an attack or health pickup, add it. 
+            // But only add a pair of boots if there isn't one already.
+            
+            // New pickup is a pair of boots and there isn't one already.
+            if new_pickup.pickup_type == "movement" && !(all_pickups.contains(&new_pickup)) {
+                all_pickups.push(new_pickup);
+            // There is a pair of boots already in the room. Generate a medkit or an attack pickup.
+            } else {
+                // Keep generating the pickup until it isn't a pair of boots.
+                'get_non_movement: loop {
+                    let new_pickup: Pickup = Pickup::generate_pickup();
+                    if new_pickup.pickup_type != "movement" {
+                        all_pickups.push(new_pickup);
+                        break 'get_non_movement;
+                    }
+                }
+            }
 
             // When all pickups are added, stop the loop.
-            if all_pickup_coords.len() == num_pickups {
+            if all_pickup_coords.len() == num_pickups && all_pickups.len() == num_pickups {
                 break;
             }
         }
@@ -427,6 +445,7 @@ pub fn show_enemy_location(enemy: &Entity, room: &Room) {
     );
 }
 
+/// Show the pickups and their locations.
 pub fn show_pickup_locations(room: &Room) {
     for (p, coords) in room.pickup_coords.iter().enumerate() {
         println!(

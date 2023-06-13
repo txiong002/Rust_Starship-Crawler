@@ -86,7 +86,7 @@ fn main() {
         // Create new player
         let mut player: Entity = Entity::new_player(
             player_name.clone(),
-            80,              // starting health is 80, which is 20 less than the maximum of 100
+            80,             // starting health is 80, which is 20 less than the maximum of 100
             player_attacks, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
             1,              // starting movement range is 1 tile
         );
@@ -359,9 +359,10 @@ fn main() {
 
                                     // Prompt the user for input to determine whether they want to restart the game
                                     loop {
-                                        let choice: String =
-                                            input!("Would you like to restart the game? (Y/N)\n\nChoice: ");
-    
+                                        let choice: String = input!(
+                                            "Would you like to restart the game? (Y/N)\n\nChoice: "
+                                        );
+
                                         if choice == "N" || choice == "n" {
                                             // // End the game
                                             println!("Thank you for playing!");
@@ -372,7 +373,6 @@ fn main() {
                                         } else {
                                             println!("Invalid input - please enter Y or N.")
                                         }
-
                                     }
                                 }
                             }
@@ -408,7 +408,6 @@ fn main() {
                         } else {
                             println!("Invalid input - please enter Y or N.")
                         }
-
                     }
                 }
             }

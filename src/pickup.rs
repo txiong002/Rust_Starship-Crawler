@@ -15,7 +15,7 @@ use rand::Rng;
 /// A pickup has a name, a type, and an effect.
 ///
 /// The effect is usually a positive number that affects the player's attack and health.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Pickup {
     /// The name of the pickup. This is the pickup's in-game name.
     pub name: String,
