@@ -8,7 +8,7 @@
 
 This is a roguelike game where the player is an explorer investigating an abandoned starship for its secrets. Along the way, the player will find hidden treasures, useful powerups, and terrifying monsters.
 
-Every room is procedurally generated, meaning the player will never encounter the same rooms twice.
+Every room is procedurally generated, meaning the player will never encounter the same rooms, enemies, and pickups twice.
 
 ### How to build and run the project
 
@@ -73,7 +73,7 @@ We tested all aspects of the game to ensure that the player could carry out the 
 
 6) When you defeat an enemy, you will move to the next room (or the next floor if you are in the last room of the current floor).
 
-7) If your HP reaches 0, the game will end and you will need to restart from the beginning. 
+7) If your HP reaches 0, the game will end and you have the option to either restart the game from the first level or quit the game.
 
 # Example
 
