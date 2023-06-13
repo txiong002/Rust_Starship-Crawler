@@ -14,7 +14,7 @@ use prompted::input;
 
 // Using rust modules and libraries
 use rsc_lib::{
-    combat::{display_player_and_enemy_health, face_off, regenerate_health, display_player_health},
+    combat::{display_player_and_enemy_health, display_player_health, face_off, regenerate_health},
     combat::{Attack, Entity},
     logbook::{generate_logbook_coordinates, Logbook},
     logbook::{
@@ -45,12 +45,152 @@ const _MAX_PLAYER_HEALTH: usize = 100;
 // const BASE_MOVEMENT: usize = 1;
 
 // Maximun number of Levels
-const MAX_LEVELS: usize = 2;
+const MAX_LEVELS: usize = 4;
+
+// ================================================
+
+/// Spawn the enemy based on which room and level we are in.
+/// 
+/// Enemy Name - determine which enemy should spawn
+/// 
+///    0 = Ceiling Crawler
+/// 
+///    1 = Rogue drone
+/// 
+///    2 = Radioactive Mutant
+/// 
+/// # Arguments
+/// 
+/// count_level = the current level number. Starts from 1.
+/// 
+/// count_room = the current room number. Starts from 1.
+/// 
+/// num_rooms_per_floor = the number of rooms per floor. Minimum value is 1.
+/// 
+fn spawn_enemy(count_level: usize, count_room: usize, num_rooms_per_floor: usize) -> Entity {
+    let mut rng = thread_rng();
+
+    // Determine which enemy should spawn in each room
+    // Enemy Name - determine which enemy should spawn
+    // 0 = Ceiling crawler
+    // 1 = Rogue drone
+    // 2 = Radioactive Mutant
+    let enemy_name: &str;
+    //let enemy_attack_damage: usize;
+    let enemy_health: usize;
+    //let enemy_attack_name: &str;
+    let mut enemy_attacks: Vec<Attack> = vec![];
+
+    // Final level is the Boss level - generate a boss
+    // It has Acid Spit, Bite, and Swipe as its main attacks.
+    if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
+        enemy_name = "BOSS: Alpha Ceiling Crawler";
+        enemy_health = 200;
+        let attack_1 = Attack::new_attack("Acid Spit".to_string(), 35);
+        let attack_2 = Attack::new_attack("Swipe".to_string(), 25);
+        let enemy_attack_bite: Attack = Attack::new_attack("Bite".to_string(), 30);
+        enemy_attacks.push(attack_1);
+        enemy_attacks.push(attack_2);
+        enemy_attacks.push(enemy_attack_bite);
+    // All other levels - generate a random enemy
+    } else {
+        // Determine the enemy's starting health value based on the level
+        // Enemies on later levels have more health than those on the early levels.
+        let starting_enemy_health: usize = if count_level == 1 {
+            25
+        } else if count_level == 2 {
+            50
+        } else if count_level == 3 {
+            75
+        } else {
+            100
+        };
+
+        // Pick an enemy to spawn.
+        let enemy_index: usize = rng.gen_range(0..=2);
+
+        if enemy_index == 0 {
+            // Set up the enemy name and health.
+            enemy_name = "Ceiling Crawler";
+            enemy_health = starting_enemy_health;
+
+            // Define the enemy's attack list.
+            let enemy_attack_bite: Attack = Attack::new_attack("Bite".to_string(), 5);
+            let enemy_attack_swipe: Attack = Attack::new_attack("Swipe".to_string(), 9);
+            let enemy_attack_acid_blob: Attack = Attack::new_attack("Acid Blob".to_string(), 12);
+            enemy_attacks.push(enemy_attack_bite);
+            enemy_attacks.push(enemy_attack_swipe);
+            enemy_attacks.push(enemy_attack_acid_blob);
+        } else if enemy_index == 1 {
+            // Set up the enemy name and health.
+            enemy_name = "Rogue Drone";
+            enemy_health = starting_enemy_health;
+
+            // Define the enemy's attack list.
+            let enemy_attack_laser: Attack = Attack::new_attack("Laser Blast".to_string(), 11);
+            let enemy_attack_mini_missile: Attack =
+                Attack::new_attack("Mini Missiles".to_string(), 15);
+            enemy_attacks.push(enemy_attack_laser);
+            enemy_attacks.push(enemy_attack_mini_missile);
+        } else {
+            // Set up the enemy name and health.
+            enemy_name = "Radioactive Mutant";
+            enemy_health = starting_enemy_health;
+
+            // Define the enemy's attack list.
+            let enemy_attack_gamma_ray: Attack = Attack::new_attack("Gamma Ray".to_string(), 13);
+            let enemy_attack_tackle: Attack = Attack::new_attack("Tackle".to_string(), 7);
+            enemy_attacks.push(enemy_attack_gamma_ray);
+            enemy_attacks.push(enemy_attack_tackle);
+        }
+    }
+
+    // Create a new enemy based on the above parameters
+    let enemy_backpack: Vec<Pickup> = vec![];
+    let enemy: Entity = Entity::new_enemy(
+        enemy_name.to_string(),
+        enemy_health,
+        enemy_attacks,
+        enemy_backpack,
+        0,
+    );
+
+    // Return the enemy.
+    enemy
+}
+
+/// Show an opening message when the player arrives at the start of a floor.
+/// 
+/// # Arguments
+/// 
+/// floor_index: The index of the current level. Starts from 0.
+fn show_floor_message(floor_index: usize) {
+    if floor_index == 0 {
+        // FIRST FLOOR
+        println!("\n===== LEVEL {}: CARGO BAY  =====", floor_index + 1);
+        println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
+    } else if floor_index == 1 {
+        // SECOND FLOOR
+        println!("\n===== LEVEL {}: HANGAR  =====", floor_index + 1);
+        println!("You survived the enemies hiding in the cargo bay. You make your way to the hangar on the second floor.\nThere, you see the charred and acid-scarred wrecks of starships big and small.\n");
+    } else if floor_index == 2 {
+        // SECOND FLOOR
+        println!("\n===== LEVEL {}: COMMAND CENTER  =====", floor_index + 1);
+        println!("You survived the enemies hiding in the hangar. You make your way to the command center on the third floor.\nIn this room, the ship's captain would manage the crew and keep track of the ship's vital functions.\n");
+    
+    } else if floor_index == MAX_LEVELS-1 {
+        // SECOND FLOOR
+        println!("\n===== LEVEL {}: RESEARCH LAB  =====", floor_index + 1);
+        println!("You survived the enemies hiding in the command center. You make your way to the final floor where the research lab lies.\nThe research lab is the heart of the crew's experiments on genetic engineering. The lead scientists were all aiming for a breakthrough, but alas, a terrifying secret cut their research short.\nYou hear a deafening roar from the adjoining lab.\n");
+    }
+}
+
+// ================================================
 
 /// Main function
 fn main() {
     // Set up the RNG
-    let mut rng = thread_rng();
+    //let rng = thread_rng();
 
     // Welcome message
     println!("==== Welcome to Starship Crawler! ====");
@@ -81,7 +221,7 @@ fn main() {
     // Loop for restarting or quitting the game
     'state: loop {
         // Create the player entity with their attack list, health, and other values.
-        let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 10)];
+        let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 100)];
 
         // Create the player's backpack, which starts empty.
         let player_backpack: Vec<Pickup> = vec![];
@@ -101,7 +241,7 @@ fn main() {
         // Create a vector of two floors.
         // The floors have two rooms each
         let num_rooms_per_floor: usize = 2;
-        let num_floors: usize = 2;
+        let num_floors: usize = 4;
 
         // This line will initialize a collection of Floor structs.
         // Each Floor has a set number of room.s
@@ -132,8 +272,8 @@ fn main() {
 
         // Indices to keep track of level index and room index
         // Counters to keep track of room number and level number
-        let mut count_level: usize = 1; // Level number
-        let mut count_room: usize = 1; // Room number in a level
+        let mut count_level: usize = 1; // Level number, starts from 1.
+        let mut count_room: usize = 1; // Room number in a level. Starts from 1.
 
         // outer loop is used for the main game logic
         // Outer loop ends when the game is over (i.e. the player dies or the player finishes the last room in the last floor)
@@ -148,15 +288,7 @@ fn main() {
 
                 // Each floor has a backstory to tell.
                 // The text is hardcoded for now
-                if f == 0 {
-                    // FIRST FLOOR
-                    println!("\n===== LEVEL {}: CARGO BAY  =====", f + 1);
-                    println!("You crack open the starship's charred cargo bay door and make your way inside the first room. There is a low growling sound from across the hall. You draw your weapon and scan the area.");
-                } else if f == 1 {
-                    // SECOND FLOOR
-                    println!("\n===== LEVEL {}: COMMAND CENTER  =====", f + 1);
-                    println!("You survived the enemies hiding in the cargo bay. You make your way to the second floor.\nThis is the command center floor where all the ship's crew would fly it and keep track of the ship's vital functions.\n");
-                }
+                show_floor_message(f);
 
                 // ROOM LOOP
                 // Loop through that floor's set of rooms
@@ -182,80 +314,8 @@ fn main() {
                     // 0 = Ceiling crawler
                     // 1 = Rogue drone
                     // 2 = Radioactive Mutant
-                    let enemy_name: &str;
-                    //let enemy_attack_damage: usize;
-                    let enemy_health: usize;
-                    //let enemy_attack_name: &str;
-                    let mut enemy_attacks: Vec<Attack> = vec![];
-
-                    // Final level is the Boss level - generate a boss
-                    // It has Acid Spit, Bite, and Swipe as its main attacks.
-                    if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
-                        enemy_name = "BOSS: Alpha Ceiling Crawler";
-                        enemy_health = 200;
-                        let attack_1 = Attack::new_attack("Acid Spit".to_string(), 35);
-                        let attack_2 = Attack::new_attack("Swipe".to_string(), 25);
-                        let enemy_attack_bite: Attack = Attack::new_attack("Bite".to_string(), 30);
-                        enemy_attacks.push(attack_1);
-                        enemy_attacks.push(attack_2);
-                        enemy_attacks.push(enemy_attack_bite);
-                    // All other levels - generate a random enemy
-                    } else {
-                        // Determine the enemy's starting health value based on the level
-                        // Enemies on later levels have more health than those on the early levels.
-                        let starting_enemy_health: usize = if count_level == 1 {
-                            25
-                        } else if count_level == 2 {
-                            50
-                        } else {
-                            100
-                        };
-
-                        // Pick an enemy to spawn.
-                        let enemy_index: usize = rng.gen_range(0..=2);
-
-                        if enemy_index == 0 {
-                            enemy_name = "Ceiling Crawler";
-                            enemy_health = starting_enemy_health;
-                            let enemy_attack_bite: Attack =
-                                Attack::new_attack("Bite".to_string(), 5);
-                            let enemy_attack_swipe: Attack =
-                                Attack::new_attack("Swipe".to_string(), 9);
-                            let enemy_attack_acid_blob: Attack =
-                                Attack::new_attack("Acid Blob".to_string(), 12);
-                            enemy_attacks.push(enemy_attack_bite);
-                            enemy_attacks.push(enemy_attack_swipe);
-                            enemy_attacks.push(enemy_attack_acid_blob);
-                        } else if enemy_index == 1 {
-                            enemy_name = "Rogue Drone";
-                            enemy_health = starting_enemy_health;
-                            let enemy_attack_laser: Attack =
-                                Attack::new_attack("Laser Blast".to_string(), 11);
-                            let enemy_attack_mini_missile: Attack =
-                                Attack::new_attack("Mini Missiles".to_string(), 15);
-                            enemy_attacks.push(enemy_attack_laser);
-                            enemy_attacks.push(enemy_attack_mini_missile);
-                        } else {
-                            enemy_name = "Radioactive Mutant";
-                            enemy_health = starting_enemy_health;
-                            let enemy_attack_gamma_ray: Attack =
-                                Attack::new_attack("Gamma Ray".to_string(), 13);
-                            let enemy_attack_tackle: Attack =
-                                Attack::new_attack("Tackle".to_string(), 7);
-                            enemy_attacks.push(enemy_attack_gamma_ray);
-                            enemy_attacks.push(enemy_attack_tackle);
-                        }
-                    }
-
-                    // Create a new enemy based on the above parameters
-                    let enemy_backpack: Vec<Pickup> = vec![];
-                    let mut enemy: Entity = Entity::new_enemy(
-                        enemy_name.to_string(),
-                        enemy_health,
-                        enemy_attacks,
-                        enemy_backpack,
-                        0,
-                    );
+                    let mut enemy: Entity =
+                        spawn_enemy(count_level, count_room, num_rooms_per_floor);
 
                     // Show the room, player, enemy, and pickup locations.
                     show_room(&room);
