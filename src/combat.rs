@@ -99,6 +99,8 @@ impl Entity {
 
 /// Combat implementation: Player and enemy take turns attacking each other.
 ///
+/// The enemy will randomly select an attack.
+///
 /// Returns a bool that determines whether the game continues or not.
 ///
 /// `true` means the game continues.
@@ -119,6 +121,9 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
         false
     // Player and enemy have at least 1 HP and take turns attacking.
     } else {
+        // ====================================================================================================
+        // PLAYER ATTACKS ENEMY
+
         // Ask for the player's command.
         input!("Press the Enter key to attack!\n ");
 
@@ -173,22 +178,40 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
             }
         }
 
+        // ====================================================================================================
+        // ENEMY ATTACKS PLAYER
+
+        // Determine which attack the enemy should use if it has multiple attacks.
+        let enemy_attack_name: String;
+        let enemy_attack_damage_value: usize;
+        if enemy.attacks.len() > 1 {
+            // Randomly select an attack.
+            let attack_index: usize = rng.gen_range(0..enemy.attacks.len());
+
+            enemy_attack_name = enemy.attacks[attack_index].name.clone();
+            enemy_attack_damage_value = enemy.attacks[attack_index].damage_value;
+        } else {
+            // Use the attack given.
+            enemy_attack_name = enemy.attacks[0].name.clone();
+            enemy_attack_damage_value = enemy.attacks[0].damage_value;
+        }
+
         // Flip a coin to determine whether the enemy's attack lands or misses.
         let coin_flip_enemy: usize = rng.gen_range(0..=1);
 
         if coin_flip_enemy == 0 {
             // Enemy misses
-            println!("{} used {} but missed!", enemy.name, enemy.attacks[0].name);
+            println!("{} used {} but missed!", enemy.name, enemy_attack_name);
         } else {
             // Enemy attacks player.
-            if player.health >= enemy.attacks[0].damage_value {
-                player.health -= enemy.attacks[0].damage_value;
+            if player.health >= enemy_attack_damage_value {
+                player.health -= enemy_attack_damage_value;
             } else {
                 player.health = 0;
             }
             println!(
                 "{} used {} and inflicted {} damage on {}!",
-                enemy.name, enemy.attacks[0].name, enemy.attacks[0].damage_value, player.name
+                enemy.name, enemy_attack_name, enemy_attack_damage_value, player.name
             );
         }
 

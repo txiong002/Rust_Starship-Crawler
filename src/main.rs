@@ -174,16 +174,22 @@ fn main() {
                 // 1 = Rogue drone
                 // 2 = Radioactive Mutant
                 let enemy_name: &str;
-                let enemy_attack_damage: usize;
+                //let enemy_attack_damage: usize;
                 let enemy_health: usize;
-                let enemy_attack_name: &str;
+                //let enemy_attack_name: &str;
+                let mut enemy_attacks: Vec<Attack> = vec![];
 
                 // Final level is the Boss level - generate a boss
+                // It has Acid Spit, Bite, and Swipe as its main attacks.
                 if count_level == MAX_LEVELS && count_room == num_rooms_per_floor {
                     enemy_name = "BOSS: Alpha Ceiling Crawler";
-                    enemy_attack_damage = 25;
                     enemy_health = 200;
-                    enemy_attack_name = "Acid Spit";
+                    let attack_1 = Attack::new_attack("Acid Spit".to_string(), 35);
+                    let attack_2 = Attack::new_attack("Swipe".to_string(), 25);
+                    let enemy_attack_bite: Attack = Attack::new_attack("Bite".to_string(), 30);
+                    enemy_attacks.push(attack_1);
+                    enemy_attacks.push(attack_2);
+                    enemy_attacks.push(enemy_attack_bite);
                 // All other levels - generate a random enemy
                 } else {
                     // Determine the enemy's starting health value based on the level
@@ -201,33 +207,38 @@ fn main() {
 
                     if enemy_index == 0 {
                         enemy_name = "Ceiling Crawler";
-                        enemy_attack_damage = 9;
                         enemy_health = starting_enemy_health;
-                        enemy_attack_name = "Swipe";
+                        let enemy_attack_bite: Attack = Attack::new_attack("Bite".to_string(), 5);
+                        let enemy_attack_swipe: Attack = Attack::new_attack("Swipe".to_string(), 9);
+                        let enemy_attack_acid_blob: Attack =
+                            Attack::new_attack("Acid Blob".to_string(), 12);
+                        enemy_attacks.push(enemy_attack_bite);
+                        enemy_attacks.push(enemy_attack_swipe);
+                        enemy_attacks.push(enemy_attack_acid_blob);
                     } else if enemy_index == 1 {
                         enemy_name = "Rogue Drone";
-                        enemy_attack_damage = 11;
                         enemy_health = starting_enemy_health;
-                        enemy_attack_name = "Laser Blast";
+                        let enemy_attack_laser: Attack =
+                            Attack::new_attack("Laser Blast".to_string(), 11);
+                        let enemy_attack_mini_missile: Attack =
+                            Attack::new_attack("Mini Missiles".to_string(), 15);
+                        enemy_attacks.push(enemy_attack_laser);
+                        enemy_attacks.push(enemy_attack_mini_missile);
                     } else {
                         enemy_name = "Radioactive Mutant";
-                        enemy_attack_damage = 13;
                         enemy_health = starting_enemy_health;
-                        enemy_attack_name = "Gamma Ray";
+                        let enemy_attack_gamma_ray: Attack =
+                            Attack::new_attack("Gamma Ray".to_string(), 13);
+                        let enemy_attack_tackle: Attack =
+                            Attack::new_attack("Tackle".to_string(), 7);
+                        enemy_attacks.push(enemy_attack_gamma_ray);
+                        enemy_attacks.push(enemy_attack_tackle);
                     }
                 }
-
-                let enemy_attacks: Vec<Attack> = vec![Attack::new_attack(
-                    enemy_attack_name.to_string(),
-                    enemy_attack_damage,
-                )];
 
                 // Create a new enemy based on the above parameters
                 let mut enemy: Entity =
                     Entity::new_enemy(enemy_name.to_string(), enemy_health, enemy_attacks, 0);
-
-                // // Create a new health pickup
-                // let pickup: Pickup = Pickup::generate_pickup();
 
                 // Show the room, player, enemy, and pickup locations.
                 show_room(&room);
