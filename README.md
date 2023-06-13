@@ -46,6 +46,7 @@ We tested all aspects of the game to ensure that the player could carry out the 
 #### Manual testing
 
 1. From one square, we executed move commands to move diagonally, up/down, and left/right and ensured that the new position was reflected on the map without crashes.
+2. We executed move commands to pick up items in each room and ensured that the effects stuck when taking the player into combat.
 
 #### Automated testing
 
@@ -82,23 +83,29 @@ We tested all aspects of the game to ensure that the player could carry out the 
 # What worked
 
 - display enemy when player is in close proximity
-- autogenerate rooms with different dimensions
+- autogenerate rooms with different dimensions, different enemies, and different pickups
+- add logbooks to provide player with the game lore
 - player able to pick up items such as attack power up, medical kits, and boots to allow wider range of moves
+- player able to store items in a backpack (except for the medical kit)
 
 # What didn't work
 
-TBD
+- TBD
 
 # Future work
 
+We plan to include the following features (the list is not exhaustive) in future versions of this game:
+
 - More enemy types
 - More bosses
+- Enemies can move around the map
+- Multiple enemies in one room (this will require expanding the minimum room size)
 - Player can carry multiple weapons and thus have multiple attack types
 - Player moves using arrow keys instead of inputing coordinates
 
 # References
 
-Lee: I reused code from HW3 to help set up the dungeon room.
+Lee: I reused code from HW3 to help set up the dungeon room and to move the player around via coordinate input.
 
 The code we reused was based on the code to define (`struct`), implement (`impl`), and display (`show_posn`) the Chomp board.
 
