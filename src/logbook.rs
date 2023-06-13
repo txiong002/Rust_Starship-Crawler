@@ -66,7 +66,8 @@ pub fn generate_logbook_entries_for_room_1_floor_2() -> Vec<Logbook> {
     let descr1: String = "Oh no! It appears someone forgot to lock the ceiling crawler's cage last night! What do we do?! AAH!!!!\n\n".to_string();
 
     let title2: String = "Entry 6104: <STATIC>".to_string();
-    let descr2: String = "<ENTRY CORRUPTED - ACIDIC LIQUID DETECTED - HANDLE WITH CAUTION>".to_string();
+    let descr2: String =
+        "<ENTRY CORRUPTED - ACIDIC LIQUID DETECTED - HANDLE WITH CAUTION>".to_string();
 
     let lb3: Logbook = Logbook::new_logbook(title1, descr1);
     let lb4: Logbook = Logbook::new_logbook(title2, descr2);

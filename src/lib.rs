@@ -496,9 +496,12 @@ pub fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
             player.health = 100;
         }
     } else if pickup.pickup_type == "attack" {
-        player.attack_damage += pickup.effect;
+        player.attacks[0].damage_value += pickup.effect;
         println!("Attack damage increased by {}.", pickup.effect);
-        println!("Your current attack damage is now {}", player.attack_damage);
+        println!(
+            "Your current attack damage is now {}",
+            player.attacks[0].damage_value
+        );
     } else if pickup.pickup_type == "movement" {
         player.movement += pickup.effect;
         println!("Movement range increased by {} tile.", pickup.effect);

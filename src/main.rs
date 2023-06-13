@@ -14,8 +14,8 @@ use prompted::input;
 
 // Using rust modules and libraries
 use rsc_lib::{
-    combat::Entity,
     combat::{display_health, face_off, regenerate_health},
+    combat::{Attack, Entity},
     logbook::{generate_logbook_coordinates, Logbook},
     logbook::{
         generate_logbook_entries_for_room_1_floor_1, generate_logbook_entries_for_room_1_floor_2,
@@ -76,13 +76,14 @@ fn main() {
 
     println!();
 
+    let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 10)];
+
     // Create new player
     let mut player: Entity = Entity::new_player(
         player_name,
-        80, // starting health is 80, which is 20 less than the maximum of 100
-        "Scattershot".to_string(),
-        10, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
-        1,  // starting movement range is 1 tile
+        80,             // starting health is 80, which is 20 less than the maximum of 100
+        player_attacks, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
+        1,              // starting movement range is 1 tile
     );
 
     println!("Your name is: {}", player.name);
@@ -216,14 +217,14 @@ fn main() {
                     }
                 }
 
-                // Create a new enemy based on the above parameters
-                let mut enemy: Entity = Entity::new_enemy(
-                    enemy_name.to_string(),
-                    enemy_health,
+                let enemy_attacks: Vec<Attack> = vec![Attack::new_attack(
                     enemy_attack_name.to_string(),
                     enemy_attack_damage,
-                    0,
-                );
+                )];
+
+                // Create a new enemy based on the above parameters
+                let mut enemy: Entity =
+                    Entity::new_enemy(enemy_name.to_string(), enemy_health, enemy_attacks, 0);
 
                 // // Create a new health pickup
                 // let pickup: Pickup = Pickup::generate_pickup();

@@ -14,6 +14,21 @@ use prompted::input;
 use rand::{thread_rng, Rng};
 
 // ========================================================================================
+/// An attack usable by any entity.
+/// An attack can have a name and a damage value.
+#[derive(Debug, Clone)]
+pub struct Attack {
+    /// The attack's name.
+    pub name: String,
+    /// The attack's damage value.
+    pub damage_value: usize,
+}
+
+impl Attack {
+    pub fn new_attack(name: String, damage_value: usize) -> Self {
+        Attack { name, damage_value }
+    }
+}
 
 // ========================================================================================
 /// A moveable entity. It can be a player or an enemy.
@@ -21,14 +36,16 @@ use rand::{thread_rng, Rng};
 /// Each entity has a name, a health bar, a base attack damage, and a base movement value.
 #[derive(Debug, Clone)]
 pub struct Entity {
-    /// The emtity's name.
+    /// The entity's name.
     pub name: String,
     /// The entity's health.
     pub health: usize,
-    /// Attack name.
-    pub attack_name: String,
-    /// Attack damage - base is 10
-    pub attack_damage: usize,
+    /// Attacks the entity can use. Each attack has a name and a damage value. For now the player has only one attack.
+    pub attacks: Vec<Attack>,
+    // /// Attack name.
+    // pub attack_name: String,
+    // /// Attack damage - base is 10
+    // pub attack_damage: usize,
     /// Stat that determines how much the entity can move in one turn. Default is 1 tile.
     pub movement: usize,
 }
@@ -41,16 +58,16 @@ impl Entity {
     pub fn new_player(
         name: String,
         health: usize,
-        attack_name: String,
-        attack_damage: usize,
+        attacks: Vec<Attack>,
+        // attack_name: String,
+        // attack_damage: usize,
         movement: usize,
     ) -> Self {
         // Return the player.
         Entity {
             name,
             health,
-            attack_name,
-            attack_damage,
+            attacks,
             movement,
         }
     }
@@ -59,16 +76,16 @@ impl Entity {
     pub fn new_enemy(
         name: String,
         health: usize,
-        attack_name: String,
-        attack_damage: usize,
+        attacks: Vec<Attack>,
+        // attack_name: String,
+        // attack_damage: usize,
         movement: usize,
     ) -> Self {
         // Return the enemy.
         Entity {
             name,
             health,
-            attack_name,
-            attack_damage,
+            attacks,
             movement,
         }
     }
@@ -111,7 +128,10 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
 
         if coin_flip_player == 0 {
             // Player misses
-            println!("{} used {} but missed!", player.name, player.attack_name);
+            println!(
+                "{} used {} but missed!",
+                player.name, player.attacks[0].name
+            );
         } else {
             // Determine if the player lands a critical hit.
             // A critical hit does twice as much damage as a normal hit.
@@ -120,16 +140,16 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
             let crit_hit_value: usize = rng.gen_range(0..=9);
 
             // Player attacks enemy.
-            if enemy.health >= player.attack_damage {
+            if enemy.health >= player.attacks[0].damage_value {
                 if crit_hit_value > 6 {
                     println!("** Player landed a critical hit! **");
-                    if enemy.health >= (2 * player.attack_damage) {
-                        enemy.health -= 2 * player.attack_damage
+                    if enemy.health >= (2 * player.attacks[0].damage_value) {
+                        enemy.health -= 2 * player.attacks[0].damage_value
                     } else {
                         enemy.health = 0
                     }
                 } else {
-                    enemy.health -= player.attack_damage;
+                    enemy.health -= player.attacks[0].damage_value;
                 }
             } else {
                 // avoid overflow
@@ -141,14 +161,14 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
                 println!(
                     "{} used {} and inflicted {} damage on {}!",
                     player.name,
-                    player.attack_name,
-                    2 * player.attack_damage,
+                    player.attacks[0].name,
+                    2 * player.attacks[0].damage_value,
                     enemy.name
                 );
             } else {
                 println!(
                     "{} used {} and inflicted {} damage on {}!",
-                    player.name, player.attack_name, player.attack_damage, enemy.name
+                    player.name, player.attacks[0].name, player.attacks[0].damage_value, enemy.name
                 );
             }
         }
@@ -158,17 +178,17 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
 
         if coin_flip_enemy == 0 {
             // Enemy misses
-            println!("{} used {} but missed!", enemy.name, enemy.attack_name);
+            println!("{} used {} but missed!", enemy.name, enemy.attacks[0].name);
         } else {
             // Enemy attacks player.
-            if player.health >= enemy.attack_damage {
-                player.health -= enemy.attack_damage;
+            if player.health >= enemy.attacks[0].damage_value {
+                player.health -= enemy.attacks[0].damage_value;
             } else {
                 player.health = 0;
             }
             println!(
                 "{} used {} and inflicted {} damage on {}!",
-                enemy.name, enemy.attack_name, enemy.attack_damage, player.name
+                enemy.name, enemy.attacks[0].name, enemy.attacks[0].damage_value, player.name
             );
         }
 
@@ -203,9 +223,8 @@ fn test_regenerate_health() {
     let mut player: Entity = Entity::new_player(
         "Test Player".to_string(),
         30, // Base health is 30
-        "Scattershot".to_string(),
-        10, // starting attack damage is 10. Set to 100 to defeat enemies instantly (i.e. to debug level progression)
-        1,  // starting movement range is 1 tile
+        vec![Attack::new_attack("Scattershot".to_string(), 10)],
+        1, // starting movement range is 1 tile
     );
 
     // Regenerate the player's health based on a random number.
