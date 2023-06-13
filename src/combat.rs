@@ -25,6 +25,7 @@ pub struct Attack {
 }
 
 impl Attack {
+    /// Create a new attack with the given name and damage value.
     pub fn new_attack(name: String, damage_value: usize) -> Self {
         Attack { name, damage_value }
     }
@@ -42,10 +43,6 @@ pub struct Entity {
     pub health: usize,
     /// Attacks the entity can use. Each attack has a name and a damage value. For now the player has only one attack.
     pub attacks: Vec<Attack>,
-    // /// Attack name.
-    // pub attack_name: String,
-    // /// Attack damage - base is 10
-    // pub attack_damage: usize,
     /// Stat that determines how much the entity can move in one turn. Default is 1 tile.
     pub movement: usize,
 }
@@ -55,14 +52,7 @@ pub struct Entity {
 ///
 impl Entity {
     /// Create a new player.
-    pub fn new_player(
-        name: String,
-        health: usize,
-        attacks: Vec<Attack>,
-        // attack_name: String,
-        // attack_damage: usize,
-        movement: usize,
-    ) -> Self {
+    pub fn new_player(name: String, health: usize, attacks: Vec<Attack>, movement: usize) -> Self {
         // Return the player.
         Entity {
             name,
@@ -73,14 +63,7 @@ impl Entity {
     }
 
     /// Create a new enemy. This is the same as the new_player function.
-    pub fn new_enemy(
-        name: String,
-        health: usize,
-        attacks: Vec<Attack>,
-        // attack_name: String,
-        // attack_damage: usize,
-        movement: usize,
-    ) -> Self {
+    pub fn new_enemy(name: String, health: usize, attacks: Vec<Attack>, movement: usize) -> Self {
         // Return the enemy.
         Entity {
             name,

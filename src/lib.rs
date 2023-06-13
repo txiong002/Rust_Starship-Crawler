@@ -6,7 +6,7 @@
 //!
 //! Library code goes here
 //!
-//! Code based on HW3 - Chomp
+//! Initial room generation ode based on HW3 - Chomp
 //!
 //!
 //!
@@ -76,15 +76,13 @@ pub struct Room {
     /// Example: (1, 1)
     pub enemy_location: (usize, usize),
 
-    /// The pickup's location.
+    /// Pickups list - default value is an empty vector
+    pub pickups: Vec<Pickup>,
+    /// List of pickup coordinates - default value is an empty vector
     ///
     /// All coordinates are 0-indexed. Since a wall is at index 0, the minimum x and y coordinate is 1.
     ///
     /// Example: (1, 1)
-    // pub pickup_location: (usize, usize),
-    /// TBD: Pickups list - default value is an empty vector
-    pub pickups: Vec<Pickup>,
-    /// List of pickup coordinates - default value is an empty vector
     pub pickup_coords: Vec<(usize, usize)>,
 
     /// Logbooks list - default value is an empty vector
@@ -528,7 +526,7 @@ pub fn found_logbook(room: Room) -> (Logbook, (usize, usize), usize, bool) {
             // Get that logbook entry
             let logbook_entry: Logbook = room.logbooks[c].clone();
 
-            // // Get the index of the logbook coordinates and use that to get the index of the logbook entry.
+            // Get the index of the logbook coordinates and use that to get the index of the logbook entry.
             let logbook_coords = room.logbook_coords[c];
 
             // Return the logbook entry with its coordinates, its index, and a true value.
@@ -563,37 +561,3 @@ fn test_new_proc_room() {
         assert_eq!(room.room_area[0].len(), room.height);
     }
 }
-
-// /// Test that a pickup is correctly found on a given square (1, 2)
-// /// and is not found on all other squares
-// #[test]
-// fn test_found_pickup() {
-//     // Define a new procedural room
-//     let mut room: Room = Room::new_proc_room();
-
-//     println!(
-//         "Player location: ({}, {})",
-//         room.player_location.0, room.player_location.1
-//     );
-
-//     show_room(&room);
-
-//     // Assert that when the player and pickup are not on the same square, the pickup is not found.
-//     let is_found: (Pickup, (usize, usize), usize, bool) = found_pickup(room.clone());
-//     assert_eq!(is_found.3, false);
-
-//     // =======================================================================================
-//     // Move the player to square (1, 1), which is where the pickup is
-//     room.player_location = (1, 1); // Player is on the same square as the pickup
-
-//     println!(
-//         "Player location: ({}, {})",
-//         room.player_location.0, room.player_location.1
-//     );
-
-//     show_room(&room);
-
-//     // Assert that when the player and pickup are on the same square, the pickup is found.
-//     let is_found: (Pickup, (usize, usize), usize, bool) = found_pickup(room.clone());
-//     assert_eq!(is_found.3, true)
-// }
