@@ -220,8 +220,13 @@ pub fn face_off(player: &mut Entity, enemy: &mut Entity) -> bool {
     }
 }
 
+/// Display the health of the player only.
+pub fn display_player_health(player: &Entity) {
+    println!("Your current health: {} HP", player.health);
+}
+
 /// Display the health of the player and the enemy.
-pub fn display_health(player: &Entity, enemy: &Entity) {
+pub fn display_player_and_enemy_health(player: &Entity, enemy: &Entity) {
     println!("{}'s current health: {}", player.name, player.health);
     println!("{}'s current heath: {}", enemy.name, enemy.health);
 }

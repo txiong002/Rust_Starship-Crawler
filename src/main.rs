@@ -14,7 +14,7 @@ use prompted::input;
 
 // Using rust modules and libraries
 use rsc_lib::{
-    combat::{display_health, face_off, regenerate_health},
+    combat::{display_player_and_enemy_health, face_off, regenerate_health, display_player_health},
     combat::{Attack, Entity},
     logbook::{generate_logbook_coordinates, Logbook},
     logbook::{
@@ -81,7 +81,7 @@ fn main() {
     // Loop for restarting or quitting the game
     'state: loop {
         // Create the player entity with their attack list, health, and other values.
-        let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 100)];
+        let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 10)];
 
         // Create the player's backpack, which starts empty.
         let player_backpack: Vec<Pickup> = vec![];
@@ -260,7 +260,6 @@ fn main() {
                     // Show the room, player, enemy, and pickup locations.
                     show_room(&room);
                     show_player_location(&room);
-                    //show_enemy_location(&enemy, &room);
                     show_pickup_locations(&room);
 
                     // Game loop logic - end the game when the player wins or the player dies.
@@ -269,7 +268,8 @@ fn main() {
                         // // Once player beets Room #02, we change Level
 
                         println!();
-
+                        // Show the player's health at all times.
+                        display_player_health(&player);
                         println!("You can move {} space.", player.movement);
                         let mut check = 0;
                         while check == 0 {
@@ -346,7 +346,7 @@ fn main() {
                             println!("\nALERT: You encountered a {}!!!", enemy.name);
                             println!("\nGET READY TO BATTLE!!!!");
                             loop {
-                                display_health(&player, &enemy); // Show the health values
+                                display_player_and_enemy_health(&player, &enemy); // Show the health values
                                 let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
 
                                 //If player wins, move to next level
