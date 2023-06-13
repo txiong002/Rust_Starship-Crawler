@@ -148,9 +148,9 @@ impl Room {
             // Generate the initial pickup
             let new_pickup: Pickup = Pickup::generate_pickup();
 
-            // If the pickup is an attack or health pickup, add it. 
+            // If the pickup is an attack or health pickup, add it.
             // But only add a pair of boots if there isn't one already.
-            
+
             // New pickup is a pair of boots and there isn't one already.
             if new_pickup.pickup_type == "movement" && !(all_pickups.contains(&new_pickup)) {
                 all_pickups.push(new_pickup);
