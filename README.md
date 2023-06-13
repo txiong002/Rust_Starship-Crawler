@@ -1,5 +1,7 @@
 # Rust Starship Crawler
+
 ## Lee Hoang, Tou Xiong, Hanna Kostrba
+
 ## 4/23/2023
 
 ## Description
@@ -12,68 +14,66 @@ Every room is procedurally generated, meaning the player will never encounter th
 
 ### How to build and run the project
 
-1) Open a terminal (Windows command line, Powershell, etc.) and clone the repository with the command below:
+1. Open a terminal (Windows command line, Powershell, etc.) and clone the repository with the command below:
 
-    ```
-    git clone https://gitlab.cecs.pdx.edu/cs510-rust-lth/rust-starship-crawler.git
-    ```
+   ```
+   git clone https://gitlab.cecs.pdx.edu/cs510-rust-lth/rust-starship-crawler.git
+   ```
 
-2) cd into the project directory:
+2. cd into the project directory:
 
-    ```
-    cd rust-starship-crawler
-    ```
+   ```
+   cd rust-starship-crawler
+   ```
 
-3) Execute the following commands to build the project
+3. Execute the following commands to build the project
 
-    ```
-    cargo check
-    cargo clippy
-    ```
+   ```
+   cargo check
+   cargo clippy
+   ```
 
-4) Run the project with the command
+4. Run the project with the command
 
-    ```
-    cargo run
-    ```
+   ```
+   cargo run
+   ```
 
 ### Testing
 
-We tested all aspects of the game to ensure that the player could carry out the basic activities. 
+We tested all aspects of the game to ensure that the player could carry out the basic activities.
 
 #### Manual testing
 
-1) From one square, we executed move commands to move diagonally, up/down, and left/right and ensured that the new position was reflected on the map without crashes.
+1. From one square, we executed move commands to move diagonally, up/down, and left/right and ensured that the new position was reflected on the map without crashes.
 
 #### Automated testing
 
-1) We wrote a test `test_new_proc_room()` to check that every procedurally generated room is within the width and height parameters.
-
-
+1. We wrote a test `test_new_proc_room()` to check that every procedurally generated room is within the width and height parameters.
 
 ### How to play
 
-1) Open a terminal and type the command 
+1. Open a terminal and type the command
 
-    `cargo run`
+   `cargo run`
 
-2) When prompted, enter your name.
+2. When prompted, enter your name.
 
-3) You will be shown a map and your current position. To move on the map, enter the x-coord and y-coord of the square you want to move to.
+3. You will be shown a map and your current position. To move on the map, enter the x-coord and y-coord of the square you want to move to.
 
-    Example: If you are on square (1, 4) and you want to move to square (2, 4), enter `2 4`.
+   Example: If you are on square (1, 4) and you want to move to square (2, 4), enter `2 4`.
 
-    Note that you can only move one square at a time unless you have the "Pair of Boots" pickup, which lets you move two squares at a time.
+   Note that you can only move one square at a time unless you have the "Pair of Boots" pickup, which lets you move two squares at a time.
 
-4) If your destination square contains a pickup, the pickup will either restore 20 HP (Medkit), boost your attack power by 10 (Knife), or increase your movement range by 1 (Pair of Boots).
+4. If your destination square contains a pickup, the pickup will either restore 20 HP (Medkit), boost your attack power by 10 (Knife), or increase your movement range by 1 (Pair of Boots).
 
-5) When you get close to an enemy, it will appear and you will enter a battle. To attack, press the enter key.
+5. When you get close to an enemy, it will appear and you will enter a battle. To attack, press the enter key.
 
-    The battle runs until either the player or the enemy is defeated.
+   The battle runs until either the player or the enemy is defeated.
 
-6) When you defeat an enemy, you will move to the next room (or the next floor if you are in the last room of the current floor).
+6. When you defeat an enemy, you will move to the next room (or the next floor if you are in the last room of the current floor).
 
-7) If your HP reaches 0, the game will end and you have the option to either restart the game from the first level or quit the game.
+7. If your HP reaches 0, the game will end and you have the option to either restart the game from the first level or quit the game.
 
 # Example
 
@@ -81,7 +81,9 @@ We tested all aspects of the game to ensure that the player could carry out the 
 
 # What worked
 
-TBD 
+- display enemy when player is in close proximity
+- autogenerate rooms with different dimensions
+- player able to pick up items such as attack power up, medical kits, and boots to allow wider range of moves
 
 # What didn't work
 
@@ -89,9 +91,10 @@ TBD
 
 # Future work
 
-* More enemy types
-* More bosses
-* Player can carry multiple weapons and thus have multiple attack types
+- More enemy types
+- More bosses
+- Player can carry multiple weapons and thus have multiple attack types
+- Player moves using arrow keys instead of inputing coordinates
 
 # References
 
@@ -104,7 +107,6 @@ https://en.wikipedia.org/wiki/Roguelike
 
 Rand Crate reference:
 https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
-
 
 # License file
 
