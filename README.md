@@ -65,13 +65,13 @@ To move on the map, enter the x-coordinate and y-coordinate of the tile you want
 
 7. If your HP reaches 0, the game will end and you have the option to either restart the game from the first level or quit the game.
 
-# Example
+### Example
 
-## Starting the game:
+#### Starting the game:
 
 ![](resources/example.png)
 
-## Picking up a pair of boots
+#### Picking up a pair of boots
 
 ![](resources/example_pickup.png)
 
