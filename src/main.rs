@@ -30,20 +30,10 @@ use rsc_lib::{
 use rand::{thread_rng, Rng};
 
 // ================================================
+// CONSTANTS
 
 /// The player's health
 const _MAX_PLAYER_HEALTH: usize = 100;
-/// The enemy's health - it varies by floor
-// let ENEMY_HEALTH_LVL1: usize = 25;
-// let ENEMY_HEALTH_LVL2: usize = 50;
-// let ENEMY_HEALTH_LVL3: usize = 75;
-// let ENEMY_HEALTH_LVL4: usize = 100;
-/// The player's base attack damage.
-// const BASE_ATTACK_DAMAGE: usize = 10;
-/// The enemy's base attack damage. Default is 9.
-// const ENEMY_ATTACK_DAMAGE: usize = 9;
-/// The number of tiles the player is allowed to traverse.
-// const BASE_MOVEMENT: usize = 1;
 
 // Maximun number of Levels
 const MAX_LEVELS: usize = 4;
@@ -77,9 +67,7 @@ fn spawn_enemy(count_level: usize, count_room: usize, num_rooms_per_floor: usize
     // 1 = Rogue drone
     // 2 = Radioactive Mutant
     let enemy_name: &str;
-    //let enemy_attack_damage: usize;
     let enemy_health: usize;
-    //let enemy_attack_name: &str;
     let mut enemy_attacks: Vec<Attack> = vec![];
 
     // Final level is the Boss level - generate a boss
@@ -189,8 +177,6 @@ fn show_floor_message(floor_index: usize) {
 
 /// Main function
 fn main() {
-    // Set up the RNG
-    //let rng = thread_rng();
 
     // Welcome message
     println!("==== Welcome to Starship Crawler! ====");
@@ -215,8 +201,6 @@ fn main() {
     }
 
     println!();
-
-    //let mut continue_or_quit: bool = true;
 
     // Loop for restarting or quitting the game
     'state: loop {
@@ -347,13 +331,13 @@ fn main() {
                         println!("You can move {} space.", player.movement);
                         let mut check = 0;
                         while check == 0 {
-                            //Get user move
+                            // Get user move
                             room = match user_move(room.clone(), &player) {
                                 Some(room) => {
                                     check = 1;
                                     room
                                 }
-                                //Continue if move was invalid
+                                // Continue if move was invalid
                                 None => continue,
                             };
                         }
@@ -438,7 +422,6 @@ fn main() {
                                             f+1
                                         );
                                         // increase player health back to full for testing purposes
-                                        //player.health = MAX_PLAYER_HEALTH;
                                         regenerate_health(&mut player);
                                         count_room = 1; // reset the counter as we move to the next level.
                                                         // Move to the next room
@@ -446,12 +429,9 @@ fn main() {
                                         println!("\n============= You are now entering Room # {}, Good Luck!  ==============", r+2);
 
                                         // replace player health back to full for testing purposes
-                                        //player.health = MAX_PLAYER_HEALTH;
                                         regenerate_health(&mut player);
                                     }
                                     input!("Press ENTER to move to next room");
-                                    // Add health to player for next level
-                                    // player.health += 20;
                                     break 'inner;
                                 } else if !game_over {
                                     // If either the enemy or the player has lost all their health, the game ends.

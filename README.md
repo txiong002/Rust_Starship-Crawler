@@ -128,6 +128,7 @@ We plan to include the following features (the list is not exhaustive) in future
 - Randomized enemy/pickup start locations
 - Multiple enemies in one room (this will require expanding the minimum room size)
 - Player can carry multiple weapons and thus have multiple attack types
+- Enemies can land critical hits on the player
 - Player moves using arrow keys instead of inputing coordinates
 
 

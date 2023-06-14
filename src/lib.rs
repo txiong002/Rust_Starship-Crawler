@@ -335,10 +335,10 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
                 return None;
             }
         };
-        //Set the usize tuple
+        // Set the usize tuple
         user_move = (v[0], v[1]);
 
-        //Check to see if the input was out of bounds or goes into a wall
+        // Check to see if the input was out of bounds or goes into a wall
         if user_move.0 >= room.width - 1 || user_move.1 >= room.height - 1 {
             println!("You can't move here!");
             return None;
@@ -391,8 +391,8 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
         let mut r = room.player_location.0;
         let mut c = room.player_location.1;
 
-        //Check to make sure that the user didn't pass the enemy, and if the user's move will move past the enemy, move the user to the next
-        //closest spot
+        // Check to make sure that the user didn't pass the enemy, and if the user's move will move past the enemy, move the user to the next
+        // closest spot
         loop {
             loop {
                 if (r + 1) == room.enemy_location.0 && (c) == room.enemy_location.1 {
@@ -424,7 +424,7 @@ pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
             }
         }
 
-        //If the move was entirely valid, set the user's move and return
+        // If the move was entirely valid, set the user's move and return
         room.player_location = user_move;
         return Some(room);
     }
