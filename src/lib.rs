@@ -23,6 +23,9 @@ use combat::Entity;
 use logbook::Logbook;
 use pickup::Pickup;
 use prompted::input;
+// Attack only necessary for pickup testing
+#[cfg(test)]
+use combat::Attack;
 
 // Randomly generate numbers
 // https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
@@ -587,4 +590,88 @@ fn test_new_proc_room() {
         assert_eq!(room.room_area.len(), room.width);
         assert_eq!(room.room_area[0].len(), room.height);
     }
+}
+
+/// Test that the health pickup restores the player's health by the intended amount (20 is the standard amount, however health restored
+/// through medkits shouldn't go higher than 100)
+#[test]
+fn test_health_pickup() {
+    //Create dummy player entity
+    let mut player: Entity = Entity::new_player(
+        "Test Player".to_string(),
+        10, //Set player health to low amount to start
+        vec![Attack::new_attack("Scattershot".to_string(), 10)],
+        vec![],
+        1,
+    );
+    let medkit: Pickup = Pickup {
+        name: String::from("Medkit"),
+        pickup_type: String::from("health"),
+        effect: 20, // Increase current health by 20
+    };
+    //Test by applying medkits multiple times
+    player = apply_pickup_effects(player, &medkit);
+    assert_eq!(player.health, 30);
+    player = apply_pickup_effects(player, &medkit);
+    assert_eq!(player.health, 50);
+    player = apply_pickup_effects(player, &medkit);
+    assert_eq!(player.health, 70);
+    player = apply_pickup_effects(player, &medkit);
+    assert_eq!(player.health, 90);
+    //Make sure that health doesn't exceed 100 when applying a medkit at 90 HP
+    player = apply_pickup_effects(player, &medkit);
+    assert_eq!(player.health, 100);
+    //Test one last time to make sure that health doesn't exceed 100 when using a medkit at 100 HP
+    player = apply_pickup_effects(player, &medkit);
+    assert_eq!(player.health, 100);
+}
+
+/// Test that attack pickups alter the player's attack in the intended manner
+#[test]
+fn test_attack_pickup() {
+    //Create dummy player entity
+    let mut player: Entity = Entity::new_player(
+        "Test Player".to_string(),
+        100,
+        vec![Attack::new_attack("Scattershot".to_string(), 10)], //Start with 10 attack power (on scattershot attack)
+        vec![],
+        1,
+    );
+    let mut knife: Pickup = Pickup {
+        name: String::from("Knife"),
+        pickup_type: String::from("attack"),
+        effect: 20, //Start with an increase of 20
+    };
+    player = apply_pickup_effects(player, &knife);
+    assert_eq!(player.attacks[0].damage_value, 30);
+    //Ensure that this function would still maintain proper behavior when attack pickups with damage increases are implemented
+    knife.effect = 40;
+    player = apply_pickup_effects(player, &knife);
+    assert_eq!(player.attacks[0].damage_value, 70);
+    knife.effect = 4000;
+    player = apply_pickup_effects(player, &knife);
+    assert_eq!(player.attacks[0].damage_value, 4070);
+    knife.effect = 6;
+    player = apply_pickup_effects(player, &knife);
+    assert_eq!(player.attacks[0].damage_value, 4076);
+}
+
+/// Make sure that the movement pickup applies the right increase to the player's movement range
+#[test]
+fn test_movement_pickup() {
+    //Create dummy player entity
+    let mut player: Entity = Entity::new_player(
+        "Test Player".to_string(),
+        100,
+        vec![Attack::new_attack("Scattershot".to_string(), 10)],
+        vec![],
+        1, //Start with one tile of movement
+    );
+    let boots: Pickup = Pickup {
+        name: String::from("Pair of Boots"),
+        pickup_type: String::from("movement"),
+        effect: 1, //Increase movement by one tile
+    };
+    player = apply_pickup_effects(player, &boots);
+    assert_eq!(player.movement, 2);
 }
