@@ -221,7 +221,7 @@ fn main() {
     // Loop for restarting or quitting the game
     'state: loop {
         // Create the player entity with their attack list, health, and other values.
-        let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 100)];
+        let player_attacks: Vec<Attack> = vec![Attack::new_attack("Scattershot".to_string(), 10)];
 
         // Create the player's backpack, which starts empty.
         let player_backpack: Vec<Pickup> = vec![];
