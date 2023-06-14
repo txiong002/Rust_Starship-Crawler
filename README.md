@@ -147,3 +147,8 @@ https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
 This project uses the "MIT License."
 
 Please see the `LICENSE` file for license terms.
+
+
+# Tagged commit
+
+The commit to grade is Release_6142023.
