@@ -67,7 +67,11 @@ To move on the map, enter the x-coordinate and y-coordinate of the tile you want
 
 # Example
 
+## Starting the game:
+
 ![](resources/example.png)
+
+## Picking up a pair of boots
 
 ![](resources/example_pickup.png)
 
