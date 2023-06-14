@@ -50,23 +50,23 @@ const MAX_LEVELS: usize = 4;
 // ================================================
 
 /// Spawn the enemy based on which room and level we are in.
-/// 
+///
 /// Enemy Name - determine which enemy should spawn
-/// 
+///
 ///    0 = Ceiling Crawler
-/// 
+///
 ///    1 = Rogue drone
-/// 
+///
 ///    2 = Radioactive Mutant
-/// 
+///
 /// # Arguments
-/// 
+///
 /// count_level = the current level number. Starts from 1.
-/// 
+///
 /// count_room = the current room number. Starts from 1.
-/// 
+///
 /// num_rooms_per_floor = the number of rooms per floor. Minimum value is 1.
-/// 
+///
 fn spawn_enemy(count_level: usize, count_room: usize, num_rooms_per_floor: usize) -> Entity {
     let mut rng = thread_rng();
 
@@ -160,9 +160,9 @@ fn spawn_enemy(count_level: usize, count_room: usize, num_rooms_per_floor: usize
 }
 
 /// Show an opening message when the player arrives at the start of a floor.
-/// 
+///
 /// # Arguments
-/// 
+///
 /// floor_index: The index of the current level. Starts from 0.
 fn show_floor_message(floor_index: usize) {
     if floor_index == 0 {
@@ -177,8 +177,7 @@ fn show_floor_message(floor_index: usize) {
         // SECOND FLOOR
         println!("\n===== LEVEL {}: COMMAND CENTER  =====", floor_index + 1);
         println!("You survived the enemies hiding in the hangar. You make your way to the command center on the third floor.\nIn this room, the ship's captain would manage the crew and keep track of the ship's vital functions.\n");
-    
-    } else if floor_index == MAX_LEVELS-1 {
+    } else if floor_index == MAX_LEVELS - 1 {
         // SECOND FLOOR
         println!("\n===== LEVEL {}: RESEARCH LAB  =====", floor_index + 1);
         println!("You survived the enemies hiding in the command center. You make your way to the final floor where the research lab lies.\nThe research lab is the heart of the crew's experiments on genetic engineering. The lead scientists were all aiming for a breakthrough, but alas, a terrifying secret cut their research short.\nYou hear a deafening roar from the adjoining lab.\n");
