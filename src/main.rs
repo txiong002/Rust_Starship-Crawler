@@ -177,7 +177,6 @@ fn show_floor_message(floor_index: usize) {
 
 /// Main function
 fn main() {
-
     // Welcome message
     println!("==== Welcome to Starship Crawler! ====");
     println!();
