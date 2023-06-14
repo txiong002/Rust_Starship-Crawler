@@ -69,6 +69,8 @@ To move on the map, enter the x-coordinate and y-coordinate of the tile you want
 
 ![](resources/example.png)
 
+![](resources/example_pickup.png)
+
 ### Testing
 
 We tested all aspects of the game to ensure that the player could carry out the basic activities. This was done through two different methods: manual testing and automated testing. Manual testing was necessary for a decent amount of the features that we implemented, since there are a lot of features that rely upon user input.
