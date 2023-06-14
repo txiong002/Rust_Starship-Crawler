@@ -130,6 +130,11 @@ We plan to include the following features (the list is not exhaustive) in future
 - Player can carry multiple weapons and thus have multiple attack types
 - Player moves using arrow keys instead of inputing coordinates
 
+
+# Presentation video
+
+You can find the presentation video `PRESENTATION.mp4` in the `presentation` folder.
+
 # References
 
 Lee: I reused code from HW3 to help set up the dungeon room and to move the player around via coordinate input.
@@ -147,7 +152,6 @@ https://docs.rs/rand/latest/rand/trait.Rng.html#method.gen_range
 This project uses the "MIT License."
 
 Please see the `LICENSE` file for license terms.
-
 
 # Tagged commit
 
