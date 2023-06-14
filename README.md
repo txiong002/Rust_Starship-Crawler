@@ -113,6 +113,12 @@ We tested all aspects of the game to ensure that the player could carry out the 
 - Small room generation. As a side-effect of the way that enemy location is implemented as of right now, small rooms aren't on the table. If the room is too small, the enemy is found immediately upon player spawn, which creates issues with the battle mechanics. Similarly, if the room is a little larger (but still small) the player isn't able to properly move around without finding the enemy on their first or second turn, which detracts from the overall experience of the game.
 - Movement range beyond two tiles. The largest problem that arose as a result of this was players being able to move across the entire room if they had enough of the pickup. This is why the implementation of the backpack/restricting the amount of movement pickups a player could obtain was important
 
+# How satisfied are we with the result?
+
+Given the progress and the features we were able to implement in the span of a few weeks, we feel that the result is satisfactory. We implemented movement, procedural rooms, and randomized pickups, all of which are needed for a rogue-like game. 
+
+However, we also feel that we could have done more with this project and expand it beyond what it currently has with new features. Those features are covered in the section below.
+
 # Future Work
 
 We plan to include the following features (the list is not exhaustive) in future versions of this game:
