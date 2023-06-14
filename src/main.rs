@@ -19,6 +19,7 @@ use rsc_lib::{
     logbook::{generate_logbook_coordinates, Logbook},
     logbook::{
         generate_logbook_entries_for_room_1_floor_1, generate_logbook_entries_for_room_1_floor_2,
+        generate_logbook_entries_for_room_1_floor_3, generate_logbook_entries_for_room_1_floor_4,
     },
     pickup::Pickup,
     *,
@@ -269,6 +270,14 @@ fn main() {
         let r1f2_logbooks: Vec<Logbook> = generate_logbook_entries_for_room_1_floor_2();
         let r1f2_lb_coords: Vec<(usize, usize)> = generate_logbook_coordinates();
 
+        // Generate the logbook entries for the first room of Floor 3.
+        let r1f3_logbooks: Vec<Logbook> = generate_logbook_entries_for_room_1_floor_3();
+        let r1f3_lb_coords: Vec<(usize, usize)> = generate_logbook_coordinates();
+
+        // Generate the logbook entries for the first room of Floor 4.
+        let r1f4_logbooks: Vec<Logbook> = generate_logbook_entries_for_room_1_floor_4();
+        let r1f4_lb_coords: Vec<(usize, usize)> = generate_logbook_coordinates();
+
         // Indices to keep track of level index and room index
         // Counters to keep track of room number and level number
         let mut count_level: usize = 1; // Level number, starts from 1.
@@ -304,6 +313,12 @@ fn main() {
                     } else if f == 1 && r == 0 {
                         room.logbooks = r1f2_logbooks.clone();
                         room.logbook_coords = r1f2_lb_coords.clone();
+                    } else if f == 2 && r == 0 {
+                        room.logbooks = r1f3_logbooks.clone();
+                        room.logbook_coords = r1f3_lb_coords.clone();
+                    } else if f == 3 && r == 0 {
+                        room.logbooks = r1f4_logbooks.clone();
+                        room.logbook_coords = r1f4_lb_coords.clone();
                     }
 
                     println!("\n===== ROOM {}  =====", r + 1);
