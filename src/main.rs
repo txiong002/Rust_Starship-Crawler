@@ -32,9 +32,6 @@ use rand::{thread_rng, Rng};
 // ================================================
 // CONSTANTS
 
-/// The player's health
-const _MAX_PLAYER_HEALTH: usize = 100;
-
 // Maximun number of Levels
 const MAX_LEVELS: usize = 4;
 
