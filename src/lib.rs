@@ -4,9 +4,17 @@
 //!
 //! CS 510 Rust
 //!
-//! Library code goes here
+//! This file contains the main library code for the game.
 //!
-//! Initial room generation code based on HW3 - Chomp
+//! Included:
+//!
+//! - Code pertaining to the Room struct and the Floor struct.
+//!
+//! - A function to move the player character around.
+//!
+//! - Functions that work with pickups and entities.
+//!
+//! References: Initial room generation and display code is based on code from HW3 - Chomp.
 //!
 //!
 //!
@@ -314,16 +322,16 @@ pub fn show_room(room: &Room) {
 /// Get arguments from user (similar to input from chomp)
 pub fn user_move(mut room: Room, player: &Entity) -> Option<Room> {
     let mut user_move: (usize, usize);
-    //Get user input
+    // Get user input
     let user_input: String = input!("Where do you want to move? (Input Format: 1 4): ")
         .parse()
         .unwrap();
 
     let user_move_str: Vec<&str> = user_input.split_whitespace().collect::<Vec<_>>();
 
-    //Make sure the user didn't input too much
+    // Make sure the user didn't input too much
     if user_move_str.len() == 2 {
-        //Turn the string vector into a usize vector (return None if one of them fails to map to the usize vector)
+        // Turn the string vector into a usize vector (return None if one of them fails to map to the usize vector)
         let v: Vec<usize> = match user_move_str
             .iter()
             .map(|s| s.parse())
@@ -596,7 +604,7 @@ fn test_new_proc_room() {
 /// through medkits shouldn't go higher than 100)
 #[test]
 fn test_health_pickup() {
-    //Create dummy player entity
+    // Create a dummy player entity
     let mut player: Entity = Entity::new_player(
         "Test Player".to_string(),
         10, //Set player health to low amount to start
@@ -604,12 +612,13 @@ fn test_health_pickup() {
         vec![],
         1,
     );
+    // Create a medkit.
     let medkit: Pickup = Pickup {
         name: String::from("Medkit"),
         pickup_type: String::from("health"),
         effect: 20, // Increase current health by 20
     };
-    //Test by applying medkits multiple times
+    // Test by applying medkits multiple times
     player = apply_pickup_effects(player, &medkit);
     assert_eq!(player.health, 30);
     player = apply_pickup_effects(player, &medkit);
@@ -618,10 +627,10 @@ fn test_health_pickup() {
     assert_eq!(player.health, 70);
     player = apply_pickup_effects(player, &medkit);
     assert_eq!(player.health, 90);
-    //Make sure that health doesn't exceed 100 when applying a medkit at 90 HP
+    // Make sure that health doesn't exceed 100 when applying a medkit at 90 HP
     player = apply_pickup_effects(player, &medkit);
     assert_eq!(player.health, 100);
-    //Test one last time to make sure that health doesn't exceed 100 when using a medkit at 100 HP
+    // Test one last time to make sure that health doesn't exceed 100 when using a medkit at 100 HP
     player = apply_pickup_effects(player, &medkit);
     assert_eq!(player.health, 100);
 }
@@ -629,7 +638,7 @@ fn test_health_pickup() {
 /// Test that attack pickups alter the player's attack in the intended manner
 #[test]
 fn test_attack_pickup() {
-    //Create dummy player entity
+    // Create dummy player entity
     let mut player: Entity = Entity::new_player(
         "Test Player".to_string(),
         100,
@@ -640,11 +649,11 @@ fn test_attack_pickup() {
     let mut knife: Pickup = Pickup {
         name: String::from("Knife"),
         pickup_type: String::from("attack"),
-        effect: 20, //Start with an increase of 20
+        effect: 20, // Start with an increase of 20
     };
     player = apply_pickup_effects(player, &knife);
     assert_eq!(player.attacks[0].damage_value, 30);
-    //Ensure that this function would still maintain proper behavior when attack pickups with damage increases are implemented
+    // Ensure that this function would still maintain proper behavior when attack pickups with damage increases are implemented
     knife.effect = 40;
     player = apply_pickup_effects(player, &knife);
     assert_eq!(player.attacks[0].damage_value, 70);
@@ -659,18 +668,18 @@ fn test_attack_pickup() {
 /// Make sure that the movement pickup applies the right increase to the player's movement range
 #[test]
 fn test_movement_pickup() {
-    //Create dummy player entity
+    // Create dummy player entity
     let mut player: Entity = Entity::new_player(
         "Test Player".to_string(),
         100,
         vec![Attack::new_attack("Scattershot".to_string(), 10)],
         vec![],
-        1, //Start with one tile of movement
+        1, // Start with one tile of movement
     );
     let boots: Pickup = Pickup {
         name: String::from("Pair of Boots"),
         pickup_type: String::from("movement"),
-        effect: 1, //Increase movement by one tile
+        effect: 1, // Increase movement by one tile
     };
     player = apply_pickup_effects(player, &boots);
     assert_eq!(player.movement, 2);

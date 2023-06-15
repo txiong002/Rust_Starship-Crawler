@@ -1,12 +1,18 @@
-//! Library file for combat between enemies and the player'
+//! Library file for combat between enemies and the player.
+//!
 //! 5/12/2023
 //!
 //! Included in this file is an entity struct that can be used for a player or an enemy.
 //! The entity struct has a name, a health value, a damage value, and a movement value.
 //!
+//! One can also find code for the Attack struct, which defines an attack usable by an Entity.
 //!
+//! An Entity can have multiple attacks and can carry pickups (see pickup.rs) in a backpack.
 //!
-//! // For prompting user input
+//! Also included is code for combat between Entities.
+//!
+
+// For prompting user input
 use prompted::input;
 
 // Randomly generate numbers
@@ -231,7 +237,7 @@ pub fn display_player_and_enemy_health(player: &Entity, enemy: &Entity) {
     println!("{}'s current heath: {}", enemy.name, enemy.health);
 }
 
-// function to restore player health. Generate number between 0 and 4, then applies health based on number generated
+/// function to restore player health. Generate number between 0 and 4, then applies health based on number generated
 pub fn regenerate_health(player: &mut Entity) {
     // add health to player if current health is less than 50
     if player.health <= 50 {

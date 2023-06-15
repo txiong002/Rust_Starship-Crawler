@@ -2,11 +2,11 @@
 //! 4/28/2023
 //! CS 510 Rust
 //!
-//! This file is used to execute the game.
+//! This file is used to execute the rust-starship-crawler game.
 //!
 //! Run it using the command `cargo run`.
 //!
-//!
+//! Have fun!
 
 // Imports ========================================
 // For prompting user input
@@ -406,7 +406,7 @@ fn main() {
                                 display_player_and_enemy_health(&player, &enemy); // Show the health values
                                 let game_over = face_off(&mut player, &mut enemy); // Player and enemy attack each other
 
-                                //If player wins, move to next level
+                                // If player wins, move to next level
                                 if !game_over && player.health > 0 {
                                     count_room += 1;
                                     if count_level == MAX_LEVELS && count_room > num_rooms_per_floor

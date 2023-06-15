@@ -126,6 +126,7 @@ We plan to include the following features (the list is not exhaustive) in future
 - More bosses
 - Enemies can move around the map
 - Randomized enemy/pickup start locations
+- Bug fixing: Fix an issue where multiple pickups may spawn on the same tile
 - Multiple enemies in one room (this will require expanding the minimum room size)
 - Player can carry multiple weapons and thus have multiple attack types
 - Enemies can land critical hits on the player

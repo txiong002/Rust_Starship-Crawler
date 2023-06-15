@@ -39,12 +39,12 @@ pub struct Pickup {
 
 // Implementation of a Pickup
 impl Pickup {
-    ///Randomly build a pick-up
+    /// Randomly build a pick-up
     pub fn generate_pickup() -> Pickup {
-        //Randomly generate item type
+        // Randomly generate item type
         let item_type = rand::thread_rng().gen_range(0..3);
 
-        //Based on which item type was generated, create the item.
+        // Based on which item type was generated, create the item.
         if item_type == 0 {
             Pickup {
                 name: String::from("Medkit"),
@@ -70,7 +70,7 @@ impl Pickup {
 /// Test that a pickup is randomly generated with the correct type and effects.
 #[test]
 fn test_generate_pickup() {
-    // For
+    // For 100 iterations, generate a pickup and test that the expected features are present.
     for i in 0..100 {
         // Generate the pickup.
         let pickup: Pickup = Pickup::generate_pickup();

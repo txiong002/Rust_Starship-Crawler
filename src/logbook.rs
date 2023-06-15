@@ -14,7 +14,7 @@
 //!
 //! A room can have multiple logbook entries. Logbook entries are only found on the first room of each floor.
 //!
-//! When the player accesses a logbook entry, the entry will not disappear, so the player can read it as many times as they want.
+//! When the player accesses a logbook entry, the entry will disappear.
 
 /// A logbook entry has a title and a description.
 ///
@@ -109,7 +109,9 @@ pub fn generate_logbook_entries_for_room_1_floor_4() -> Vec<Logbook> {
     vec![lb7, lb8]
 }
 
-/// Hardcode the logbook coordinates.
+/// Generate the logbook coordinates for two logbooks in one room.
+///
+/// This is hardcoded for now.
 pub fn generate_logbook_coordinates() -> Vec<(usize, usize)> {
     vec![(2, 1), (2, 2)]
 }
