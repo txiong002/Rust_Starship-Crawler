@@ -529,7 +529,9 @@ pub fn apply_pickup_effects(mut player: Entity, pickup: &Pickup) -> Entity {
             println!("Your current health is now {}", player.health);
         } else {
             // Health is 81 or higher, set health to 100
+            println!("Health restored by {}.", 100 - player.health);
             player.health = 100;
+            println!("Your current health is now {}", player.health);
         }
     } else if pickup.pickup_type == "attack" {
         player.attacks[0].damage_value += pickup.effect;
