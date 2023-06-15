@@ -157,4 +157,4 @@ Please see the `LICENSE` file for license terms.
 
 # Tagged commit
 
-The commit to grade is Release_6142023.
+The commit to grade is tagged "Release_6142023".
